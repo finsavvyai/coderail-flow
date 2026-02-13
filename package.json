@@ -1,0 +1,15 @@
+{
+  "name": "coderail-flow-starter",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "deploy:api": "npm --workspace apps/api run deploy",
+    "deploy:web": "npm --workspace apps/web run deploy",
+    "lint": "echo 'Add lint later'"
+  }
+}

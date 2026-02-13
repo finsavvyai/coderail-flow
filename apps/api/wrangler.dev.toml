@@ -1,0 +1,23 @@
+name = "coderail-flow-api"
+main = "src/index.ts"
+compatibility_date = "2025-12-13"
+compatibility_flags = ["nodejs_compat"]
+
+# ---- D1 ----
+[[d1_databases]]
+binding = "DB"
+database_name = "coderail-flow-db"
+database_id = "4943d70b-ed7e-4440-b46d-ee7201f5e551"
+
+# ---- R2 ----
+[[r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "coderail-flow-artifacts"
+
+# Browser Rendering is NOT available locally — stub runner is used instead
+# [browser]
+# binding = "BROWSER"
+
+[vars]
+APP_ENV = "development"
+PUBLIC_BASE_URL = "http://localhost:5173"

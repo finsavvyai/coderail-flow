@@ -1,0 +1,46 @@
+name = "coderail-flow-api"
+main = "src/index.ts"
+compatibility_date = "2025-12-13"
+compatibility_flags = ["nodejs_compat"]
+
+# ---- D1 ----
+[[d1_databases]]
+binding = "DB"
+database_name = "coderail-flow-db"
+database_id = "4943d70b-ed7e-4440-b46d-ee7201f5e551"
+
+# ---- R2 (optional in this starter) ----
+[[r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "coderail-flow-artifacts"
+
+# ---- Browser Rendering ----
+[browser]
+binding = "BROWSER"
+
+[vars]
+APP_ENV = "production"
+PUBLIC_BASE_URL = "https://coderail-flow.pages.dev"
+# CLERK_ISSUER = "https://clerk.your-domain.dev"  # Set via `wrangler secret put CLERK_ISSUER`
+
+# ──────────────────────────────────────
+# Staging environment: `wrangler deploy --env staging`
+# ──────────────────────────────────────
+[env.staging]
+name = "coderail-flow-api-staging"
+
+[env.staging.vars]
+APP_ENV = "staging"
+PUBLIC_BASE_URL = "https://coderail-flow-staging.pages.dev"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "coderail-flow-db-staging"
+database_id = ""  # Create with: wrangler d1 create coderail-flow-db-staging
+
+[[env.staging.r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "coderail-flow-artifacts-staging"
+
+[env.staging.browser]
+binding = "BROWSER"

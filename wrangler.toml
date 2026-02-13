@@ -1,0 +1,2 @@
+# Root config is intentionally minimal.
+# Use apps/api/wrangler.toml for the Worker.
