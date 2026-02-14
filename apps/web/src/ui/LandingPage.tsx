@@ -287,9 +287,9 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a href="#waitlist" className={p.featured ? "lp-btn-primary" : "lp-btn-outline"}>
+              <Link to="/app" className={p.featured ? "lp-btn-primary" : "lp-btn-outline"}>
                 {p.cta}
-              </a>
+              </Link>
             </div>
           ))}
         </div>

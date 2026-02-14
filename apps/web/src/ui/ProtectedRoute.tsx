@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -6,24 +6,32 @@ import {
   UserButton,
   useAuth,
 } from "@clerk/clerk-react";
-import { Zap, ArrowLeft, CreditCard } from "lucide-react";
+import { Zap, ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { setTokenProvider } from "./api";
 
-function TokenSync() {
+function TokenSync({ onReady }: { onReady: () => void }) {
   const { getToken } = useAuth();
   useEffect(() => {
     setTokenProvider(() => getToken());
+    onReady();
   }, [getToken]);
   return null;
 }
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const [tokenReady, setTokenReady] = useState(false);
+
   return (
     <>
       <SignedIn>
-        <TokenSync />
-        <div className="app-topbar">
+        <TokenSync onReady={() => setTokenReady(true)} />
+        {!tokenReady ? (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <Loader2 size={32} className="spin" style={{ color: "#6366f1" }} />
+          </div>
+        ) : null}
+        <div className="app-topbar" style={{ display: tokenReady ? undefined : "none" }}>
           <div className="app-topbar-inner">
             <Link to="/" className="app-topbar-brand">
               <Zap size={18} strokeWidth={2.5} />
@@ -38,7 +46,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        {children}
+        {tokenReady ? children : null}
       </SignedIn>
       <SignedOut>
         <div className="auth-gate">

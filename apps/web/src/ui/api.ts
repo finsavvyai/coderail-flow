@@ -40,7 +40,10 @@ export type RunRow = {
 // ---- API functions ----
 export async function getFlows(): Promise<Flow[]> {
   const res = await fetch(`${API_BASE}/flows`, { headers: await authHeaders() });
-  if (!res.ok) throw new Error("Failed to load flows");
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || `Failed to load flows (${res.status})`);
+  }
   const json = await res.json();
   return json.flows ?? [];
 }
