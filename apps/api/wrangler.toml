@@ -20,7 +20,7 @@ binding = "BROWSER"
 
 [vars]
 APP_ENV = "production"
-PUBLIC_BASE_URL = "https://coderail-flow.pages.dev"
+PUBLIC_BASE_URL = "https://coderail-flow.netlify.app"
 # CLERK_ISSUER = "https://clerk.your-domain.dev"  # Set via `wrangler secret put CLERK_ISSUER`
 
 # ──────────────────────────────────────
