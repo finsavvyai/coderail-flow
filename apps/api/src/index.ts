@@ -12,6 +12,12 @@ import { rateLimit } from "./ratelimit";
 type Variables = { userId: string; userEmail?: string };
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
+// Prevent Cloudflare CDN from caching API responses (stale CORS headers)
+app.use("*", async (c, next) => {
+  await next();
+  c.header("Cache-Control", "no-store");
+});
+
 app.use("*", cors({
   origin: (origin, c) => {
     const env = (c as any).env as Env;
