@@ -2,8 +2,11 @@ import { Hono } from "hono";
 import type { Env } from "./env";
 import { q, q1 } from "./db";
 import { uuid } from "./ids";
+import { requireAuth } from "./auth";
 
-const billing = new Hono<{ Bindings: Env }>();
+type Variables = { userId: string; userEmail?: string };
+const billing = new Hono<{ Bindings: Env; Variables: Variables }>();
+const auth = requireAuth();
 
 const PLAN_LIMITS: Record<string, { runs: number; flows: number }> = {
   free: { runs: 10, flows: 3 },
@@ -13,22 +16,23 @@ const PLAN_LIMITS: Record<string, { runs: number; flows: number }> = {
 };
 
 // ---- Get or create user account ----
-billing.post("/account/sync", async (c) => {
+billing.post("/account/sync", auth, async (c) => {
   const env = c.env;
-  const body = await c.req.json<{ clerkId: string; email: string; name?: string }>();
+  const clerkId = c.get("userId");
+  const body = await c.req.json<{ email: string; name?: string }>();
 
-  if (!body.clerkId || !body.email) {
-    return c.json({ error: "clerkId and email required" }, 400);
+  if (!body.email) {
+    return c.json({ error: "email required" }, 400);
   }
 
-  let user = await q1<any>(env, "SELECT * FROM user_account WHERE clerk_id = ?", [body.clerkId]);
+  let user = await q1<any>(env, "SELECT * FROM user_account WHERE clerk_id = ?", [clerkId]);
 
   if (!user) {
     const id = uuid();
     const now = new Date().toISOString();
     await q(env, `INSERT INTO user_account (id, clerk_id, email, name, plan, runs_this_month, runs_reset_at, created_at, updated_at)
                   VALUES (?, ?, ?, ?, 'free', 0, ?, ?, ?)`,
-      [id, body.clerkId, body.email, body.name ?? null, now, now, now]
+      [id, clerkId, body.email, body.name ?? null, now, now, now]
     );
     user = await q1<any>(env, "SELECT * FROM user_account WHERE id = ?", [id]);
   }
@@ -50,9 +54,9 @@ billing.post("/account/sync", async (c) => {
 });
 
 // ---- Get account info ----
-billing.get("/account/:clerkId", async (c) => {
+billing.get("/account", auth, async (c) => {
   const env = c.env;
-  const clerkId = c.req.param("clerkId");
+  const clerkId = c.get("userId");
 
   const user = await q1<any>(env, "SELECT * FROM user_account WHERE clerk_id = ?", [clerkId]);
   if (!user) return c.json({ error: "user_not_found" }, 404);
@@ -74,14 +78,15 @@ billing.get("/account/:clerkId", async (c) => {
 });
 
 // ---- Create Lemon Squeezy checkout ----
-billing.post("/checkout", async (c) => {
+billing.post("/checkout", auth, async (c) => {
   const env = c.env;
   if (!env.LEMONSQUEEZY_API_KEY) {
     return c.json({ error: "Lemon Squeezy not configured" }, 503);
   }
 
-  const body = await c.req.json<{ clerkId: string; plan: "pro" | "team" }>();
-  const user = await q1<any>(env, "SELECT * FROM user_account WHERE clerk_id = ?", [body.clerkId]);
+  const clerkId = c.get("userId");
+  const body = await c.req.json<{ plan: "pro" | "team" }>();
+  const user = await q1<any>(env, "SELECT * FROM user_account WHERE clerk_id = ?", [clerkId]);
   if (!user) return c.json({ error: "user_not_found" }, 404);
 
   const variantId = body.plan === "pro" ? env.LEMONSQUEEZY_VARIANT_PRO : env.LEMONSQUEEZY_VARIANT_TEAM;

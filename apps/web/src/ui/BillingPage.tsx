@@ -39,7 +39,6 @@ export function BillingPage() {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
-          clerkId: user.id,
           email: user.primaryEmailAddress?.emailAddress ?? "",
           name: user.fullName,
         }),
@@ -64,7 +63,7 @@ export function BillingPage() {
           "content-type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ clerkId: user.id, plan }),
+        body: JSON.stringify({ plan }),
       });
       const data = await res.json();
       if (data.checkoutUrl) {
