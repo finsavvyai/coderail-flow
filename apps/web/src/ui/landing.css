@@ -56,9 +56,11 @@
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.15s;
+  border-radius: 6px;
 }
 
 .lp-nav-links a:hover { color: var(--text); }
+.lp-nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .lp-btn-sm {
   display: inline-flex;
@@ -66,7 +68,8 @@
   gap: 6px;
   background: var(--accent);
   color: #fff !important;
-  padding: 8px 16px;
+  padding: 10px 16px;
+  min-height: 44px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
@@ -75,6 +78,7 @@
 }
 
 .lp-btn-sm:hover { background: var(--accent-hover); }
+.lp-btn-sm:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---- Hero ---- */
 .lp-hero {
@@ -143,12 +147,17 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
 .lp-btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(43, 124, 255, 0.3);
+}
+
+.lp-btn-primary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .lp-btn-primary:disabled {
@@ -177,6 +186,11 @@
   border-color: var(--text-dim);
 }
 
+.lp-btn-ghost:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .lp-btn-outline {
   display: inline-flex;
   align-items: center;
@@ -198,6 +212,11 @@
 .lp-btn-outline:hover {
   border-color: var(--accent);
   background: rgba(43, 124, 255, 0.05);
+}
+
+.lp-btn-outline:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .lp-hero-stats {
@@ -302,19 +321,19 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .lp-feature-card:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(43, 124, 255, 0.1);
 }
 
 .lp-feature-icon {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: rgba(43, 124, 255, 0.1);
+  background: rgba(43, 124, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -526,8 +545,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(76, 175, 80, 0.1);
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.4);
   color: #4CAF50;
   padding: 16px;
   border-radius: 10px;

@@ -1,6 +1,6 @@
 import { ArrowLeft, Save, Play } from 'lucide-react';
 import type { Flow } from './api';
-import { STEP_TYPES } from './flow-builder-types';
+import { STEP_TYPES } from './flow-builder-step-types';
 import { useFlowBuilder } from './useFlowBuilder';
 import { StepList } from './StepList';
 import { StepFieldEditor } from './StepFieldEditor';
@@ -52,7 +52,7 @@ export function FlowBuilder({
       <div style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <button className="btn" onClick={onCancel} style={{ padding: '6px 10px' }}>
+            <button className="btn" onClick={onCancel} aria-label="Go back" style={{ padding: '10px' }}>
               <ArrowLeft size={16} />
             </button>
             <div className="h2" style={{ margin: 0 }}>
@@ -60,27 +60,36 @@ export function FlowBuilder({
             </div>
           </div>
 
+          <label htmlFor="flow-name" className="sr-only">Flow name</label>
           <input
+            id="flow-name"
             className="input"
             placeholder="Flow name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: 8 }}
+            aria-label="Flow name"
           />
+          <label htmlFor="flow-desc" className="sr-only">Description</label>
           <textarea
+            id="flow-desc"
             className="input"
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
             style={{ marginBottom: 12, resize: 'vertical' }}
+            aria-label="Flow description"
           />
 
+          <label htmlFor="flow-auth" className="sr-only">Auth profile</label>
           <select
+            id="flow-auth"
             className="input"
             value={authProfileId}
             onChange={(e) => setAuthProfileId(e.target.value)}
             style={{ marginBottom: 12 }}
+            aria-label="Auth profile"
           >
             <option value="">No auth profile</option>
             {authProfiles.map((profile) => (
