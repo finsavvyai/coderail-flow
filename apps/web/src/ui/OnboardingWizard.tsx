@@ -91,14 +91,16 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
 
   function handleNext() {
     if (step === 1 && !projectId) {
-      handleCreateProject();
+      void handleCreateProject();
     } else {
       setStep(step + 1);
     }
   }
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
@@ -200,4 +202,3 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
     </div>
   );
 }
-

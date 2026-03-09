@@ -32,7 +32,9 @@ export function ProjectSidebar({
           Projects
         </div>
         <div style={{ marginBottom: 12 }}>
-          <label htmlFor="project-name" className="sr-only">Project name</label>
+          <label htmlFor="project-name" className="sr-only">
+            Project name
+          </label>
           <input
             id="project-name"
             className="input"
@@ -42,7 +44,9 @@ export function ProjectSidebar({
             onChange={(e) => onNameChange(e.target.value)}
             style={{ marginBottom: 4 }}
           />
-          <label htmlFor="project-url" className="sr-only">Base URL</label>
+          <label htmlFor="project-url" className="sr-only">
+            Base URL
+          </label>
           <input
             id="project-url"
             className="input"

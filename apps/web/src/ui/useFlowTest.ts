@@ -45,59 +45,63 @@ export function useFlowTest({
       const headers: Record<string, string> = {};
       if (token) headers.Authorization = `Bearer ${token}`;
 
-      intervalRef.current = setInterval(async () => {
-        try {
-          // Fetch run status and steps in parallel
-          const [runRes, stepsRes] = await Promise.all([
-            fetch(`/api/runs/${id}`, { headers }),
-            fetch(`/api/runs/${id}/steps`, { headers }),
-          ]);
+      intervalRef.current = setInterval(
+        () =>
+          void (async () => {
+            try {
+              // Fetch run status and steps in parallel
+              const [runRes, stepsRes] = await Promise.all([
+                fetch(`/api/runs/${id}`, { headers }),
+                fetch(`/api/runs/${id}/steps`, { headers }),
+              ]);
 
-          if (!runRes.ok) {
-            stopPolling();
-            setStatus('failed');
-            setTesting(false);
-            return;
-          }
+              if (!runRes.ok) {
+                stopPolling();
+                setStatus('failed');
+                setTesting(false);
+                return;
+              }
 
-          const runData = await runRes.json();
-          const run = runData.run;
+              const runData = await runRes.json();
+              const run = runData.run;
 
-          // Update step details from real DB records
-          if (stepsRes.ok) {
-            const stepsData = await stepsRes.json();
-            const steps: StepDetail[] = (stepsData.steps || []).map((s: any) => ({
-              idx: s.idx,
-              type: s.type,
-              status: s.status,
-              detail: s.detail,
-            }));
-            setStepDetails(steps);
+              // Update step details from real DB records
+              if (stepsRes.ok) {
+                const stepsData = await stepsRes.json();
+                const steps: StepDetail[] = (stepsData.steps || []).map((s: any) => ({
+                  idx: s.idx,
+                  type: s.type,
+                  status: s.status,
+                  detail: s.detail,
+                }));
+                setStepDetails(steps);
 
-            // Current step = number of completed steps
-            const completedCount = steps.filter(
-              (s: StepDetail) => s.status === 'ok' || s.status === 'failed'
-            ).length;
-            setCurrentStep(completedCount);
-          }
+                // Current step = number of completed steps
+                const completedCount = steps.filter(
+                  (s: StepDetail) => s.status === 'ok' || s.status === 'failed'
+                ).length;
+                setCurrentStep(completedCount);
+              }
 
-          if (run.status === 'succeeded') {
-            stopPolling();
-            setStatus('succeeded');
-            setTesting(false);
-            setCurrentStep(stepCount);
-            toast.success('Flow test completed successfully!');
-          } else if (run.status === 'failed') {
-            stopPolling();
-            setStatus('failed');
-            setError(run.error_message || 'Flow test failed');
-            setTesting(false);
-            toast.error('Flow test failed');
-          }
-        } catch {
-          // Ignore transient fetch errors during polling
-        }
-      }, 1500);
+              if (run.status === 'succeeded') {
+                stopPolling();
+                setStatus('succeeded');
+                setTesting(false);
+                setCurrentStep(stepCount);
+                toast.success('Flow test completed successfully!');
+              } else if (run.status === 'failed') {
+                stopPolling();
+                setStatus('failed');
+                setError(run.error_message || 'Flow test failed');
+                setTesting(false);
+                toast.error('Flow test failed');
+              }
+            } catch {
+              // Ignore transient fetch errors during polling
+            }
+          })(),
+        1500
+      );
 
       // Safety timeout: stop polling after 2 minutes
       setTimeout(() => stopPolling(), 120000);
@@ -141,7 +145,7 @@ export function useFlowTest({
 
       const data = await res.json();
       setRunId(data.runId);
-      pollRunStatus(data.runId);
+      void pollRunStatus(data.runId);
     } catch (err: any) {
       setError(err.message || 'Failed to start test');
       setStatus('failed');

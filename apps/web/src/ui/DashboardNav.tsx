@@ -5,8 +5,7 @@ export function DashboardNav() {
   const location = useLocation();
 
   const isActive = (path: string) =>
-    location.pathname === path ||
-    (path === '/app' && location.pathname === '/app/dashboard');
+    location.pathname === path || (path === '/app' && location.pathname === '/app/dashboard');
 
   const links = [
     { to: '/app', label: 'Dashboard' },

@@ -22,12 +22,12 @@ export function useProjectManager() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    loadProjects();
+    void loadProjects();
   }, []);
 
   useEffect(() => {
     if (selectedProject) {
-      loadScreens(selectedProject.id);
+      void loadScreens(selectedProject.id);
     }
   }, [selectedProject]);
 

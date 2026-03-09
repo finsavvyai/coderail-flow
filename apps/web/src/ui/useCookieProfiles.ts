@@ -13,7 +13,7 @@ export function useCookieProfiles(projectId: string) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    loadProfiles();
+    void loadProfiles();
   }, [projectId]);
 
   async function loadProfiles() {
@@ -104,7 +104,7 @@ export function useCookieProfiles(projectId: string) {
     }
     const updatedProfile = { ...selectedProfile, cookies: updatedCookies };
     setSelectedProfile(updatedProfile);
-    saveProfile(updatedProfile);
+    void saveProfile(updatedProfile);
     setEditingCookie(null);
   }
 
@@ -115,7 +115,7 @@ export function useCookieProfiles(projectId: string) {
     );
     const updatedProfile = { ...selectedProfile, cookies: updatedCookies };
     setSelectedProfile(updatedProfile);
-    saveProfile(updatedProfile);
+    void saveProfile(updatedProfile);
   }
 
   function exportProfile() {
@@ -150,7 +150,7 @@ export function useCookieProfiles(projectId: string) {
           sessionStorage: data.sessionStorage || selectedProfile.sessionStorage,
         };
         setSelectedProfile(updatedProfile);
-        saveProfile(updatedProfile);
+        void saveProfile(updatedProfile);
       }
       setImportJson('');
       setError('');

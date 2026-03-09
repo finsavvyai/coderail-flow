@@ -51,7 +51,9 @@ export function Waitlist() {
             </div>
           ) : (
             <form className="lp-cta-form" onSubmit={handleSubmit}>
-              <label htmlFor="waitlist-email" className="sr-only">Email address</label>
+              <label htmlFor="waitlist-email" className="sr-only">
+                Email address
+              </label>
               <input
                 id="waitlist-email"
                 type="email"

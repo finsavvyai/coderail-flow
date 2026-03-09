@@ -13,7 +13,9 @@ const hintStyle = { fontSize: 11, color: '#a8b3cf', marginTop: 4 };
 export function JiraInstanceUrlField({ config, onChange }: JiraFormFieldsProps) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <label htmlFor="jira-instance-url" style={labelStyle}>Jira Instance URL</label>
+      <label htmlFor="jira-instance-url" style={labelStyle}>
+        Jira Instance URL
+      </label>
       <input
         id="jira-instance-url"
         className="input"
@@ -36,7 +38,9 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
       <div>
-        <label htmlFor="jira-client-id" style={labelStyle}>Client ID</label>
+        <label htmlFor="jira-client-id" style={labelStyle}>
+          Client ID
+        </label>
         <input
           id="jira-client-id"
           className="input"
@@ -48,7 +52,9 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
         />
       </div>
       <div>
-        <label htmlFor="jira-client-secret" style={labelStyle}>Client Secret</label>
+        <label htmlFor="jira-client-secret" style={labelStyle}>
+          Client Secret
+        </label>
         <div style={{ position: 'relative' }}>
           <input
             id="jira-client-secret"
@@ -87,7 +93,9 @@ export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
       <div>
-        <label htmlFor="jira-project-key" style={labelStyle}>Project Key</label>
+        <label htmlFor="jira-project-key" style={labelStyle}>
+          Project Key
+        </label>
         <input
           id="jira-project-key"
           className="input"
@@ -100,7 +108,9 @@ export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
         <div style={hintStyle}>Jira project key (e.g., PROJ)</div>
       </div>
       <div>
-        <label htmlFor="jira-issue-type" style={labelStyle}>Default Issue Type</label>
+        <label htmlFor="jira-issue-type" style={labelStyle}>
+          Default Issue Type
+        </label>
         <input
           id="jira-issue-type"
           className="input"

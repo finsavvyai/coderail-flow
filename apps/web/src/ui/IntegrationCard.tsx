@@ -1,12 +1,4 @@
-import {
-  Trash2,
-  TestTube,
-  Check,
-  Eye,
-  EyeOff,
-  ChevronDown,
-  ChevronUp,
-} from 'lucide-react';
+import { Trash2, TestTube, Check, Eye, EyeOff, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Integration, Delivery } from './integrations-types';
 import { getTypeInfo } from './integrations-types';
 
@@ -151,4 +143,3 @@ function DeliveryLog({ deliveries }: { deliveries: Delivery[] }) {
     </div>
   );
 }
-

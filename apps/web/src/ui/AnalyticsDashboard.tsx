@@ -13,11 +13,7 @@ import {
 import { AnalyticsSummaryCards } from './AnalyticsSummaryCards';
 import { RunsOverTimeChart, TopFlowsList } from './AnalyticsCharts';
 import { StepPerformanceCard, ElementReliabilityCard } from './AnalyticsChartItems';
-import {
-  buildOpsSnapshot,
-  OpsSnapshotCard,
-  RecentRunsTable,
-} from './AnalyticsDashboardCharts';
+import { buildOpsSnapshot, OpsSnapshotCard, RecentRunsTable } from './AnalyticsDashboardCharts';
 
 interface AnalyticsDashboardProps {
   projectId?: string;
@@ -25,7 +21,11 @@ interface AnalyticsDashboardProps {
   onSelectRun?: (runId: string) => void | Promise<void>;
 }
 
-export function AnalyticsDashboard({ projectId, selectedRunId, onSelectRun }: AnalyticsDashboardProps) {
+export function AnalyticsDashboard({
+  projectId,
+  selectedRunId,
+  onSelectRun,
+}: AnalyticsDashboardProps) {
   const [stats, setStats] = useState<AnalyticsStats | null>(null);
   const [stepStats, setStepStats] = useState<StepAnalyticsStats | null>(null);
   const [elementStats, setElementStats] = useState<ElementReliabilityStats | null>(null);
@@ -35,7 +35,7 @@ export function AnalyticsDashboard({ projectId, selectedRunId, onSelectRun }: An
   const [copiedSnapshot, setCopiedSnapshot] = useState(false);
 
   useEffect(() => {
-    loadStats();
+    void loadStats();
   }, [projectId, timeRange]);
 
   async function loadStats() {

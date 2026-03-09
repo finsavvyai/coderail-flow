@@ -10,9 +10,7 @@ export function CookieImportPreview({ cookies }: CookieImportPreviewProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-3">
-        Cookie Preview (First 10)
-      </h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">Cookie Preview (First 10)</h3>
       <div className="border border-gray-300 rounded-lg overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -36,19 +34,13 @@ export function CookieImportPreview({ cookies }: CookieImportPreviewProps) {
               const status = getCookieExpiryStatus(cookie);
               return (
                 <tr key={index}>
-                  <td className="px-4 py-2 text-sm font-medium text-gray-900">
-                    {cookie.name}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-600">
-                    {cookie.domain || '*'}
-                  </td>
+                  <td className="px-4 py-2 text-sm font-medium text-gray-900">{cookie.name}</td>
+                  <td className="px-4 py-2 text-sm text-gray-600">{cookie.domain || '*'}</td>
                   <td className="px-4 py-2 text-sm font-mono text-gray-600">
                     {cookie.value.slice(0, 8)}
                     {cookie.value.length > 8 ? '...' : ''}
                   </td>
-                  <td className={`px-4 py-2 text-xs ${status.color}`}>
-                    {status.status}
-                  </td>
+                  <td className={`px-4 py-2 text-xs ${status.color}`}>{status.status}</td>
                 </tr>
               );
             })}

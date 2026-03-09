@@ -46,9 +46,7 @@ export function RecorderStepList(props: RecorderStepListProps) {
           <div style={{ padding: 24, textAlign: 'center', color: '#8b95b0', fontSize: 13 }}>
             <Plus size={24} style={{ marginBottom: 8, opacity: 0.5 }} />
             <div>No actions recorded yet</div>
-            <div style={{ fontSize: 11, marginTop: 4 }}>
-              Interact with the page to record steps
-            </div>
+            <div style={{ fontSize: 11, marginTop: 4 }}>Interact with the page to record steps</div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>

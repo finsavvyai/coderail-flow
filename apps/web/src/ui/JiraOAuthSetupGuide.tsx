@@ -28,12 +28,7 @@ export function JiraOAuthSetupGuide({ instanceUrl }: JiraOAuthSetupGuideProps) {
       <ol style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: '#a3a3a3', lineHeight: 1.6 }}>
         <li style={{ marginBottom: 6 }}>
           Go to{' '}
-          <a
-            href={oauthUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#0052CC' }}
-          >
+          <a href={oauthUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0052CC' }}>
             Jira OAuth 2.0 settings
           </a>
         </li>

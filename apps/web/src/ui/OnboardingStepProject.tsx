@@ -10,7 +10,10 @@ export function OnboardingStepProject({
     <div style={{ padding: '32px 24px' }}>
       <h3 style={{ margin: '0 0 24px', fontSize: 20 }}>Let's set up your first project</h3>
       <div style={{ marginBottom: 16 }}>
-        <label htmlFor="onboarding-project-name" style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="onboarding-project-name"
+          style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}
+        >
           Project Name
         </label>
         <input
@@ -24,7 +27,10 @@ export function OnboardingStepProject({
         />
       </div>
       <div style={{ marginBottom: 16 }}>
-        <label htmlFor="onboarding-project-url" style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="onboarding-project-url"
+          style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}
+        >
           Base URL
         </label>
         <input
@@ -51,8 +57,8 @@ export function OnboardingStepProject({
           lineHeight: 1.6,
         }}
       >
-        <strong style={{ color: '#3b82f6' }}>Tip:</strong> You can add more projects and
-            configure advanced settings later from the dashboard.
+        <strong style={{ color: '#3b82f6' }}>Tip:</strong> You can add more projects and configure
+        advanced settings later from the dashboard.
       </div>
     </div>
   );

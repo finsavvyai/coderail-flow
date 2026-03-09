@@ -30,7 +30,7 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
   });
 
   useEffect(() => {
-    loadSchedules();
+    void loadSchedules();
   }, []);
 
   async function loadSchedules() {
@@ -51,7 +51,9 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
       let params = {};
       try {
         params = JSON.parse(newSchedule.params);
-      } catch {}
+      } catch {
+        // ignore invalid JSON, use empty object
+      }
       await apiRequest('/schedules', {
         method: 'POST',
         body: JSON.stringify({
@@ -62,7 +64,7 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
       });
       setShowCreate(false);
       setNewSchedule({ flowId: '', cronExpression: '0 * * * *', params: '{}' });
-      loadSchedules();
+      void loadSchedules();
     } catch (e) {
       console.error('Failed to create schedule:', e);
     }
@@ -74,7 +76,7 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
         method: 'PUT',
         body: JSON.stringify({ enabled: !enabled }),
       });
-      loadSchedules();
+      void loadSchedules();
     } catch (e) {
       console.error('Failed to toggle schedule:', e);
     }
@@ -84,7 +86,7 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
     if (!confirm('Delete this schedule?')) return;
     try {
       await apiRequest(`/schedules/${id}`, { method: 'DELETE' });
-      loadSchedules();
+      void loadSchedules();
     } catch (e) {
       console.error('Failed to delete schedule:', e);
     }

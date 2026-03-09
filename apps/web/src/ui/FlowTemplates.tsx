@@ -29,7 +29,7 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         setLoading(false);
       }
     }
-    loadTemplates();
+    void loadTemplates();
   }, []);
 
   const categories = Array.from(new Set(templates.map((t) => t.category)));
@@ -44,7 +44,7 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
   });
 
   function handleCopy(template: TemplateSummary) {
-    navigator.clipboard.writeText(JSON.stringify(template, null, 2));
+    void navigator.clipboard.writeText(JSON.stringify(template, null, 2));
     setCopiedId(template.id);
     setTimeout(() => setCopiedId(null), 2000);
   }
@@ -73,7 +73,9 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         categories={categories}
       />
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>Loading templates...</div>
+        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
+          Loading templates...
+        </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
           {filteredTemplates.map((t) => (
@@ -91,7 +93,9 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
           <FileText size={48} style={{ marginBottom: 16, opacity: 0.5 }} />
           <div>No templates found</div>
-          <div className="small" style={{ marginTop: 8 }}>Try adjusting your search or filters</div>
+          <div className="small" style={{ marginTop: 8 }}>
+            Try adjusting your search or filters
+          </div>
         </div>
       )}
       {selectedTemplate && (
@@ -99,20 +103,35 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
           template={selectedTemplate}
           projectId={projectId}
           onClose={() => setSelectedTemplate(null)}
-          onSuccess={() => { setSelectedTemplate(null); onSuccess?.(); }}
+          onSuccess={() => {
+            setSelectedTemplate(null);
+            onSuccess?.();
+          }}
         />
       )}
     </div>
   );
 }
 
-function SearchBar({ search, onSearchChange }: { search: string; onSearchChange: (v: string) => void }) {
+function SearchBar({
+  search,
+  onSearchChange,
+}: {
+  search: string;
+  onSearchChange: (v: string) => void;
+}) {
   return (
     <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
       <div style={{ flex: 1, position: 'relative' }}>
         <Search
           size={16}
-          style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#a3a3a3' }}
+          style={{
+            position: 'absolute',
+            left: 12,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#a3a3a3',
+          }}
         />
         <input
           className="input"
@@ -139,7 +158,11 @@ function CategoryPills({
     <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
       <button
         className="btn"
-        style={{ background: !selectedCategory ? '#3b82f6' : '#2a2a2a', padding: '4px 12px', fontSize: 12 }}
+        style={{
+          background: !selectedCategory ? '#3b82f6' : '#2a2a2a',
+          padding: '4px 12px',
+          fontSize: 12,
+        }}
         onClick={() => onSelectCategory(null)}
       >
         All
@@ -148,7 +171,11 @@ function CategoryPills({
         <button
           key={cat}
           className="btn"
-          style={{ background: selectedCategory === cat ? '#3b82f6' : '#2a2a2a', padding: '4px 12px', fontSize: 12 }}
+          style={{
+            background: selectedCategory === cat ? '#3b82f6' : '#2a2a2a',
+            padding: '4px 12px',
+            fontSize: 12,
+          }}
           onClick={() => onSelectCategory(cat)}
         >
           {cat}

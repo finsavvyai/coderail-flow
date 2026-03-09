@@ -18,7 +18,7 @@ export function useJiraConfig(projectId: string) {
       const token = await getToken();
       const res = await fetch(
         `/api/integrations/jira/config?projectId=${encodeURIComponent(projectId)}`,
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.ok) {
         const data = await res.json();
@@ -40,7 +40,7 @@ export function useJiraConfig(projectId: string) {
   }
 
   useEffect(() => {
-    loadExistingConfig();
+    void loadExistingConfig();
   }, [projectId]);
 
   async function saveConfig() {

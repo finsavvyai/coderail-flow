@@ -23,7 +23,12 @@ export function CookieManager({ projectId, onClose }: { projectId: string; onClo
               <Cookie size={18} style={{ marginRight: 8 }} />
               Auth Profiles
             </div>
-            <button className="btn" onClick={onClose} style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }} aria-label="Close auth profiles">
+            <button
+              className="btn"
+              onClick={onClose}
+              style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }}
+              aria-label="Close auth profiles"
+            >
               <X size={16} />
             </button>
           </div>

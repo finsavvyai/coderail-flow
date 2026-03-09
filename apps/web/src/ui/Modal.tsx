@@ -24,7 +24,7 @@ export function Modal({
       }
       if (e.key === 'Tab' && dialogRef.current) {
         const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
         if (focusable.length === 0) return;
         const first = focusable[0];
@@ -38,7 +38,7 @@ export function Modal({
         }
       }
     },
-    [onClose],
+    [onClose]
   );
 
   useEffect(() => {

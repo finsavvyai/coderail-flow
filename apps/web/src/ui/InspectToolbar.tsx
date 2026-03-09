@@ -34,15 +34,17 @@ export function InspectToolbar({
         <div className="h2" style={{ margin: 0 }}>
           Element Mapper
         </div>
-        <button className="btn" onClick={onCancel} style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }} aria-label="Close inspector">
+        <button
+          className="btn"
+          onClick={onCancel}
+          style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }}
+          aria-label="Close inspector"
+        >
           <X size={16} />
         </button>
       </div>
       <div style={{ marginBottom: 12 }}>
-        <label
-          className="small"
-          style={{ display: 'block', marginBottom: 4, color: '#8b8b8b' }}
-        >
+        <label className="small" style={{ display: 'block', marginBottom: 4, color: '#8b8b8b' }}>
           Page URL
         </label>
         <div style={{ display: 'flex', gap: 4 }}>
@@ -54,7 +56,12 @@ export function InspectToolbar({
             onKeyDown={(e) => e.key === 'Enter' && onLoadPage()}
             style={{ flex: 1 }}
           />
-          <button className="btn" onClick={onLoadPage} disabled={!url.trim()} aria-label="Reload page">
+          <button
+            className="btn"
+            onClick={onLoadPage}
+            disabled={!url.trim()}
+            aria-label="Reload page"
+          >
             <RefreshCw size={16} />
           </button>
         </div>

@@ -14,10 +14,7 @@ export function AppHeader({ err }: AppHeaderProps) {
             Automated Browser Workflows
           </div>
         </div>
-        <div
-          className="badge"
-          style={{ backgroundColor: '#22c55e', color: '#fff', fontSize: 11 }}
-        >
+        <div className="badge" style={{ backgroundColor: '#22c55e', color: '#fff', fontSize: 11 }}>
           PRODUCTION READY
         </div>
       </div>

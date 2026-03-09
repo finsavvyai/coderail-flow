@@ -26,7 +26,10 @@ export function SlackMessagePreview({
   return (
     <>
       <div style={{ marginBottom: 16 }}>
-        <label htmlFor="slack-channel" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="slack-channel"
+          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
+        >
           Channel
         </label>
         <input
@@ -40,7 +43,10 @@ export function SlackMessagePreview({
       </div>
 
       <div style={{ marginBottom: 16 }}>
-        <label htmlFor="slack-message" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="slack-message"
+          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
+        >
           Message
         </label>
         <textarea
@@ -57,7 +63,15 @@ export function SlackMessagePreview({
         <label style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}>
           Attachments
         </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginBottom: 8 }}>
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            cursor: 'pointer',
+            marginBottom: 8,
+          }}
+        >
           <input
             type="checkbox"
             checked={includeScreenshot}
@@ -95,8 +109,8 @@ export function SlackMessagePreview({
           </span>
         </div>
         <div style={{ fontSize: 11, color: '#a3a3a3', lineHeight: 1.5 }}>
-          You need to configure a Slack integration first. Go to Settings → Integrations →
-          Add Integration → Slack.
+          You need to configure a Slack integration first. Go to Settings → Integrations → Add
+          Integration → Slack.
         </div>
       </div>
     </>

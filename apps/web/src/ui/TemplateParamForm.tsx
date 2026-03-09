@@ -29,9 +29,7 @@ export function TemplateParamForm({ params, values, onUpdate }: TemplateParamFor
             >
               {param.name}
               {param.required && <span style={{ color: '#dc3545' }}> *</span>}
-              <span style={{ marginLeft: 8, fontSize: 11, color: '#a3a3a3' }}>
-                ({param.type})
-              </span>
+              <span style={{ marginLeft: 8, fontSize: 11, color: '#a3a3a3' }}>({param.type})</span>
             </label>
             {param.type === 'number' ? (
               <input

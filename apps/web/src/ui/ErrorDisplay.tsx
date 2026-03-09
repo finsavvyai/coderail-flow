@@ -174,7 +174,10 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
         }}
       >
         <div className="small" style={{ color: '#a8b3cf', marginBottom: 6 }}>
-          <Lightbulb size={14} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
+          <Lightbulb
+            size={14}
+            style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }}
+          />
           Troubleshooting Tips:
         </div>
         <ul style={{ margin: 0, paddingLeft: 20, color: '#b3b3b3', fontSize: 12 }}>

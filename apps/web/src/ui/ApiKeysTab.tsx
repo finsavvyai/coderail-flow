@@ -92,7 +92,13 @@ function KeyList({ apiKeys, onDelete }: { apiKeys: ApiKey[]; onDelete: (id: stri
           <button
             className="btn"
             onClick={() => onDelete(key.id)}
-            style={{ padding: '10px 12px', fontSize: 11, background: '#2a1a1a', minHeight: 44, minWidth: 44 }}
+            style={{
+              padding: '10px 12px',
+              fontSize: 11,
+              background: '#2a1a1a',
+              minHeight: 44,
+              minWidth: 44,
+            }}
             aria-label="Delete API key"
           >
             <Trash2 size={12} />

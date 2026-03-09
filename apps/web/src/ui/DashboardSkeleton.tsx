@@ -4,7 +4,13 @@ export function DashboardSkeleton() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       {/* Stat cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: 16,
+        }}
+      >
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="card" style={{ padding: 20 }}>
             <Skeleton width={40} height={40} borderRadius={10} />

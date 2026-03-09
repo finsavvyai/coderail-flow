@@ -52,7 +52,12 @@ export function FlowBuilder({
       <div style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <button className="btn" onClick={onCancel} aria-label="Go back" style={{ padding: '10px' }}>
+            <button
+              className="btn"
+              onClick={onCancel}
+              aria-label="Go back"
+              style={{ padding: '10px' }}
+            >
               <ArrowLeft size={16} />
             </button>
             <div className="h2" style={{ margin: 0 }}>
@@ -60,7 +65,9 @@ export function FlowBuilder({
             </div>
           </div>
 
-          <label htmlFor="flow-name" className="sr-only">Flow name</label>
+          <label htmlFor="flow-name" className="sr-only">
+            Flow name
+          </label>
           <input
             id="flow-name"
             className="input"
@@ -70,7 +77,9 @@ export function FlowBuilder({
             style={{ marginBottom: 8 }}
             aria-label="Flow name"
           />
-          <label htmlFor="flow-desc" className="sr-only">Description</label>
+          <label htmlFor="flow-desc" className="sr-only">
+            Description
+          </label>
           <textarea
             id="flow-desc"
             className="input"
@@ -82,7 +91,9 @@ export function FlowBuilder({
             aria-label="Flow description"
           />
 
-          <label htmlFor="flow-auth" className="sr-only">Auth profile</label>
+          <label htmlFor="flow-auth" className="sr-only">
+            Auth profile
+          </label>
           <select
             id="flow-auth"
             className="input"

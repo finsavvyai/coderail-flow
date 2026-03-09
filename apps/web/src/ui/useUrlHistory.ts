@@ -40,10 +40,7 @@ export function useUrlHistory() {
     []
   );
 
-  const handleRemoveRecent = useCallback(
-    (url: string) => setRecentUrls(removeRecentUrl(url)),
-    []
-  );
+  const handleRemoveRecent = useCallback((url: string) => setRecentUrls(removeRecentUrl(url)), []);
 
   return {
     recentUrls,

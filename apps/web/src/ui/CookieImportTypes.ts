@@ -25,9 +25,7 @@ export function getCookieExpiryStatus(cookie: ImportCookie): CookieExpiryStatus 
 
   const expiry = new Date(cookie.expires);
   const now = new Date();
-  const daysUntilExpiry = Math.floor(
-    (expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-  );
+  const daysUntilExpiry = Math.floor((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
   if (daysUntilExpiry < 0) {
     return { status: 'Expired', color: 'text-red-600' };

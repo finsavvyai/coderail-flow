@@ -28,7 +28,7 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
     setSteps(initialSteps);
     setStatus('running');
     startTimeRef.current = Date.now();
-    pollProgress();
+    void pollProgress();
     const timer = setInterval(() => {
       setElapsedTime(Date.now() - startTimeRef.current);
     }, 100);
@@ -70,10 +70,10 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
           }
         }
       }
-      pollingRef.current = window.setTimeout(pollProgress, 1000);
+      pollingRef.current = window.setTimeout(() => void pollProgress(), 1000);
     } catch (e) {
       console.error('Failed to poll progress:', e);
-      pollingRef.current = window.setTimeout(pollProgress, 2000);
+      pollingRef.current = window.setTimeout(() => void pollProgress(), 2000);
     }
   }
 
@@ -107,7 +107,9 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
             {status === 'running' ? 'Running...' : status === 'succeeded' ? 'Completed' : 'Failed'}
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#a3a3a3', fontSize: 13 }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#a3a3a3', fontSize: 13 }}
+        >
           <Clock size={14} /> {formatTime(elapsedTime)}
         </div>
       </div>

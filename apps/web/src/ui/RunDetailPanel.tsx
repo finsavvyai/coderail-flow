@@ -37,13 +37,7 @@ export function RunDetailPanel({
         <LiveProgress runId={selectedRun} onComplete={onProgressComplete} />
       )}
 
-      {run && (
-        <RunShareCard
-          run={run}
-          selectedRun={selectedRun}
-          artifacts={runDetail?.artifacts}
-        />
-      )}
+      {run && <RunShareCard run={run} selectedRun={selectedRun} artifacts={runDetail?.artifacts} />}
 
       {runDetail?.run?.status === 'failed' && (
         <ErrorDisplay

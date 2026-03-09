@@ -50,7 +50,10 @@ export function AddStepPanel({ onAddStep }: AddStepPanelProps) {
         }}
       >
         <div className="small" style={{ color: '#a8b3cf', marginBottom: 8 }}>
-          <Lightbulb size={14} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
+          <Lightbulb
+            size={14}
+            style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }}
+          />
           Quick Tips
         </div>
         <ul style={{ fontSize: 13, color: '#a8b3cf', paddingLeft: 20, margin: 0 }}>

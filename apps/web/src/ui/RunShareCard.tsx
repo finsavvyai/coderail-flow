@@ -24,8 +24,8 @@ export function RunShareCard({ run, selectedRun, artifacts }: RunShareCardProps)
         ? Math.max(
             0,
             Math.round(
-              (new Date(run.finished_at).getTime() - new Date(run.started_at).getTime()) / 1000,
-            ),
+              (new Date(run.finished_at).getTime() - new Date(run.started_at).getTime()) / 1000
+            )
           )
         : null;
 
@@ -71,7 +71,10 @@ export function RunShareCard({ run, selectedRun, artifacts }: RunShareCardProps)
           }}
         >
           <div style={{ maxWidth: 720 }}>
-            <div className="small" style={{ color: '#8fb8ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <div
+              className="small"
+              style={{ color: '#8fb8ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
               Share this run
             </div>
             <div style={{ fontSize: 13, lineHeight: 1.7, color: '#d6e4ff', marginTop: 8 }}>

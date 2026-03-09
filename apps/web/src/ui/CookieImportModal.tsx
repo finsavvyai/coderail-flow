@@ -4,15 +4,15 @@ import { Button } from './Button';
 import type { ImportCookie, CookieImportModalProps } from './CookieImportTypes';
 import { validateCookieArray } from './CookieImportTypes';
 import { CookieImportPreview } from './CookieImportPreview';
-import {
-  ImportInstructions,
-  ImportErrorDisplay,
-  SecurityNotice,
-} from './CookieImportNotices';
+import { ImportInstructions, ImportErrorDisplay, SecurityNotice } from './CookieImportNotices';
 
 export type { CookieImportModalProps, ImportCookie as Cookie };
 
-export function CookieImportModal({ projectId, onSave, onCancel }: CookieImportModalProps) {
+export function CookieImportModal({
+  projectId: _projectId,
+  onSave,
+  onCancel,
+}: CookieImportModalProps) {
   const [profileName, setProfileName] = useState('');
   const [cookies, setCookies] = useState<ImportCookie[]>([]);
   const [loading, setLoading] = useState(false);
@@ -73,11 +73,7 @@ export function CookieImportModal({ projectId, onSave, onCancel }: CookieImportM
         <div className="flex-1 overflow-auto p-6 space-y-6">
           <ImportInstructions />
 
-          <ProfileNameInput
-            value={profileName}
-            onChange={setProfileName}
-            disabled={loading}
-          />
+          <ProfileNameInput value={profileName} onChange={setProfileName} disabled={loading} />
 
           <FileUploadField
             fileInputRef={fileInputRef}
@@ -114,11 +110,22 @@ function ModalHeader(props: { onCancel: () => void; loading: boolean }) {
     <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Import Authentication Cookies</h2>
-        <p className="text-sm text-gray-600 mt-1">Upload cookies to enable authenticated workflow execution</p>
+        <p className="text-sm text-gray-600 mt-1">
+          Upload cookies to enable authenticated workflow execution
+        </p>
       </div>
-      <button onClick={props.onCancel} className="text-gray-400 hover:text-gray-600" disabled={props.loading}>
+      <button
+        onClick={props.onCancel}
+        className="text-gray-400 hover:text-gray-600"
+        disabled={props.loading}
+      >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
@@ -136,9 +143,7 @@ function ProfileNameInput({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        Profile Name *
-      </label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Profile Name *</label>
       <input
         type="text"
         value={value}
@@ -164,9 +169,7 @@ function FileUploadField({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        Cookies JSON File *
-      </label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Cookies JSON File *</label>
       <div className="flex items-center gap-4">
         <input
           ref={fileInputRef}
@@ -184,9 +187,7 @@ function FileUploadField({
           Choose File
         </Button>
         {cookieCount > 0 && (
-          <span className="text-sm text-gray-600">
-            {cookieCount} cookies loaded
-          </span>
+          <span className="text-sm text-gray-600">{cookieCount} cookies loaded</span>
         )}
       </div>
     </div>

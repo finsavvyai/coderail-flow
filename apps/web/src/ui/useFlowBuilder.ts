@@ -27,7 +27,7 @@ export function useFlowBuilder({ projectId, existingFlow, onSave }: UseFlowBuild
   const [error, setError] = useState('');
 
   useEffect(() => {
-    loadAuthProfiles();
+    void loadAuthProfiles();
   }, [projectId]);
 
   async function loadAuthProfiles() {

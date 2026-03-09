@@ -15,8 +15,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadStats();
-    loadRuns();
+    void loadStats();
+    void loadRuns();
   }, [dateRange]);
 
   const loadStats = async () => {
@@ -40,10 +40,9 @@ export default function DashboardPage() {
 
   const loadRuns = async () => {
     try {
-      const response = await fetch(
-        `/api/runs?limit=10&sort=created_at&order=desc`,
-        { headers: await authHeaders() },
-      );
+      const response = await fetch(`/api/runs?limit=10&sort=created_at&order=desc`, {
+        headers: await authHeaders(),
+      });
       if (response.ok) {
         const data = await response.json();
         setRuns(data.runs || data);

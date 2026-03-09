@@ -10,7 +10,7 @@ export function useIntegrations(projectId: string) {
   const [testing, setTesting] = useState<string | null>(null);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [projectId]);
 
   async function loadData() {

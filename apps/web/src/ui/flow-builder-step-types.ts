@@ -126,7 +126,4 @@ const STEP_TYPES_BASIC: StepTypeConfig[] = [
   },
 ];
 
-export const STEP_TYPES: StepTypeConfig[] = [
-  ...STEP_TYPES_BASIC,
-  ...STEP_TYPES_ADVANCED,
-];
+export const STEP_TYPES: StepTypeConfig[] = [...STEP_TYPES_BASIC, ...STEP_TYPES_ADVANCED];

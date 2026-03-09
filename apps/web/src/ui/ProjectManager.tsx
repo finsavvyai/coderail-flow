@@ -28,7 +28,7 @@ export function ProjectManager() {
         projectId={pm.selectedProject.id}
         onSave={() => {
           pm.setView('list');
-          pm.loadScreens(pm.selectedProject.id);
+          void pm.loadScreens(pm.selectedProject.id);
         }}
         onCancel={() => pm.setView('list')}
       />
@@ -89,10 +89,7 @@ export function ProjectManager() {
         >
           &larr; Back to Project
         </button>
-        <FlowTemplates
-          projectId={pm.selectedProject.id}
-          onSuccess={() => pm.setView('list')}
-        />
+        <FlowTemplates projectId={pm.selectedProject.id} onSuccess={() => pm.setView('list')} />
       </div>
     );
   }

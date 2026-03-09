@@ -30,7 +30,7 @@ export function ElementMapper({
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadScreens();
+    void loadScreens();
   }, [projectId]);
 
   async function loadScreens() {

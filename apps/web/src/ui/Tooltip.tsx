@@ -17,24 +17,16 @@ export function Tooltip({
   const showTooltip = () => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      let x = rect.left + rect.width / 2;
-      let y = rect.top;
-
-      switch (position) {
-        case 'bottom':
-          y = rect.bottom + 8;
-          break;
-        case 'left':
-          x = rect.left - 8;
-          y = rect.top + rect.height / 2;
-          break;
-        case 'right':
-          x = rect.right + 8;
-          y = rect.top + rect.height / 2;
-          break;
-        default:
-          y = rect.top - 8;
-      }
+      const baseX = rect.left + rect.width / 2;
+      const posMap = {
+        bottom: { x: baseX, y: rect.bottom + 8 },
+        left: { x: rect.left - 8, y: rect.top + rect.height / 2 },
+        right: { x: rect.right + 8, y: rect.top + rect.height / 2 },
+        top: { x: baseX, y: rect.top - 8 },
+      };
+      const pos = posMap[position] || posMap.top;
+      const x = pos.x;
+      const y = pos.y;
 
       setCoords({ x, y });
     }

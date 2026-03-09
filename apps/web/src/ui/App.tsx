@@ -46,7 +46,9 @@ export function App() {
     if (!selectedFlow && f[0]?.id) setSelectedFlow(f[0].id);
   }
 
-  useEffect(() => { refreshAll().catch((e) => setErr(String(e))); }, []);
+  useEffect(() => {
+    refreshAll().catch((e) => setErr(String(e)));
+  }, []);
 
   useEffect(() => {
     const requestedRun = searchParams.get('run');
@@ -56,35 +58,54 @@ export function App() {
 
   async function onRun() {
     try {
-      setErr(''); setBusy(true); setShowProgress(true);
+      setErr('');
+      setBusy(true);
+      setShowProgress(true);
       const runId = await createRun(selectedFlow, {});
       setSelectedRun(runId);
       setRunDetail(await getRun(runId));
     } catch (e: any) {
-      setErr(e?.message ?? String(e)); setBusy(false); setShowProgress(false);
+      setErr(e?.message ?? String(e));
+      setBusy(false);
+      setShowProgress(false);
     }
   }
 
   async function onInstallTemplate(template: TemplateSummary) {
-    if (!activeProjectId) { setErr('No project context found.'); return; }
+    if (!activeProjectId) {
+      setErr('No project context found.');
+      return;
+    }
     const params: Record<string, any> = {};
     for (const p of template.params ?? []) {
       if (!p.required) continue;
       const value = window.prompt(`Template param: ${p.name}`);
-      if (!value) { setErr(`Cancelled: missing ${p.name}`); return; }
+      if (!value) {
+        setErr(`Cancelled: missing ${p.name}`);
+        return;
+      }
       params[p.name] = value;
     }
     try {
-      setErr(''); setInstallingTemplateId(template.id);
-      const created = await createFlowFromTemplate({ templateId: template.id, projectId: activeProjectId, params });
+      setErr('');
+      setInstallingTemplateId(template.id);
+      const created = await createFlowFromTemplate({
+        templateId: template.id,
+        projectId: activeProjectId,
+        params,
+      });
       await refreshAll();
       setSelectedFlow(created.flowId);
-    } catch (e: any) { setErr(e?.message ?? String(e)); }
-    finally { setInstallingTemplateId(''); }
+    } catch (e: any) {
+      setErr(e?.message ?? String(e));
+    } finally {
+      setInstallingTemplateId('');
+    }
   }
 
   async function onProgressComplete() {
-    setBusy(false); setShowProgress(false);
+    setBusy(false);
+    setShowProgress(false);
     await refreshAll();
     if (selectedRun) setRunDetail(await getRun(selectedRun));
   }
@@ -100,33 +121,74 @@ export function App() {
   async function onRetry() {
     if (!selectedRun) return;
     try {
-      setErr(''); setShowProgress(true);
+      setErr('');
+      setShowProgress(true);
       await retryRun(selectedRun);
-      setRunDetail(await getRun(selectedRun)); await refreshAll();
-    } catch (e: any) { setErr(e?.message ?? String(e)); setShowProgress(false); }
+      setRunDetail(await getRun(selectedRun));
+      await refreshAll();
+    } catch (e: any) {
+      setErr(e?.message ?? String(e));
+      setShowProgress(false);
+    }
   }
 
   return (
     <div className="container">
       <AppHeader err={err} />
       <div className="card" style={{ marginBottom: 14 }}>
-        <div className="h2" style={{ marginBottom: 12 }}>Run History Dashboard</div>
+        <div className="h2" style={{ marginBottom: 12 }}>
+          Run History Dashboard
+        </div>
         <AnalyticsDashboard selectedRunId={selectedRun} onSelectRun={onSelectRun} />
       </div>
-      <TemplateLibrary templates={templates} installingTemplateId={installingTemplateId} onInstall={onInstallTemplate} />
+      <TemplateLibrary
+        templates={templates}
+        installingTemplateId={installingTemplateId}
+        onInstall={onInstallTemplate}
+      />
       <div className="row">
-        <FlowPanel flows={flows} selectedFlow={selectedFlow} setSelectedFlow={setSelectedFlow} flow={flow} busy={busy} onRun={onRun} />
-        <RunsTable runs={runs} selectedRun={selectedRun} onSelectRun={onSelectRun} runDetail={runDetail} showProgress={showProgress}
-          videoArtifact={videoArtifact} screenshotArtifacts={screenshotArtifacts} subtitleArtifact={subtitleArtifact}
-          onProgressComplete={onProgressComplete} onRetry={onRetry} />
+        <FlowPanel
+          flows={flows}
+          selectedFlow={selectedFlow}
+          setSelectedFlow={setSelectedFlow}
+          flow={flow}
+          busy={busy}
+          onRun={onRun}
+        />
+        <RunsTable
+          runs={runs}
+          selectedRun={selectedRun}
+          onSelectRun={onSelectRun}
+          runDetail={runDetail}
+          showProgress={showProgress}
+          videoArtifact={videoArtifact}
+          screenshotArtifacts={screenshotArtifacts}
+          subtitleArtifact={subtitleArtifact}
+          onProgressComplete={onProgressComplete}
+          onRetry={onRetry}
+        />
       </div>
-      <div style={{ marginTop: 24, padding: 16, backgroundColor: '#1a1a1a', borderRadius: 8, border: '1px solid #3a3a3a' }}>
+      <div
+        style={{
+          marginTop: 24,
+          padding: 16,
+          backgroundColor: '#1a1a1a',
+          borderRadius: 8,
+          border: '1px solid #3a3a3a',
+        }}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <div className="small" style={{ color: '#a8b3cf', marginBottom: 4 }}>Production Status</div>
-            <div style={{ fontSize: 12 }}>Real-time Progress / Screenshot Gallery / Error Handling / Browser Automation</div>
+            <div className="small" style={{ color: '#a8b3cf', marginBottom: 4 }}>
+              Production Status
+            </div>
+            <div style={{ fontSize: 12 }}>
+              Real-time Progress / Screenshot Gallery / Error Handling / Browser Automation
+            </div>
           </div>
-          <div className="small" style={{ color: '#22c55e' }}>v1.0.0</div>
+          <div className="small" style={{ color: '#22c55e' }}>
+            v1.0.0
+          </div>
         </div>
       </div>
     </div>

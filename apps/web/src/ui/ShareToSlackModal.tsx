@@ -25,7 +25,12 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
     try {
       const token = await (window as any).Clerk?.session?.getToken();
       const payload: any = {
-        channel, message, flowUrl, flowName, includeScreenshot, includeVideo,
+        channel,
+        message,
+        flowUrl,
+        flowName,
+        includeScreenshot,
+        includeVideo,
       };
       if (runId) {
         payload.runId = runId;
@@ -54,12 +59,14 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
 
   function copyToClipboard() {
     const text = `${message}\n\n${flowUrl}${runUrl ? `\n\nRun: ${runUrl}` : ''}`;
-    navigator.clipboard.writeText(text);
+    void navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard!');
   }
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
@@ -67,8 +74,13 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
   return (
     <div
       style={{
-        position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.7)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
       }}
       onClick={onClose}
       role="dialog"
@@ -84,9 +96,18 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
           onClick={onClose}
           aria-label="Close dialog"
           style={{
-            position: 'absolute', top: 12, right: 12,
-            background: 'none', border: 'none', cursor: 'pointer', color: '#ccc',
-            padding: 14, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: '#ccc',
+            padding: 14,
+            borderRadius: 6,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <X size={18} />
@@ -122,7 +143,8 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
             disabled={loading}
             className="btn"
             style={{
-              flex: 1, background: loading ? '#2a2a2a' : '#4A154B',
+              flex: 1,
+              background: loading ? '#2a2a2a' : '#4A154B',
               opacity: loading ? 0.6 : 1,
             }}
           >
@@ -134,8 +156,14 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
           type="button"
           onClick={onClose}
           style={{
-            marginTop: 12, width: '100%', padding: '8px 16px',
-            background: 'none', border: 'none', color: '#a3a3a3', cursor: 'pointer', fontSize: 13,
+            marginTop: 12,
+            width: '100%',
+            padding: '8px 16px',
+            background: 'none',
+            border: 'none',
+            color: '#a3a3a3',
+            cursor: 'pointer',
+            fontSize: 13,
           }}
         >
           Cancel
@@ -150,8 +178,13 @@ function SlackModalHeader() {
     <div style={{ marginBottom: 24, textAlign: 'center' }}>
       <div
         style={{
-          width: 64, height: 64, borderRadius: 12, background: '#4A154B',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          width: 64,
+          height: 64,
+          borderRadius: 12,
+          background: '#4A154B',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           margin: '0 auto 16px',
         }}
       >

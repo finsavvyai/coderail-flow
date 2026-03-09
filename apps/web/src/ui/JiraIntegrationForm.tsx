@@ -53,7 +53,7 @@ export function JiraIntegrationForm({ projectId, onClose }: JiraIntegrationProps
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    saveConfig();
+    void saveConfig();
   }
 
   const testDisabled = testing || !config.instanceUrl || !config.clientId;
@@ -62,10 +62,22 @@ export function JiraIntegrationForm({ projectId, onClose }: JiraIntegrationProps
     <div className="card" style={{ maxWidth: 700, margin: '0 auto' }}>
       <JiraHeader />
       <form onSubmit={handleSubmit}>
-        <JiraInstanceUrlField config={config} existingConfig={existingConfig} onChange={setConfig} />
-        <JiraCredentialsFields config={config} existingConfig={existingConfig} onChange={setConfig} />
+        <JiraInstanceUrlField
+          config={config}
+          existingConfig={existingConfig}
+          onChange={setConfig}
+        />
+        <JiraCredentialsFields
+          config={config}
+          existingConfig={existingConfig}
+          onChange={setConfig}
+        />
         <JiraProjectFields config={config} existingConfig={existingConfig} onChange={setConfig} />
-        <JiraAutoCreateToggle config={config} existingConfig={existingConfig} onChange={setConfig} />
+        <JiraAutoCreateToggle
+          config={config}
+          existingConfig={existingConfig}
+          onChange={setConfig}
+        />
         <JiraOAuthSetupGuide instanceUrl={config.instanceUrl} />
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>

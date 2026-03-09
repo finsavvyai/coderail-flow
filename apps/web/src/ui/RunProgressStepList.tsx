@@ -32,9 +32,7 @@ export function RunProgressStepList({ steps }: RunProgressStepListProps) {
           }}
         >
           {step.status === 'pending' && (
-            <div
-              style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid #444' }}
-            />
+            <div style={{ width: 16, height: 16, borderRadius: '50%', border: '2px solid #444' }} />
           )}
           {step.status === 'running' && (
             <Loader2 size={16} className="spin" style={{ color: '#3b82f6' }} />

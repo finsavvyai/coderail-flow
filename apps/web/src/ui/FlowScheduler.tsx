@@ -99,7 +99,14 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   return (
     <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Clock size={18} style={{ color: '#3b82f6' }} />
           <h3 style={{ margin: 0 }}>Flow Scheduler</h3>
@@ -186,7 +193,11 @@ function ScheduleItem({
         <button
           className="btn"
           onClick={() => onToggle(schedule.id, !schedule.enabled)}
-          style={{ padding: '8px 12px', fontSize: 11, background: schedule.enabled ? '#22c55e' : '#2a2a2a' }}
+          style={{
+            padding: '8px 12px',
+            fontSize: 11,
+            background: schedule.enabled ? '#22c55e' : '#2a2a2a',
+          }}
         >
           {schedule.enabled ? 'Enabled' : 'Disabled'}
         </button>

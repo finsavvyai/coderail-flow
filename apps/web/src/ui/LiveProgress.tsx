@@ -66,11 +66,11 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
     };
 
     // Poll immediately
-    pollProgress();
+    void pollProgress();
 
     // Then poll every 1 second while running
     if (progress.status !== 'succeeded' && progress.status !== 'failed') {
-      interval = setInterval(pollProgress, 1000);
+      interval = setInterval(() => void pollProgress(), 1000);
     }
 
     return () => {

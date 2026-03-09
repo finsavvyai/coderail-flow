@@ -50,7 +50,10 @@ export function CronBuilder({
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="cron-flow-select" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="cron-flow-select"
+          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
+        >
           Flow
         </label>
         <select
@@ -69,7 +72,10 @@ export function CronBuilder({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="cron-schedule-preset" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="cron-schedule-preset"
+          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
+        >
           Schedule
         </label>
         <select
@@ -87,7 +93,10 @@ export function CronBuilder({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="cron-expression-input" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label
+          htmlFor="cron-expression-input"
+          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
+        >
           Cron Expression
         </label>
         <input
@@ -101,8 +110,13 @@ export function CronBuilder({
           aria-describedby="cron-error cron-hint"
         />
         {cronExpression.trim() !== '' && !isValidCron(cronExpression) && (
-          <div id="cron-error" role="alert" style={{ fontSize: 12, color: '#f44336', marginTop: 4 }}>
-            Invalid cron expression. Must be 5 space-separated fields (minute hour day month weekday).
+          <div
+            id="cron-error"
+            role="alert"
+            style={{ fontSize: 12, color: '#f44336', marginTop: 4 }}
+          >
+            Invalid cron expression. Must be 5 space-separated fields (minute hour day month
+            weekday).
           </div>
         )}
         <div id="cron-hint" style={{ fontSize: 11, color: '#a3a3a3', marginTop: 4 }}>
@@ -119,11 +133,7 @@ export function CronBuilder({
         >
           {loading ? 'Creating...' : 'Create Schedule'}
         </button>
-        <button
-          className="btn"
-          onClick={onCancel}
-          style={{ flex: 1, background: '#2a2a2a' }}
-        >
+        <button className="btn" onClick={onCancel} style={{ flex: 1, background: '#2a2a2a' }}>
           Cancel
         </button>
       </div>

@@ -1,10 +1,39 @@
 import {
-  Globe, MessageSquare, MousePointer, Pencil, Sparkles, Hourglass, Pause,
-  Target, FileText, ClipboardList, Keyboard, FolderOpen, Shuffle, MousePointerClick,
-  Pointer, Eraser, Crosshair, Wind,
-  CheckCircle, Link, Search, Timer, Radio, Camera, FileDown, BarChart3,
-  ScrollText, Frame, Smartphone, Monitor, Cookie, Zap, StickyNote,
-  RefreshCw, HelpCircle,
+  Globe,
+  MessageSquare,
+  MousePointer,
+  Pencil,
+  Sparkles,
+  Hourglass,
+  Pause,
+  Target,
+  FileText,
+  ClipboardList,
+  Keyboard,
+  FolderOpen,
+  Shuffle,
+  MousePointerClick,
+  Pointer,
+  Eraser,
+  Crosshair,
+  Wind,
+  CheckCircle,
+  Link,
+  Search,
+  Timer,
+  Radio,
+  Camera,
+  FileDown,
+  BarChart3,
+  ScrollText,
+  Frame,
+  Smartphone,
+  Monitor,
+  Cookie,
+  Zap,
+  StickyNote,
+  RefreshCw,
+  HelpCircle,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -55,5 +84,9 @@ export function StepIcon({ type, size = 18 }: { type: string; size?: number }) {
       </span>
     );
   }
-  return <span aria-hidden="true" style={{ fontSize: size }}>?</span>;
+  return (
+    <span aria-hidden="true" style={{ fontSize: size }}>
+      ?
+    </span>
+  );
 }

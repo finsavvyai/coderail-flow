@@ -7,7 +7,7 @@ export function formatTimeRangeLabel(timeRange: '7d' | '30d' | '90d') {
 export function buildOpsSnapshot(
   stats: AnalyticsStats,
   recentRuns: RunRow[],
-  timeRange: '7d' | '30d' | '90d',
+  timeRange: '7d' | '30d' | '90d'
 ) {
   const successRate = stats.total > 0 ? Math.round((stats.succeeded / stats.total) * 100) : 0;
   const failedRecent = recentRuns.filter((run) => run.status === 'failed').length;
@@ -16,12 +16,22 @@ export function buildOpsSnapshot(
     return b.count - a.count;
   })[0];
   const benchmark =
-    successRate >= 95 ? 'Elite reliability' : successRate >= 85 ? 'Strong reliability' : successRate >= 70 ? 'Needs tuning' : 'At risk';
+    successRate >= 95
+      ? 'Elite reliability'
+      : successRate >= 85
+        ? 'Strong reliability'
+        : successRate >= 70
+          ? 'Needs tuning'
+          : 'At risk';
 
   const message = [
     `CodeRail Flow ops snapshot (${formatTimeRangeLabel(timeRange)}): ${stats.succeeded}/${stats.total} runs succeeded with ${(stats.avgDuration / 1000).toFixed(1)}s average runtime.`,
-    strongestFlow ? `Best-performing flow: ${strongestFlow.flowName} at ${strongestFlow.successRate}% success across ${strongestFlow.count} runs.` : '',
-    failedRecent === 0 ? 'No failed runs in the latest sample.' : `${failedRecent} recent run${failedRecent === 1 ? '' : 's'} need follow-up.`,
+    strongestFlow
+      ? `Best-performing flow: ${strongestFlow.flowName} at ${strongestFlow.successRate}% success across ${strongestFlow.count} runs.`
+      : '',
+    failedRecent === 0
+      ? 'No failed runs in the latest sample.'
+      : `${failedRecent} recent run${failedRecent === 1 ? '' : 's'} need follow-up.`,
   ]
     .filter(Boolean)
     .join(' ');
@@ -50,8 +60,7 @@ export function OpsSnapshotCard({
       style={{
         marginBottom: 16,
         border: '1px solid rgba(43, 124, 255, 0.28)',
-        background:
-          'linear-gradient(135deg, rgba(43, 124, 255, 0.18), rgba(43, 124, 255, 0.06))',
+        background: 'linear-gradient(135deg, rgba(43, 124, 255, 0.18), rgba(43, 124, 255, 0.06))',
       }}
     >
       <div
@@ -64,7 +73,10 @@ export function OpsSnapshotCard({
         }}
       >
         <div style={{ maxWidth: 760 }}>
-          <div className="small" style={{ color: '#8fb8ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+          <div
+            className="small"
+            style={{ color: '#8fb8ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}
+          >
             Shareable ops snapshot
           </div>
           <div className="h2" style={{ marginTop: 6, marginBottom: 8 }}>
@@ -118,8 +130,7 @@ export function RecentRunsTable({ recentRuns, selectedRunId, onSelectRun }: Rece
               onClick={() => onSelectRun?.(run.id)}
               style={{
                 cursor: onSelectRun ? 'pointer' : 'default',
-                background:
-                  selectedRunId === run.id ? 'rgba(43, 124, 255, 0.14)' : undefined,
+                background: selectedRunId === run.id ? 'rgba(43, 124, 255, 0.14)' : undefined,
               }}
             >
               <td className="mono">{run.id.slice(0, 8)}...</td>

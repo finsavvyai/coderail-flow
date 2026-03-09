@@ -27,7 +27,7 @@ export function BillingPage() {
 
   useEffect(() => {
     if (!isLoaded || !user) return;
-    syncAccount();
+    void syncAccount();
   }, [isLoaded, user]);
 
   async function syncAccount() {

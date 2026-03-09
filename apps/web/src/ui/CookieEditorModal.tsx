@@ -16,7 +16,9 @@ export function CookieEditorModal({
   onChange: (cookie: CookieEntry) => void;
 }) {
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
@@ -40,12 +42,21 @@ export function CookieEditorModal({
         zIndex: 1000,
       }}
     >
-      <div className="card" style={{ width: 500, maxHeight: '80vh', overflow: 'auto' }} onClick={(e) => e.stopPropagation()}>
+      <div
+        className="card"
+        style={{ width: 500, maxHeight: '80vh', overflow: 'auto' }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
           <div className="h2" style={{ margin: 0 }}>
             Edit Cookie
           </div>
-          <button className="btn" onClick={onClose} aria-label="Close dialog" style={{ padding: '12px', minHeight: 44, minWidth: 44 }}>
+          <button
+            className="btn"
+            onClick={onClose}
+            aria-label="Close dialog"
+            style={{ padding: '12px', minHeight: 44, minWidth: 44 }}
+          >
             <X size={16} />
           </button>
         </div>

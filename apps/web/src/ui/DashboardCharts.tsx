@@ -70,7 +70,13 @@ export function DashboardCharts({ stats }: DashboardChartsProps) {
                 <YAxis stroke="#5a6580" tick={{ fill: '#8b95b0', fontSize: 12 }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
                 <Legend wrapperStyle={{ color: '#8b95b0' }} />
-                <Line type="monotone" dataKey="count" stroke="#2b7cff" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke="#2b7cff"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -83,7 +89,11 @@ export function DashboardCharts({ stats }: DashboardChartsProps) {
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={stats.runs_by_flow.slice(0, 5)}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1f2a44" />
-              <XAxis dataKey="flow_name" stroke="#5a6580" tick={{ fill: '#8b95b0', fontSize: 12 }} />
+              <XAxis
+                dataKey="flow_name"
+                stroke="#5a6580"
+                tick={{ fill: '#8b95b0', fontSize: 12 }}
+              />
               <YAxis stroke="#5a6580" tick={{ fill: '#8b95b0', fontSize: 12 }} />
               <Tooltip contentStyle={chartTooltipStyle} />
               <Legend wrapperStyle={{ color: '#8b95b0' }} />
