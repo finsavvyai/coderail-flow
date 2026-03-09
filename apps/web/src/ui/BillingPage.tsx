@@ -163,7 +163,7 @@ export function BillingPage() {
         onUpgrade={handleUpgrade}
       />
 
-      <p className="small" style={{ textAlign: 'center', color: '#5a6580' }}>
+      <p className="small" style={{ textAlign: 'center', color: '#a8b3cf' }}>
         Early-bird special: First 50 users get Pro at $19/mo for life.
         <br />
         Payments secured by Lemon Squeezy. Cancel anytime.

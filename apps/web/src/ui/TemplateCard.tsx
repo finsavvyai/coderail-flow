@@ -65,7 +65,7 @@ export function TemplateCard({ template, isCopied, onCopy, onSelect }: TemplateC
         </span>
         <button
           className="btn"
-          style={{ padding: '6px 12px', fontSize: 12 }}
+          style={{ padding: '6px 12px', fontSize: 12, minHeight: 44 }}
           onClick={() => onSelect(template)}
         >
           Use Template

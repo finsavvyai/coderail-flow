@@ -66,7 +66,7 @@ export function UrlDropdown({
               gap: 4,
             }}
           >
-            <Star size={10} fill="#eab308" color="#eab308" /> Favorites
+            <Star size={10} fill="#eab308" color="#eab308" aria-hidden="true" /> Favorites
           </div>
           {favoriteUrls.map((url) => (
             <UrlRow
@@ -93,7 +93,7 @@ export function UrlDropdown({
               borderTop: favoriteUrls.length > 0 ? '1px solid #333' : 'none',
             }}
           >
-            <Clock size={10} /> Recent
+            <Clock size={10} aria-hidden="true" /> Recent
           </div>
           {recentUrls.map((url) => (
             <UrlRow
@@ -126,9 +126,17 @@ function UrlRow({
 }) {
   return (
     <div
+      role="option"
+      tabIndex={0}
       style={rowStyle}
       onMouseEnter={(e) => (e.currentTarget.style.background = '#2a2a2a')}
       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(url);
+        }
+      }}
     >
       <div
         style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}

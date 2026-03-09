@@ -27,7 +27,7 @@ export function CookieEditorModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Edit cookie"
+      aria-labelledby="cookie-editor-title"
       onClick={onClose}
       style={{
         position: 'fixed',
@@ -48,7 +48,7 @@ export function CookieEditorModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-          <div className="h2" style={{ margin: 0 }}>
+          <div id="cookie-editor-title" className="h2" style={{ margin: 0 }}>
             Edit Cookie
           </div>
           <button

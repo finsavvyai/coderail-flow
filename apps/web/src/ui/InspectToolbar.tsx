@@ -44,11 +44,12 @@ export function InspectToolbar({
         </button>
       </div>
       <div style={{ marginBottom: 12 }}>
-        <label className="small" style={{ display: 'block', marginBottom: 4, color: '#8b8b8b' }}>
+        <label htmlFor="inspect-url" className="small" style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}>
           Page URL
         </label>
         <div style={{ display: 'flex', gap: 4 }}>
           <input
+            id="inspect-url"
             className="input"
             placeholder="https://example.com/page"
             value={url}
@@ -61,6 +62,7 @@ export function InspectToolbar({
             onClick={onLoadPage}
             disabled={!url.trim()}
             aria-label="Reload page"
+            style={{ minHeight: 44, minWidth: 44 }}
           >
             <RefreshCw size={16} />
           </button>

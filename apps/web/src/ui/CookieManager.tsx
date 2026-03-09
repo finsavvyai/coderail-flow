@@ -46,8 +46,9 @@ export function CookieManager({ projectId, onClose }: { projectId: string; onClo
               onClick={cm.createProfile}
               disabled={cm.saving}
               style={{ width: '100%' }}
+              aria-label="Create new auth profile"
             >
-              <Plus size={16} /> Create Profile
+              <Plus size={16} aria-hidden="true" /> Create Profile
             </button>
           </div>
 
@@ -87,7 +88,7 @@ export function CookieManager({ projectId, onClose }: { projectId: string; onClo
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%',
-              color: '#8b8b8b',
+              color: '#a8b3cf',
             }}
           >
             <div style={{ textAlign: 'center' }}>

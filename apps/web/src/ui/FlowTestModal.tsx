@@ -50,7 +50,7 @@ export function FlowTestModal({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={`Test flow: ${flowName}`}
+      aria-labelledby="flow-test-title"
     >
       <div
         className="card"
@@ -81,7 +81,7 @@ export function FlowTestModal({
         <div style={{ textAlign: 'center', padding: '32px 24px' }}>
           {getStatusIcon(status)}
 
-          <h2 style={{ margin: '16px 0 8px', fontSize: 20 }}>{flowName}</h2>
+          <h2 id="flow-test-title" style={{ margin: '16px 0 8px', fontSize: 20 }}>{flowName}</h2>
 
           <div style={{ fontSize: 14, color: '#888', marginBottom: 24 }}>
             {stepCount} steps • Test run

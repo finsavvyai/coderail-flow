@@ -40,7 +40,7 @@ export function StepFieldEditor({
             className="btn"
             onClick={onMoveUp}
             disabled={stepIndex === 0}
-            style={{ padding: '10px 12px' }}
+            style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }}
             aria-label="Move step up"
           >
             <ChevronUp size={14} />
@@ -49,7 +49,7 @@ export function StepFieldEditor({
             className="btn"
             onClick={onMoveDown}
             disabled={stepIndex === totalSteps - 1}
-            style={{ padding: '10px 12px' }}
+            style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }}
             aria-label="Move step down"
           >
             <ChevronDown size={14} />

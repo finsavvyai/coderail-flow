@@ -43,10 +43,11 @@ export function ScheduleCreateForm({
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label htmlFor="schedule-flow" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
           Flow
         </label>
         <select
+          id="schedule-flow"
           className="input"
           value={newSchedule.flowId}
           onChange={(e) => onChange({ ...newSchedule, flowId: e.target.value })}
@@ -61,10 +62,11 @@ export function ScheduleCreateForm({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label htmlFor="schedule-cron" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
           Schedule
         </label>
         <select
+          id="schedule-cron"
           className="input"
           value={newSchedule.cronExpression}
           onChange={(e) => onChange({ ...newSchedule, cronExpression: e.target.value })}
@@ -78,10 +80,11 @@ export function ScheduleCreateForm({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label htmlFor="schedule-params" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
           Parameters (JSON)
         </label>
         <input
+          id="schedule-params"
           className="input"
           value={newSchedule.params}
           onChange={(e) => onChange({ ...newSchedule, params: e.target.value })}

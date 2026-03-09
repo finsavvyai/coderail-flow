@@ -76,6 +76,7 @@ export function FlowBuilder({
             onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: 8 }}
             aria-label="Flow name"
+            aria-describedby={error ? 'flow-builder-error' : undefined}
           />
           <label htmlFor="flow-desc" className="sr-only">
             Description
@@ -112,6 +113,8 @@ export function FlowBuilder({
 
           {error && (
             <div
+              id="flow-builder-error"
+              role="alert"
               style={{
                 padding: 10,
                 background: '#2a1a1a',

@@ -70,7 +70,8 @@ export function Modal({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={title || 'Dialog'}
+      aria-labelledby={title ? 'modal-title' : undefined}
+      aria-label={title ? undefined : 'Dialog'}
     >
       <div
         ref={dialogRef}
@@ -94,7 +95,7 @@ export function Modal({
               borderBottom: '1px solid #2a2a2a',
             }}
           >
-            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>{title}</h3>
+            <h3 id="modal-title" style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>{title}</h3>
             <button
               onClick={onClose}
               aria-label="Close dialog"
@@ -191,8 +192,8 @@ export const globalAnimationStyles = `
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {

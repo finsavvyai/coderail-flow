@@ -36,9 +36,10 @@ export function ScreenshotGallery({ screenshots }: ScreenshotGalleryProps) {
         }}
       >
         {screenshots.map((screenshot, index) => (
-          <div
+          <button
             key={screenshot.id}
             onClick={() => setSelectedIndex(index)}
+            aria-label={`View screenshot ${getStepNumber(screenshot, index)}`}
             style={{
               cursor: 'pointer',
               border: selectedIndex === index ? '2px solid #2196F3' : '1px solid #3a3a3a',
@@ -47,6 +48,9 @@ export function ScreenshotGallery({ screenshots }: ScreenshotGalleryProps) {
               backgroundColor: '#1a1a1a',
               transition: 'border-color 0.15s',
               position: 'relative',
+              padding: 0,
+              textAlign: 'left',
+              width: '100%',
             }}
             onMouseEnter={(e) => {
               if (selectedIndex !== index) e.currentTarget.style.borderColor = '#555';
@@ -66,7 +70,7 @@ export function ScreenshotGallery({ screenshots }: ScreenshotGalleryProps) {
             >
               Step {getStepNumber(screenshot, index)}
             </div>
-          </div>
+          </button>
         ))}
       </div>
 

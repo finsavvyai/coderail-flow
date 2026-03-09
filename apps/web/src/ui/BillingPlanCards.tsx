@@ -83,7 +83,7 @@ export function BillingPlanCards({
                     color: '#a8b3cf',
                   }}
                 >
-                  <Check size={13} style={{ color: '#22c55e' }} /> {f}
+                  <Check size={13} style={{ color: '#22c55e' }} aria-hidden="true" /> {f}
                 </li>
               ))}
             </ul>
