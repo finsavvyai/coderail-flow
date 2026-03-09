@@ -143,7 +143,7 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
             background: 'none',
             border: 'none',
             cursor: 'pointer',
-            color: '#aaa',
+            color: '#b3b3b3',
             padding: 10,
             borderRadius: 6,
             display: 'flex',

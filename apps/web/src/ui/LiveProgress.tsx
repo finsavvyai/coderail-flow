@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getRun } from "./api";
+import React, { useEffect, useState } from 'react';
+import { getRun } from './api';
 
 export type ProgressState = {
   step: number;
@@ -19,7 +19,7 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
     step: 0,
     total: 0,
     status: 'queued',
-    percentage: 0
+    percentage: 0,
   });
 
   useEffect(() => {
@@ -31,7 +31,9 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
         const run = data.run;
 
         // Calculate progress based on artifacts (screenshots indicate completed steps)
-        const screenshots = (data.artifacts || []).filter((a: any) => a.kind?.startsWith('screenshot'));
+        const screenshots = (data.artifacts || []).filter((a: any) =>
+          a.kind?.startsWith('screenshot')
+        );
         const step = screenshots.length;
 
         // Estimate total from flow definition or default to unknown
@@ -43,7 +45,14 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
           total: step > 0 ? step : 0,
           status,
           description: getStatusDescription(status, step),
-          percentage: status === 'succeeded' ? 100 : status === 'failed' ? 0 : (step > 0 ? (step / 13) * 100 : 0)
+          percentage:
+            status === 'succeeded'
+              ? 100
+              : status === 'failed'
+                ? 0
+                : step > 0
+                  ? (step / 13) * 100
+                  : 0,
         });
 
         // If complete, stop polling
@@ -71,12 +80,22 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
 
   return (
     <div style={{ marginTop: 16, marginBottom: 16 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 8,
+        }}
+      >
         <div>
-          <span className="badge" style={{
-            backgroundColor: getStatusColor(progress.status),
-            color: '#fff'
-          }}>
+          <span
+            className="badge"
+            style={{
+              backgroundColor: getStatusColor(progress.status),
+              color: '#fff',
+            }}
+          >
             {progress.status}
           </span>
           {progress.step > 0 && (
@@ -85,30 +104,37 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
             </span>
           )}
         </div>
-        <div className="small">
-          {Math.round(progress.percentage)}%
-        </div>
+        <div className="small">{Math.round(progress.percentage)}%</div>
       </div>
 
       {/* Progress bar */}
-      <div style={{
-        width: '100%',
-        height: 8,
-        backgroundColor: '#2a2a2a',
-        borderRadius: 4,
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          width: `${progress.percentage}%`,
-          height: '100%',
-          backgroundColor: getStatusColor(progress.status),
-          transition: 'width 0.3s ease',
-        }}></div>
+      <div
+        role="progressbar"
+        aria-valuenow={Math.round(progress.percentage)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Flow execution progress"
+        style={{
+          width: '100%',
+          height: 8,
+          backgroundColor: '#2a2a2a',
+          borderRadius: 4,
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            width: `${progress.percentage}%`,
+            height: '100%',
+            backgroundColor: getStatusColor(progress.status),
+            transition: 'width 0.3s ease',
+          }}
+        ></div>
       </div>
 
       {/* Description */}
       {progress.description && (
-        <div className="small" style={{ marginTop: 8, color: '#8b8b8b' }}>
+        <div className="small" style={{ marginTop: 8, color: '#a8b3cf' }}>
           {progress.description}
         </div>
       )}
@@ -118,20 +144,30 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
 
 function getStatusColor(status: string): string {
   switch (status) {
-    case 'succeeded': return '#4CAF50';
-    case 'failed': return '#f44336';
-    case 'running': return '#2196F3';
-    case 'queued': return '#9E9E9E';
-    default: return '#9E9E9E';
+    case 'succeeded':
+      return '#22c55e';
+    case 'failed':
+      return '#f44336';
+    case 'running':
+      return '#3b82f6';
+    case 'queued':
+      return '#6b7280';
+    default:
+      return '#6b7280';
   }
 }
 
 function getStatusDescription(status: string, step: number): string {
   switch (status) {
-    case 'queued': return 'Waiting to start...';
-    case 'running': return step > 0 ? `Executing step ${step}...` : 'Starting execution...';
-    case 'succeeded': return 'Execution completed successfully!';
-    case 'failed': return 'Execution failed. Check error details below.';
-    default: return 'Unknown status';
+    case 'queued':
+      return 'Waiting to start...';
+    case 'running':
+      return step > 0 ? `Executing step ${step}...` : 'Starting execution...';
+    case 'succeeded':
+      return 'Execution completed successfully!';
+    case 'failed':
+      return 'Execution failed. Check error details below.';
+    default:
+      return 'Unknown status';
   }
 }

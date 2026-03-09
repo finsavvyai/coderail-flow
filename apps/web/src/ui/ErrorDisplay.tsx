@@ -82,7 +82,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
           border: '1px solid #3a3a3a',
         }}
       >
-        <div className="small" style={{ color: '#8b8b8b', marginBottom: 4 }}>
+        <div className="small" style={{ color: '#a8b3cf', marginBottom: 4 }}>
           Error Message:
         </div>
         <div style={{ color: '#fca5a5', fontFamily: 'monospace', fontSize: 14 }}>
@@ -93,7 +93,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
       {/* Error Screenshot */}
       {errorScreenshot && (
         <div style={{ marginBottom: 12 }}>
-          <div className="small" style={{ color: '#8b8b8b', marginBottom: 8 }}>
+          <div className="small" style={{ color: '#a8b3cf', marginBottom: 8 }}>
             Screenshot at time of failure:
           </div>
           <button
@@ -173,11 +173,11 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
           border: '1px solid #3a3a3a',
         }}
       >
-        <div className="small" style={{ color: '#8b8b8b', marginBottom: 6 }}>
+        <div className="small" style={{ color: '#a8b3cf', marginBottom: 6 }}>
           <Lightbulb size={14} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
           Troubleshooting Tips:
         </div>
-        <ul style={{ margin: 0, paddingLeft: 20, color: '#aaa', fontSize: 12 }}>
+        <ul style={{ margin: 0, paddingLeft: 20, color: '#b3b3b3', fontSize: 12 }}>
           <li>Check if the target page structure has changed</li>
           <li>Verify element locators are still valid</li>
           <li>Ensure the page loaded completely before interaction</li>

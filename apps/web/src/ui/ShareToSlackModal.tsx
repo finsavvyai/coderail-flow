@@ -85,8 +85,8 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
           aria-label="Close dialog"
           style={{
             position: 'absolute', top: 12, right: 12,
-            background: 'none', border: 'none', cursor: 'pointer', color: '#aaa',
-            padding: 10, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'none', border: 'none', cursor: 'pointer', color: '#ccc',
+            padding: 14, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
         >
           <X size={18} />
@@ -135,7 +135,7 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
           onClick={onClose}
           style={{
             marginTop: 12, width: '100%', padding: '8px 16px',
-            background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 13,
+            background: 'none', border: 'none', color: '#a3a3a3', cursor: 'pointer', fontSize: 13,
           }}
         >
           Cancel
@@ -160,7 +160,7 @@ function SlackModalHeader() {
         </svg>
       </div>
       <h2 style={{ margin: 0, fontSize: 20 }}>Share to Slack</h2>
-      <div style={{ fontSize: 13, color: '#888', marginTop: 4 }}>
+      <div style={{ fontSize: 13, color: '#a3a3a3', marginTop: 4 }}>
         Share flow results with your team
       </div>
     </div>

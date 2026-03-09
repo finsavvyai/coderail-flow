@@ -50,10 +50,11 @@ export function CronBuilder({
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label htmlFor="cron-flow-select" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
           Flow
         </label>
         <select
+          id="cron-flow-select"
           className="input"
           value={selectedFlow}
           onChange={(e) => onSelectedFlowChange(e.target.value)}
@@ -68,10 +69,11 @@ export function CronBuilder({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label htmlFor="cron-schedule-preset" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
           Schedule
         </label>
         <select
+          id="cron-schedule-preset"
           className="input"
           value={cronExpression}
           onChange={(e) => onCronExpressionChange(e.target.value)}
@@ -85,10 +87,11 @@ export function CronBuilder({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+        <label htmlFor="cron-expression-input" style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
           Cron Expression
         </label>
         <input
+          id="cron-expression-input"
           className="input"
           type="text"
           value={cronExpression}
@@ -102,7 +105,7 @@ export function CronBuilder({
             Invalid cron expression. Must be 5 space-separated fields (minute hour day month weekday).
           </div>
         )}
-        <div id="cron-hint" style={{ fontSize: 11, color: '#888', marginTop: 4 }}>
+        <div id="cron-hint" style={{ fontSize: 11, color: '#a3a3a3', marginTop: 4 }}>
           Format: minute hour day month weekday (e.g., 0 9 * * * for daily at 9 AM)
         </div>
       </div>

@@ -30,7 +30,7 @@ function JiraHeader() {
         </div>
         <div>
           <h2 style={{ margin: 0, fontSize: 20 }}>Jira Integration</h2>
-          <div style={{ fontSize: 13, color: '#888' }}>
+          <div style={{ fontSize: 13, color: '#a3a3a3' }}>
             Automatically create Jira issues from failed runs
           </div>
         </div>

@@ -8,7 +8,7 @@ interface JiraFormFieldsProps {
 }
 
 const labelStyle = { display: 'block' as const, marginBottom: 6, fontSize: 13, fontWeight: 500 };
-const hintStyle = { fontSize: 11, color: '#666', marginTop: 4 };
+const hintStyle = { fontSize: 11, color: '#a8b3cf', marginTop: 4 };
 
 export function JiraInstanceUrlField({ config, onChange }: JiraFormFieldsProps) {
   return (
@@ -70,7 +70,7 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
               transform: 'translateY(-50%)',
               background: 'none',
               border: 'none',
-              color: '#888',
+              color: '#a8b3cf',
               cursor: 'pointer',
               fontSize: 11,
             }}
@@ -135,7 +135,7 @@ export function JiraAutoCreateToggle({ config, onChange }: JiraFormFieldsProps) 
         />
         <div>
           <div style={{ fontSize: 13, fontWeight: 500 }}>Auto-create issues on failure</div>
-          <div style={{ fontSize: 11, color: '#888' }}>
+          <div style={{ fontSize: 11, color: '#a8b3cf' }}>
             Automatically create Jira issues when flows fail
           </div>
         </div>

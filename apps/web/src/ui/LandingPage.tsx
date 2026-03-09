@@ -44,7 +44,7 @@ function Hero() {
   return (
     <section className="lp-hero">
       <div className="lp-hero-badge">
-        <Star size={16} /> Now in Early Access
+        <Star size={16} aria-hidden="true" /> Now in Early Access
       </div>
       <h1 className="lp-hero-title">
         Automate browser workflows.
@@ -60,7 +60,7 @@ function Hero() {
           Get Early Access <ArrowRight size={16} />
         </a>
         <a href="#how-it-works" className="lp-btn-ghost">
-          <Play size={16} /> See How It Works
+          <Play size={16} aria-hidden="true" /> See How It Works
         </a>
       </div>
       <div className="lp-hero-stats">

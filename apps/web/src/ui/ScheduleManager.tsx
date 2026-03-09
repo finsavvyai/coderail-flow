@@ -132,9 +132,9 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
       )}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 20, color: '#888' }}>Loading...</div>
+        <div style={{ textAlign: 'center', padding: 20, color: '#a3a3a3' }}>Loading...</div>
       ) : schedules.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 40, color: '#666' }}>
+        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
           <Clock size={48} style={{ marginBottom: 16, opacity: 0.5 }} />
           <div>No scheduled flows yet</div>
           <div className="small" style={{ marginTop: 8 }}>
@@ -161,7 +161,7 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
                   <div style={{ fontWeight: 500, marginBottom: 4 }}>
                     {getFlowName(schedule.flow_id)}
                   </div>
-                  <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#888' }}>
+                  <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#a3a3a3' }}>
                     <span>{formatCron(schedule.cron_expression)}</span>
                     <span>Last: {formatDate(schedule.last_run_at)}</span>
                     <span>Next: {formatDate(schedule.next_run_at)}</span>

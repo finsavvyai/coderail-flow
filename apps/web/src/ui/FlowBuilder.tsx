@@ -106,7 +106,7 @@ export function FlowBuilder({
                 background: '#2a1a1a',
                 border: '1px solid #f44336',
                 borderRadius: 6,
-                color: '#ff9aa2',
+                color: '#fca5a5',
                 fontSize: 13,
                 marginBottom: 12,
               }}

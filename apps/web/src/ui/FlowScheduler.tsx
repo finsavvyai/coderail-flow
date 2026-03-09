@@ -126,7 +126,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
         />
       )}
       {schedules.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 32, color: '#888' }}>
+        <div style={{ textAlign: 'center', padding: 32, color: '#a8b3cf' }}>
           <Calendar size={48} style={{ marginBottom: 12, opacity: 0.5 }} />
           <div>No schedules yet</div>
           <div className="small" style={{ marginTop: 8 }}>
@@ -175,9 +175,9 @@ function ScheduleItem({
     >
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>{schedule.flowName}</div>
-        <div style={{ fontSize: 12, color: '#888' }}>{schedule.cronExpression}</div>
+        <div style={{ fontSize: 12, color: '#a8b3cf' }}>{schedule.cronExpression}</div>
         {schedule.nextRun && (
-          <div style={{ fontSize: 11, color: '#666', marginTop: 4 }}>
+          <div style={{ fontSize: 11, color: '#a8b3cf', marginTop: 4 }}>
             Next run: {new Date(schedule.nextRun).toLocaleString()}
           </div>
         )}

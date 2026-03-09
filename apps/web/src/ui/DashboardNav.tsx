@@ -19,7 +19,7 @@ export function DashboardNav() {
     <nav className="dash-nav">
       <div className="dash-nav-inner">
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <Link to="/app" className="dash-nav-brand" aria-label="CodeRail Flow home">
+          <Link to="/app" className="dash-nav-brand">
             <Zap size={18} strokeWidth={2.5} />
             <span>CodeRail Flow</span>
           </Link>

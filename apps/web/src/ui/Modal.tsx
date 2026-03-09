@@ -101,9 +101,9 @@ export function Modal({
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#aaa',
+                color: '#ccc',
                 cursor: 'pointer',
-                padding: 10,
+                padding: 14,
                 borderRadius: 6,
                 display: 'flex',
                 alignItems: 'center',

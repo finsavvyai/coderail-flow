@@ -68,7 +68,7 @@ export function ProjectSidebar({
               background: '#2a1a1a',
               border: '1px solid #f44336',
               borderRadius: 6,
-              color: '#ff9aa2',
+              color: '#fca5a5',
               fontSize: 12,
               marginBottom: 12,
             }}
@@ -93,7 +93,7 @@ export function ProjectSidebar({
                 <Folder size={16} style={{ color: '#6366f1' }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13, fontWeight: 500 }}>{p.name}</div>
-                  <div className="small" style={{ color: '#8b8b8b' }}>
+                  <div className="small" style={{ color: '#a8b3cf' }}>
                     {p.base_url}
                   </div>
                 </div>

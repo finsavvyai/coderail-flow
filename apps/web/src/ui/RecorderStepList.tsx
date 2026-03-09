@@ -43,7 +43,7 @@ export function RecorderStepList(props: RecorderStepListProps) {
       />
       <div style={{ flex: 1, overflow: 'auto', padding: 8 }}>
         {recordedActions.length === 0 ? (
-          <div style={{ padding: 24, textAlign: 'center', color: '#666', fontSize: 13 }}>
+          <div style={{ padding: 24, textAlign: 'center', color: '#8b95b0', fontSize: 13 }}>
             <Plus size={24} style={{ marginBottom: 8, opacity: 0.5 }} />
             <div>No actions recorded yet</div>
             <div style={{ fontSize: 11, marginTop: 4 }}>
@@ -68,11 +68,11 @@ export function RecorderStepList(props: RecorderStepListProps) {
       </div>
       {recordedActions.length > 0 && (
         <div style={{ padding: 12, borderTop: '1px solid #2a2a2a' }}>
-          <div style={{ fontSize: 11, color: '#666', marginBottom: 8 }}>Quick Add:</div>
+          <div style={{ fontSize: 11, color: '#a8b3cf', marginBottom: 8 }}>Quick Add:</div>
           <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
             <button
               className="btn"
-              style={{ padding: '4px 8px', fontSize: 11, transition: 'background 0.15s' }}
+              style={{ padding: '8px 12px', fontSize: 11, transition: 'background 0.15s' }}
               onClick={() => onAddManual('click')}
               onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
               onMouseLeave={(e) => (e.currentTarget.style.background = '')}
@@ -81,7 +81,7 @@ export function RecorderStepList(props: RecorderStepListProps) {
             </button>
             <button
               className="btn"
-              style={{ padding: '4px 8px', fontSize: 11, transition: 'background 0.15s' }}
+              style={{ padding: '8px 12px', fontSize: 11, transition: 'background 0.15s' }}
               onClick={() => onAddManual('fill')}
               onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
               onMouseLeave={(e) => (e.currentTarget.style.background = '')}
@@ -130,7 +130,7 @@ function StepListHeader({
               className="btn"
               onClick={() => setActiveStepIndex((i) => (i !== null && i > 0 ? i - 1 : i))}
               disabled={activeStepIndex === null || activeStepIndex <= 0}
-              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 32 }}
+              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 44 }}
               aria-label="Previous step"
             >
               <ChevronLeft size={14} />
@@ -139,7 +139,7 @@ function StepListHeader({
               className="btn"
               onClick={() => setActiveStepIndex((i) => (i !== null && i < maxIndex ? i + 1 : i))}
               disabled={activeStepIndex === null || activeStepIndex >= maxIndex}
-              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 32 }}
+              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 44 }}
               aria-label="Next step"
             >
               <ChevronRight size={14} />
@@ -154,7 +154,7 @@ function StepListHeader({
                 background: showSubtitleOverlay ? 'rgba(99,102,241,0.2)' : '#2a2a2a',
                 fontSize: 10,
                 color: showSubtitleOverlay ? '#a78bfa' : '#888',
-                minHeight: 32,
+                minHeight: 44,
               }}
             >
               <MessageSquare size={14} />
@@ -163,7 +163,7 @@ function StepListHeader({
               className="btn"
               onClick={onClear}
               aria-label="Clear all steps"
-              style={{ padding: '8px 12px', background: '#2a1a1a', fontSize: 11, minHeight: 32 }}
+              style={{ padding: '8px 12px', background: '#2a1a1a', fontSize: 11, minHeight: 44 }}
             >
               Clear
             </button>

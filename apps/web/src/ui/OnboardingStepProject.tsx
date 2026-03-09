@@ -36,7 +36,7 @@ export function OnboardingStepProject({
           onChange={(e) => setProjectUrl(e.target.value)}
           style={{ fontSize: 14 }}
         />
-        <div style={{ fontSize: 12, color: '#888', marginTop: 6 }}>
+        <div style={{ fontSize: 12, color: '#a3a3a3', marginTop: 6 }}>
           The website you want to automate or test
         </div>
       </div>
@@ -47,7 +47,7 @@ export function OnboardingStepProject({
           borderRadius: 8,
           border: '1px solid #3b82f6',
           fontSize: 12,
-          color: '#888',
+          color: '#a3a3a3',
           lineHeight: 1.6,
         }}
       >

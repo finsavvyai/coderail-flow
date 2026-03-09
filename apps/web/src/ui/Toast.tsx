@@ -69,7 +69,7 @@ export function ToastContainer() {
               minWidth: 250,
             }}
           >
-            <span style={{ color: color.bg, display: 'flex', alignItems: 'center' }}>{color.icon}</span>
+            <span aria-hidden="true" style={{ color: color.bg, display: 'flex', alignItems: 'center' }}>{color.icon}</span>
             <span style={{ flex: 1, fontSize: 13 }} role="status">{toast.message}</span>
             <button
               onClick={() => {
@@ -80,9 +80,9 @@ export function ToastContainer() {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#aaa',
+                color: '#ccc',
                 cursor: 'pointer',
-                padding: 10,
+                padding: 14,
                 borderRadius: 4,
                 display: 'flex',
                 alignItems: 'center',

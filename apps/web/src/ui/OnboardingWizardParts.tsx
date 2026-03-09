@@ -56,7 +56,7 @@ export function FeatureItem({
       <div style={{ flexShrink: 0 }}>{icon}</div>
       <div>
         <div style={{ fontWeight: 500, marginBottom: 4, fontSize: 14 }}>{title}</div>
-        <div style={{ fontSize: 13, color: '#888', lineHeight: 1.5 }}>{description}</div>
+        <div style={{ fontSize: 13, color: '#a3a3a3', lineHeight: 1.5 }}>{description}</div>
       </div>
     </div>
   );
@@ -96,7 +96,7 @@ export function OptionCard({
     >
       <div style={{ marginBottom: 8, color: '#3b82f6' }}>{icon}</div>
       <div style={{ fontWeight: 500, marginBottom: 4, fontSize: 15 }}>{title}</div>
-      <div style={{ fontSize: 13, color: '#888' }}>{description}</div>
+      <div style={{ fontSize: 13, color: '#a3a3a3' }}>{description}</div>
     </button>
   );
 }

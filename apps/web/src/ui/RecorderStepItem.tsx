@@ -99,7 +99,7 @@ export function StepItem({
           style={{
             background: 'transparent',
             border: 'none',
-            color: '#666',
+            color: '#a3a3a3',
             cursor: 'pointer',
             padding: 8,
             borderRadius: 4,

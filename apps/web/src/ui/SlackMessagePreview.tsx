@@ -94,7 +94,7 @@ export function SlackMessagePreview({
             Slack Integration Required
           </span>
         </div>
-        <div style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>
+        <div style={{ fontSize: 11, color: '#a3a3a3', lineHeight: 1.5 }}>
           You need to configure a Slack integration first. Go to Settings → Integrations →
           Add Integration → Slack.
         </div>

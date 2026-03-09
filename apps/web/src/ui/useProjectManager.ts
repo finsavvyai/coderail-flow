@@ -69,12 +69,14 @@ export function useProjectManager() {
     try {
       setLoading(true);
       setError('');
-      const project = await createProject({
+      const created = await createProject({
         name: newProjectName.trim(),
         baseUrl: newProjectUrl.trim(),
       });
       await loadProjects();
-      setSelectedProject(project);
+      if (created) {
+        setSelectedProject(created);
+      }
       setNewProjectName('');
       setNewProjectUrl('');
     } catch (e: any) {
