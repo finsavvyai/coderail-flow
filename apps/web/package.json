@@ -7,7 +7,7 @@
     "build": "vite build",
     "test": "vitest run --config vitest.config.ts",
     "preview": "vite preview --port 5173",
-    "deploy": "wrangler pages deploy dist --project-name coderail-flow"
+    "deploy": "wrangler pages deploy dist --project-name coderail-flow --commit-dirty=true"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.60.0",

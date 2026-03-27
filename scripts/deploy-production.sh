@@ -4,6 +4,7 @@ set -euo pipefail
 API_DIR="apps/api"
 WEB_DIR="apps/web"
 PAGES_PROJECT_NAME="coderail-flow"
+WEB_URL="https://${PAGES_PROJECT_NAME}.pages.dev"
 
 echo "🚀 CodeRail Flow - Production Deployment"
 echo "=========================================="
@@ -68,14 +69,20 @@ if [ "$SECRETS_OK" = false ]; then
     fi
 fi
 
+if ! wrangler secret list --cwd "$API_DIR" 2>/dev/null | grep -q "SENTRY_DSN"; then
+    echo -e "${YELLOW}⚠️  SENTRY_DSN not set; production errors will not be reported to Sentry${NC}"
+fi
+
 echo ""
 echo "📦 Deploying API to production..."
 cd "$API_DIR"
-wrangler deploy
-if [ $? -ne 0 ]; then
+if ! API_DEPLOY_OUTPUT=$(wrangler deploy --env="" 2>&1); then
+    echo "$API_DEPLOY_OUTPUT"
     echo -e "${RED}❌ API deployment failed${NC}"
     exit 1
 fi
+echo "$API_DEPLOY_OUTPUT"
+API_URL=$(printf '%s\n' "$API_DEPLOY_OUTPUT" | grep -Eo 'https://[^[:space:]]+\.workers\.dev' | tail -n 1)
 echo -e "${GREEN}✅ API deployed${NC}"
 cd ../..
 
@@ -88,11 +95,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-wrangler pages deploy dist --project-name="$PAGES_PROJECT_NAME"
-if [ $? -ne 0 ]; then
+if ! WEB_DEPLOY_OUTPUT=$(wrangler pages deploy dist --project-name="$PAGES_PROJECT_NAME" --commit-dirty=true 2>&1); then
+    echo "$WEB_DEPLOY_OUTPUT"
     echo -e "${RED}❌ Web deployment failed${NC}"
     exit 1
 fi
+echo "$WEB_DEPLOY_OUTPUT"
+WEB_DEPLOYMENT_URL=$(printf '%s\n' "$WEB_DEPLOY_OUTPUT" | grep -Eo 'https://[^[:space:]]+\.pages\.dev' | head -n 1)
 echo -e "${GREEN}✅ Web deployed${NC}"
 cd ../..
 
@@ -100,12 +109,19 @@ echo ""
 echo -e "${GREEN}🎉 Deployment complete!${NC}"
 echo ""
 echo "📍 Production URLs:"
-echo "  API: https://coderail-flow-api.YOUR_SUBDOMAIN.workers.dev"
-echo "  Web: https://coderail-flow.pages.dev"
+echo "  API: ${API_URL:-Unavailable}"
+echo "  Web: $WEB_URL"
+if [ -n "${WEB_DEPLOYMENT_URL:-}" ]; then
+    echo "  Latest Pages deployment: $WEB_DEPLOYMENT_URL"
+fi
 echo ""
 echo "🧪 To run E2E tests against production:"
-echo "  E2E_BASE_URL=https://coderail-flow.pages.dev npm run test:e2e"
+echo "  E2E_BASE_URL=$WEB_URL E2E_API_URL=${API_URL:-$WEB_URL} npm run test:e2e"
 echo ""
 echo "📊 To view logs:"
-echo "  wrangler tail"
+if [ -n "${API_URL:-}" ]; then
+    echo "  wrangler tail --env=\"\" --cwd $API_DIR"
+else
+    echo "  wrangler tail --env=\"\" --cwd $API_DIR"
+fi
 echo ""

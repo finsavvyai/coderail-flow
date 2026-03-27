@@ -31,8 +31,8 @@
     "security:pentest": "tsx scripts/pentest-smoke.ts",
     "validate:production": "pnpm run format:check && pnpm test && pnpm run test:web && pnpm run build:web",
     "deploy:production": "bash scripts/deploy-production.sh",
-    "deploy:production:api": "cd apps/api && wrangler deploy",
-    "deploy:production:web": "cd apps/web && pnpm run build && wrangler pages deploy dist --project-name=coderail-flow",
+    "deploy:production:api": "cd apps/api && wrangler deploy --env=\"\"",
+    "deploy:production:web": "cd apps/web && pnpm run build && wrangler pages deploy dist --project-name=coderail-flow --commit-dirty=true",
     "test:e2e:production": "bash scripts/run-e2e-production.sh"
   },
   "devDependencies": {

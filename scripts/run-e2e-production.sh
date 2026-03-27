@@ -11,8 +11,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Default production URLs (update these with your actual URLs)
-API_URL="${E2E_API_URL:-https://coderail-flow-api.YOUR_SUBDOMAIN.workers.dev}"
+# Default production URLs
+API_URL="${E2E_API_URL:-https://coderail-flow-api.broad-dew-49ad.workers.dev}"
 WEB_URL="${E2E_BASE_URL:-https://coderail-flow.pages.dev}"
 
 echo "📍 Target URLs:"
