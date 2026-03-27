@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import toast from 'react-hot-toast';
+import { apiUrl, getClerkToken } from './api-core';
 
 export type FlowTestStatus = 'idle' | 'running' | 'succeeded' | 'failed';
 
@@ -41,7 +42,7 @@ export function useFlowTest({
 
   async function pollRunStatus(id: string) {
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
+      const token = await getClerkToken();
       const headers: Record<string, string> = {};
       if (token) headers.Authorization = `Bearer ${token}`;
 
@@ -51,8 +52,8 @@ export function useFlowTest({
             try {
               // Fetch run status and steps in parallel
               const [runRes, stepsRes] = await Promise.all([
-                fetch(`/api/runs/${id}`, { headers }),
-                fetch(`/api/runs/${id}/steps`, { headers }),
+                fetch(apiUrl(`/runs/${id}`), { headers }),
+                fetch(apiUrl(`/runs/${id}/steps`), { headers }),
               ]);
 
               if (!runRes.ok) {
@@ -121,11 +122,11 @@ export function useFlowTest({
     setStepDetails([]);
 
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
+      const token = await getClerkToken();
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       if (token) headers.Authorization = `Bearer ${token}`;
 
-      const res = await fetch('/api/runs', {
+      const res = await fetch(apiUrl('/runs'), {
         method: 'POST',
         headers,
         body: JSON.stringify({

@@ -1,5 +1,15 @@
-import { Star, Clock, ExternalLink, Minimize2, Maximize2, Play, Square } from 'lucide-react';
+import {
+  Star,
+  Clock,
+  ExternalLink,
+  Minimize2,
+  Maximize2,
+  Monitor,
+  Play,
+  Square,
+} from 'lucide-react';
 import type { RecorderMode } from './FlowRecorder.types';
+import { getRecorderModeLabel, getRecorderModeTitle } from './recorder-runtime';
 import { UrlDropdown } from './UrlDropdown';
 
 interface RecorderUrlInputProps {
@@ -9,14 +19,16 @@ interface RecorderUrlInputProps {
   flowName: string;
   setFlowName: (name: string) => void;
   mode: RecorderMode;
-  setMode: (mode: RecorderMode) => void;
+  availableModes: RecorderMode[];
+  cycleMode: () => void;
+  modeStatusMessage: string;
   favoriteUrls: string[];
   recentUrls: string[];
   showUrlDropdown: boolean;
   setShowUrlDropdown: (show: boolean) => void;
   urlDropdownRef: React.RefObject<HTMLDivElement>;
-  startRecording: () => void;
-  stopRecording: () => void;
+  startRecording: () => void | Promise<void>;
+  stopRecording: () => void | Promise<void>;
   onToggleFavorite: (url: string) => void;
   onRemoveFavorite: (url: string) => void;
   onRemoveRecent: (url: string) => void;
@@ -30,7 +42,9 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
     flowName,
     setFlowName,
     mode,
-    setMode,
+    availableModes,
+    cycleMode,
+    modeStatusMessage,
     favoriteUrls,
     recentUrls,
     showUrlDropdown,
@@ -115,12 +129,18 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
         </div>
         <button
           className="btn"
-          onClick={() => setMode(mode === 'iframe' ? 'window' : 'iframe')}
-          disabled={isRecording}
-          title={mode === 'iframe' ? 'Switch to new window' : 'Switch to inline frame'}
+          onClick={cycleMode}
+          disabled={isRecording || availableModes.length <= 1}
+          title={getRecorderModeTitle(mode)}
           style={{ padding: '8px 10px', background: '#2a2a2a' }}
         >
-          {mode === 'iframe' ? <ExternalLink size={14} /> : <Minimize2 size={14} />}
+          {mode === 'server' ? (
+            <Monitor size={14} />
+          ) : mode === 'iframe' ? (
+            <Minimize2 size={14} />
+          ) : (
+            <ExternalLink size={14} />
+          )}
         </button>
         {!isRecording ? (
           <button
@@ -128,7 +148,12 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
             onClick={startRecording}
             style={{ background: '#22c55e', whiteSpace: 'nowrap' }}
           >
-            <Play size={14} /> {mode === 'window' ? 'Record in Window' : 'Start Recording'}
+            <Play size={14} />{' '}
+            {mode === 'server'
+              ? 'Record (Browser)'
+              : mode === 'window'
+                ? 'Record in Window'
+                : 'Start Recording'}
           </button>
         ) : (
           <button
@@ -158,10 +183,17 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
             whiteSpace: 'nowrap',
           }}
         >
-          {mode === 'iframe' ? <Minimize2 size={11} /> : <Maximize2 size={11} />}
-          {mode === 'iframe' ? 'Inline' : 'New Window'}
+          {mode === 'server' ? (
+            <Monitor size={11} />
+          ) : mode === 'iframe' ? (
+            <Minimize2 size={11} />
+          ) : (
+            <Maximize2 size={11} />
+          )}
+          {getRecorderModeLabel(mode)}
         </div>
       </div>
+      <div style={{ marginTop: 10, fontSize: 11, color: '#8b95b0' }}>{modeStatusMessage}</div>
     </div>
   );
 }

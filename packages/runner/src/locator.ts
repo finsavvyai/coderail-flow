@@ -103,7 +103,9 @@ export async function resolveElement(
     }
   }
 
-  throw new Error(`Element not found: ${elementData.name} (${elementData.id}). Primary: ${primarySelector}, Fallbacks: ${fallbacks.length}`);
+  throw new Error(
+    `Element not found: ${elementData.name} (${elementData.id}). Primary: ${primarySelector}, Fallbacks: ${fallbacks.length}`
+  );
 }
 
 /**
@@ -120,14 +122,16 @@ function replaceParams(locator: LocatorPrimary, params: Record<string, any>): Lo
 
   return {
     ...locator,
-    value: replacedValue
+    value: replacedValue,
   };
 }
 
 /**
  * Get element's bounding box for overlays
  */
-export async function getElementBounds(element: any): Promise<{ x: number; y: number; width: number; height: number } | null> {
+export async function getElementBounds(
+  element: any
+): Promise<{ x: number; y: number; width: number; height: number } | null> {
   try {
     const box = await element.boundingBox();
     return box;

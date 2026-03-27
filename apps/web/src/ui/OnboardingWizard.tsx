@@ -7,6 +7,7 @@ import { OnboardingStepWelcome } from './OnboardingStepWelcome';
 import { OnboardingStepProject } from './OnboardingStepProject';
 import { OnboardingStepPath } from './OnboardingStepPath';
 import { OnboardingStepComplete } from './OnboardingStepComplete';
+import { apiUrl, getClerkToken } from './api-core';
 
 export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps) {
   const [step, setStep] = useState(0);
@@ -62,12 +63,12 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
     }
     setLoading(true);
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
-      const res = await fetch('/api/projects', {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl('/projects'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
           name: projectName.trim(),

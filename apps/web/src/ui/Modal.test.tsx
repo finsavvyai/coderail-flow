@@ -1,103 +1,69 @@
-/**
- * Modal component tests.
- */
-
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Modal } from './Modal';
 
 describe('Modal', () => {
-  it('does not render when isOpen is false', () => {
+  it('does not render when closed', () => {
     render(
-      <Modal isOpen={false} onClose={vi.fn()}>
+      <Modal open={false} onClose={vi.fn()}>
         <div>Modal Content</div>
       </Modal>
     );
 
-    expect(screen.queryByText('Modal Content')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('renders when isOpen is true', () => {
+  it('renders content and title when open', () => {
     render(
-      <Modal isOpen={true} onClose={vi.fn()}>
+      <Modal open={true} onClose={vi.fn()} title="Test Title">
         <div>Modal Content</div>
       </Modal>
     );
 
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
     expect(screen.getByText('Modal Content')).toBeInTheDocument();
   });
 
-  it('renders title when provided', () => {
-    render(
-      <Modal isOpen={true} onClose={vi.fn()} title="Test Title">
-        <div>Content</div>
-      </Modal>
-    );
-
-    expect(screen.getByText('Test Title')).toBeInTheDocument();
-  });
-
-  it('calls onClose when close button is clicked', async () => {
+  it('calls onClose when the close button is clicked', async () => {
     const handleClose = vi.fn();
     const user = userEvent.setup();
 
     render(
-      <Modal isOpen={true} onClose={handleClose}>
+      <Modal open={true} onClose={handleClose} title="Closable">
         <div>Content</div>
       </Modal>
     );
 
-    await user.click(screen.getByRole('button', { name: /close/i }));
+    await user.click(screen.getByRole('button', { name: /close dialog/i }));
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onClose when backdrop is clicked', async () => {
+  it('calls onClose when the backdrop is clicked', async () => {
     const handleClose = vi.fn();
     const user = userEvent.setup();
 
     render(
-      <Modal isOpen={true} onClose={handleClose}>
+      <Modal open={true} onClose={handleClose} title="Closable">
         <div>Content</div>
       </Modal>
     );
 
-    const backdrop = screen.getByTestId('modal-backdrop');
-    await user.click(backdrop);
+    await user.click(screen.getByRole('dialog'));
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
-  it('does not close when closeOnBackdropClick is false', async () => {
+  it('closes when Escape is pressed', () => {
     const handleClose = vi.fn();
-    const user = userEvent.setup();
 
     render(
-      <Modal isOpen={true} onClose={handleClose} closeOnBackdropClick={false}>
-        <div>Content</div>
+      <Modal open={true} onClose={handleClose} title="Closable">
+        <button type="button">Focusable</button>
       </Modal>
     );
 
-    const backdrop = screen.getByTestId('modal-backdrop');
-    await user.click(backdrop);
-    expect(handleClose).not.toHaveBeenCalled();
-  });
-
-  it('applies size classes correctly', () => {
-    const { rerender } = render(
-      <Modal isOpen={true} onClose={vi.fn()} size="small">
-        <div>Content</div>
-      </Modal>
-    );
-
-    const modal = screen.getByTestId('modal-backdrop');
-    expect(modal).toHaveClass('size-small');
-
-    rerender(
-      <Modal isOpen={true} onClose={vi.fn()} size="large">
-        <div>Content</div>
-      </Modal>
-    );
-
-    expect(modal).toHaveClass('size-large');
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(handleClose).toHaveBeenCalledTimes(1);
   });
 });

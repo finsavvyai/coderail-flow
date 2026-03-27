@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Copy, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { SlackMessagePreview } from './SlackMessagePreview';
+import { apiUrl, getClerkToken } from './api-core';
 
 interface ShareToSlackModalProps {
   flowId: string;
@@ -23,7 +24,7 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
   async function handleShare() {
     setLoading(true);
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
+      const token = await getClerkToken();
       const payload: any = {
         channel,
         message,
@@ -36,11 +37,11 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
         payload.runId = runId;
         payload.runUrl = runUrl;
       }
-      const res = await fetch('/api/integrations/slack/share', {
+      const res = await fetch(apiUrl('/integrations/slack/share'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(payload),
       });

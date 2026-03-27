@@ -12,6 +12,7 @@ interface RecorderPreviewProps {
   activeStepIndex: number | null;
   recordedActions: RecordedAction[];
   onPopOut: () => void;
+  serverScreenshot?: string | null;
 }
 
 export function RecorderPreview(props: RecorderPreviewProps) {
@@ -25,6 +26,7 @@ export function RecorderPreview(props: RecorderPreviewProps) {
     activeStepIndex,
     recordedActions,
     onPopOut,
+    serverScreenshot,
   } = props;
 
   return (
@@ -40,7 +42,9 @@ export function RecorderPreview(props: RecorderPreviewProps) {
         onPopOut={onPopOut}
       />
       <div style={{ flex: 1, background: '#0a0a0a', position: 'relative' }}>
-        {targetUrl && isRecording && mode === 'iframe' ? (
+        {targetUrl && isRecording && mode === 'server' ? (
+          <ServerModeView screenshot={serverScreenshot} iframeLoaded={iframeLoaded} />
+        ) : targetUrl && isRecording && mode === 'iframe' ? (
           <IframePreview
             targetUrl={targetUrl}
             iframeRef={iframeRef}
@@ -53,6 +57,44 @@ export function RecorderPreview(props: RecorderPreviewProps) {
         ) : (
           <EmptyPreview />
         )}
+      </div>
+    </div>
+  );
+}
+
+function ServerModeView({
+  screenshot,
+  iframeLoaded,
+}: {
+  screenshot?: string | null;
+  iframeLoaded: boolean;
+}) {
+  if (screenshot) {
+    return (
+      <img
+        src={screenshot}
+        alt="Live browser preview"
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+      />
+    );
+  }
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        color: '#666',
+        fontSize: 14,
+        flexDirection: 'column',
+        gap: 8,
+      }}
+    >
+      <div style={{ fontSize: 24 }}>🖥️</div>
+      <div>{iframeLoaded ? 'Loading preview…' : 'Launching browser…'}</div>
+      <div style={{ fontSize: 11, color: '#555' }}>
+        Interact with the Puppeteer browser window to record actions
       </div>
     </div>
   );

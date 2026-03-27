@@ -4,7 +4,7 @@ import { DashboardCharts } from './DashboardCharts';
 import { DashboardRunsTable } from './DashboardRunsTable';
 import { DashboardEmptyState } from './DashboardEmptyState';
 import { DashboardSkeleton } from './DashboardSkeleton';
-import { authHeaders } from './api-core';
+import { apiUrl, authHeaders } from './api-core';
 import toast from 'react-hot-toast';
 import type { Run, Stats } from './DashboardPage.types';
 
@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
   const loadStats = async () => {
     try {
-      const response = await fetch(`/api/stats?dateRange=${dateRange}`, {
+      const response = await fetch(apiUrl(`/stats?dateRange=${dateRange}`), {
         headers: await authHeaders(),
       });
       if (response.ok) {
@@ -40,7 +40,7 @@ export default function DashboardPage() {
 
   const loadRuns = async () => {
     try {
-      const response = await fetch(`/api/runs?limit=10&sort=created_at&order=desc`, {
+      const response = await fetch(apiUrl('/runs?limit=10&sort=created_at&order=desc'), {
         headers: await authHeaders(),
       });
       if (response.ok) {

@@ -60,7 +60,10 @@ function pad(num: number, length: number): string {
  * Build narration timeline from executed steps
  * Estimates timing based on step type (3s default per narration)
  */
-export function buildNarrationTimeline(steps: Array<{ type: string; narrate?: string }>, startTimeMs = 0): NarrationEntry[] {
+export function buildNarrationTimeline(
+  steps: Array<{ type: string; narrate?: string }>,
+  startTimeMs = 0
+): NarrationEntry[] {
   const narrations: NarrationEntry[] = [];
   let currentTimeMs = startTimeMs;
 
@@ -74,7 +77,7 @@ export function buildNarrationTimeline(steps: Array<{ type: string; narrate?: st
       narrations.push({
         text: step.narrate,
         startMs: currentTimeMs,
-        endMs: currentTimeMs + duration
+        endMs: currentTimeMs + duration,
       });
 
       currentTimeMs += duration;

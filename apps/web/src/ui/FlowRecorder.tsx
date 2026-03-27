@@ -60,7 +60,9 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
         flowName={recorder.flowName}
         setFlowName={recorder.setFlowName}
         mode={recorder.mode}
-        setMode={recorder.setMode}
+        availableModes={recorder.availableModes}
+        cycleMode={recorder.cycleRecorderMode}
+        modeStatusMessage={recorder.recorderStatusMessage}
         favoriteUrls={recorder.favoriteUrls}
         recentUrls={recorder.recentUrls}
         showUrlDropdown={recorder.showUrlDropdown}
@@ -85,6 +87,7 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
           activeStepIndex={recorder.activeStepIndex}
           recordedActions={recorder.recordedActions}
           onPopOut={recorder.popOutToWindow}
+          serverScreenshot={recorder.serverScreenshot}
         />
         <RecorderStepList
           recordedActions={recorder.recordedActions}

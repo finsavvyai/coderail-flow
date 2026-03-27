@@ -2,6 +2,7 @@ name = "coderail-flow-api"
 main = "src/index.ts"
 compatibility_date = "2025-12-13"
 compatibility_flags = ["nodejs_compat"]
+minify = true
 
 # ---- D1 ----
 [[d1_databases]]
@@ -18,9 +19,26 @@ bucket_name = "coderail-flow-artifacts"
 [browser]
 binding = "BROWSER"
 
+# ---- Optional KMS Service Binding ----
+# Uncomment and set to your KMS worker/service when enabling Task 15 KMS key retrieval.
+# [[services]]
+# binding = "CLOUDFLARE_KMS"
+# service = "coderail-flow-kms"
+
 [vars]
 APP_ENV = "production"
 PUBLIC_BASE_URL = "https://coderail-flow.pages.dev"
+# AUTH_ENCRYPTION_KEY = "set-via-wrangler-secret"
+
+# ---- Workflows (Durable Execution) ----
+[[workflows]]
+name = "flow-execution"
+binding = "FLOW_WORKFLOW"
+class_name = "FlowExecutionWorkflow"
+
+# ---- Cron Triggers ----
+[triggers]
+crons = ["* * * * *"]
 # CLERK_ISSUER = "https://clerk.your-domain.dev"  # Set via `wrangler secret put CLERK_ISSUER`
 
 # ──────────────────────────────────────

@@ -43,7 +43,10 @@ export function ScheduleCreateForm({
       }}
     >
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="schedule-flow" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label
+          htmlFor="schedule-flow"
+          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
+        >
           Flow
         </label>
         <select
@@ -62,7 +65,10 @@ export function ScheduleCreateForm({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="schedule-cron" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label
+          htmlFor="schedule-cron"
+          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
+        >
           Schedule
         </label>
         <select
@@ -80,7 +86,10 @@ export function ScheduleCreateForm({
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="schedule-params" style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}>
+        <label
+          htmlFor="schedule-params"
+          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
+        >
           Parameters (JSON)
         </label>
         <input

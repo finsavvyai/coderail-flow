@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { XCircle, RefreshCw, Lightbulb, ChevronDown, ChevronRight } from 'lucide-react';
-
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+import { apiUrl } from './api-core';
 
 type ErrorDisplayProps = {
   run: any;
@@ -98,7 +97,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
           </div>
           <button
             onClick={() => {
-              window.open(`${API_BASE}/artifacts/${errorScreenshot.id}/preview`, '_blank');
+              window.open(apiUrl(`/artifacts/${errorScreenshot.id}/preview`), '_blank');
             }}
             aria-label="View error screenshot full size"
             style={{
@@ -110,7 +109,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
             }}
           >
             <img
-              src={`${API_BASE}/artifacts/${errorScreenshot.id}/preview`}
+              src={apiUrl(`/artifacts/${errorScreenshot.id}/preview`)}
               alt="Error screenshot"
               style={{
                 width: '100%',

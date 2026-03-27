@@ -5,15 +5,18 @@
   "scripts": {
     "dev": "vite --port 5173",
     "build": "vite build",
+    "test": "vitest run --config vitest.config.ts",
     "preview": "vite preview --port 5173",
-    "deploy": "wrangler pages deploy dist --project-name coderail-flow-web"
+    "deploy": "wrangler pages deploy dist --project-name coderail-flow"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.60.0",
     "lucide-react": "^0.563.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.13.0"
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.13.0",
+    "recharts": "^3.7.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

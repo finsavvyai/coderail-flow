@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import type { JiraConfig } from './JiraIntegrationForm.types';
 import { DEFAULT_JIRA_CONFIG } from './JiraIntegrationForm.types';
-
-async function getToken(): Promise<string | undefined> {
-  return (window as any).Clerk?.session?.getToken();
-}
+import { apiUrl, getClerkToken } from './api-core';
 
 export function useJiraConfig(projectId: string) {
   const [config, setConfig] = useState<JiraConfig>({ ...DEFAULT_JIRA_CONFIG });
@@ -14,11 +11,18 @@ export function useJiraConfig(projectId: string) {
   const [existingConfig, setExistingConfig] = useState<any>(null);
 
   async function loadExistingConfig() {
+    if (!projectId) {
+      setExistingConfig(null);
+      setConfig({ ...DEFAULT_JIRA_CONFIG });
+      return;
+    }
     try {
-      const token = await getToken();
+      const token = await getClerkToken();
       const res = await fetch(
-        `/api/integrations/jira/config?projectId=${encodeURIComponent(projectId)}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        apiUrl(`/integrations/jira/config?projectId=${encodeURIComponent(projectId)}`),
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        }
       );
       if (res.ok) {
         const data = await res.json();
@@ -44,12 +48,19 @@ export function useJiraConfig(projectId: string) {
   }, [projectId]);
 
   async function saveConfig() {
+    if (!projectId) {
+      toast.error('Select a project before configuring Jira');
+      return;
+    }
     setLoading(true);
     try {
-      const token = await getToken();
-      const res = await fetch('/api/integrations/jira/config', {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl('/integrations/jira/config'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           projectId,
           config: {
@@ -76,12 +87,19 @@ export function useJiraConfig(projectId: string) {
   }
 
   async function testConnection() {
+    if (!projectId) {
+      toast.error('Select a project before testing Jira');
+      return;
+    }
     setTesting(true);
     try {
-      const token = await getToken();
-      const res = await fetch('/api/integrations/jira/test', {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl('/integrations/jira/test'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           instanceUrl: config.instanceUrl,
           clientId: config.clientId,
@@ -102,11 +120,15 @@ export function useJiraConfig(projectId: string) {
 
   async function deleteIntegration() {
     if (!confirm('Are you sure you want to remove the Jira integration?')) return;
+    if (!projectId) return;
     try {
-      const token = await getToken();
-      const res = await fetch('/api/integrations/jira/config', {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl('/integrations/jira/config'), {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ projectId }),
       });
       if (!res.ok) throw new Error('Failed to remove integration');

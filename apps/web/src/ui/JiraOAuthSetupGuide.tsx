@@ -1,4 +1,5 @@
 import { ExternalLink } from 'lucide-react';
+import { apiAbsoluteUrl } from './api-core';
 
 interface JiraOAuthSetupGuideProps {
   instanceUrl: string;
@@ -7,7 +8,7 @@ interface JiraOAuthSetupGuideProps {
 export function JiraOAuthSetupGuide({ instanceUrl }: JiraOAuthSetupGuideProps) {
   const baseUrl = instanceUrl || 'https://your-domain.atlassian.net';
   const oauthUrl = `${baseUrl}/plugins/servlet/oauth/com.atlassian.oauth.oauth2consumer:client-id-plugin`;
-  const callbackUrl = `${window.location.origin}/api/integrations/jira/callback`;
+  const callbackUrl = apiAbsoluteUrl('/integrations/jira/callback');
 
   return (
     <div

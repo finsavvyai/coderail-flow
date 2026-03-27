@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { CheckCircle, XCircle, Clock, Loader2 } from 'lucide-react';
 import { RunProgressStepList } from './RunProgressStepList';
 import type { StepProgress } from './RunProgressStepList';
+import { apiUrl } from './api-core';
 
 interface RunProgressProps {
   runId: string;
@@ -40,8 +41,7 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
 
   async function pollProgress() {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || '/api';
-      const res = await fetch(`${API_BASE}/runs/${runId}`);
+      const res = await fetch(apiUrl(`/runs/${runId}`));
       const data = await res.json();
       if (data.run) {
         if (data.run.status === 'succeeded' || data.run.status === 'failed') {

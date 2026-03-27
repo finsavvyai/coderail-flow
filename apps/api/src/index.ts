@@ -6,6 +6,7 @@
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import * as Sentry from '@sentry/cloudflare';
 import type { Env } from './env';
 import { billing } from './billing';
 import { requireAuth } from './auth';
@@ -25,15 +26,25 @@ import { authProfiles } from './routes/auth-profiles';
 import { schedules, scheduled } from './routes/schedules';
 import { misc } from './routes/misc';
 import { health } from './routes/health';
-import { initSentry, flushSentry } from './monitoring/sentry';
+import { captureException, flushSentry, getSentryOptions, initSentry } from './monitoring/sentry';
+import { getLogger, loggerMiddleware } from './monitoring/logger';
 import { cspHeaders, requestTimeout } from './middleware/security';
+import { validationErrorHandler } from './middleware/validation';
+import { getRuntimeConfig, isProductionLikeEnv, resolveCorsOrigin } from './runtime-config';
 
 export { FlowExecutionWorkflow } from './workflow';
 export { scheduled };
 export { initSentry, flushSentry };
 
-type Variables = { userId: string; userEmail?: string };
+export type Variables = {
+  userId?: string;
+  userEmail?: string;
+  requestId: string;
+  logger: ReturnType<typeof getLogger>;
+};
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
+app.use('*', loggerMiddleware());
+app.use('*', validationErrorHandler);
 
 // Security headers
 app.use('*', cspHeaders);
@@ -61,16 +72,89 @@ app.use(
   cors({
     origin: (origin, c) => {
       const env = (c as any).env as Env;
-      const baseUrl = env.PUBLIC_BASE_URL;
-      if (!baseUrl || env.APP_ENV !== 'production') return origin || '*';
-      const allowed = [baseUrl];
-      return allowed.includes(origin) ? origin : allowed[0];
+      return resolveCorsOrigin(origin, env);
     },
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    exposeHeaders: ['X-RateLimit-Limit', 'X-RateLimit-Remaining', 'X-RateLimit-Reset'],
+    exposeHeaders: [
+      'X-RateLimit-Limit',
+      'X-RateLimit-Remaining',
+      'X-RateLimit-Reset',
+      'X-Request-Id',
+      'Server-Timing',
+    ],
   })
 );
+
+app.use('*', async (c, next) => {
+  if (
+    !isProductionLikeEnv(c.env.APP_ENV) ||
+    c.req.path === '/health' ||
+    c.req.path.startsWith('/health/')
+  ) {
+    return next();
+  }
+
+  const config = getRuntimeConfig(c.env);
+  if (config.ok) {
+    return next();
+  }
+
+  const requestId = c.get('requestId') || crypto.randomUUID();
+  c.header('X-Request-Id', requestId);
+
+  return c.json(
+    {
+      error: 'service_unavailable',
+      message: 'Service is not ready to receive traffic. Check /health/ready for details.',
+      requestId,
+    },
+    503
+  );
+});
+
+app.onError((err, c) => {
+  const requestId = c.get('requestId') || crypto.randomUUID();
+  const logger = c.get('logger') || getLogger(requestId);
+  const error = err instanceof Error ? err : new Error(String(err));
+
+  logger.error('Unhandled request error', error, {
+    method: c.req.method,
+    path: c.req.path,
+    userId: c.get('userId'),
+  });
+
+  captureException(error, {
+    requestId,
+    method: c.req.method,
+    path: c.req.path,
+    user: c.get('userId') ? { id: c.get('userId') } : undefined,
+  });
+
+  c.header('X-Request-Id', requestId);
+
+  return c.json(
+    {
+      error: 'internal_error',
+      message: 'An unexpected error occurred. Retry with the provided request ID.',
+      requestId,
+    },
+    500
+  );
+});
+
+app.notFound((c) => {
+  const requestId = c.get('requestId') || crypto.randomUUID();
+  c.header('X-Request-Id', requestId);
+  return c.json(
+    {
+      error: 'not_found',
+      message: 'Route not found.',
+      requestId,
+    },
+    404
+  );
+});
 
 // Health check
 app.route('/health', health);
@@ -93,11 +177,11 @@ app.get('/stats', async (c) => {
     succeeded_runs: payload.succeeded,
     failed_runs: payload.failed,
     avg_duration: payload.avgDuration,
-    runs_by_flow: payload.byFlow.map(f => ({
+    runs_by_flow: payload.byFlow.map((f) => ({
       flow_name: f.flowName,
       count: f.count,
     })),
-    runs_over_time: payload.byDay.map(d => ({
+    runs_over_time: payload.byDay.map((d) => ({
       date: d.date,
       count: d.count,
     })),
@@ -166,4 +250,11 @@ app.route(
   })()
 );
 
-export default app;
+const handler = {
+  fetch(request, env, executionCtx) {
+    return app.fetch(request, env, executionCtx);
+  },
+  scheduled,
+} satisfies ExportedHandler<Env>;
+
+export default Sentry.withSentry<Env>(getSentryOptions, handler);

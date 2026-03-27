@@ -53,7 +53,9 @@ export function AddKeyForm({
   return (
     <div className="card" style={{ padding: 20 }}>
       <div style={{ fontWeight: 500, marginBottom: 12 }}>New API Key</div>
-      <label htmlFor="api-key-name" className="sr-only">Key name</label>
+      <label htmlFor="api-key-name" className="sr-only">
+        Key name
+      </label>
       <input
         id="api-key-name"
         className="input"
@@ -62,7 +64,9 @@ export function AddKeyForm({
         onChange={(e) => onNameChange(e.target.value)}
         style={{ marginBottom: 8 }}
       />
-      <label htmlFor="api-key-expiry" className="sr-only">Expiry</label>
+      <label htmlFor="api-key-expiry" className="sr-only">
+        Expiry
+      </label>
       <select
         id="api-key-expiry"
         className="input"

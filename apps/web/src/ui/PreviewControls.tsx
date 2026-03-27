@@ -19,12 +19,31 @@ export function IframePreview({
 }: IframePreviewProps) {
   const subtitle =
     activeStepIndex !== null ? recordedActions[activeStepIndex]?.subtitle : undefined;
+  const proxyUrl = getProxyUrl(targetUrl);
+
+  if (!proxyUrl) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          color: '#8b95b0',
+          padding: 24,
+          textAlign: 'center',
+        }}
+      >
+        Configure `VITE_API_URL` so the recorder proxy can load this page.
+      </div>
+    );
+  }
 
   return (
     <>
       <iframe
         ref={iframeRef}
-        src={getProxyUrl(targetUrl)}
+        src={proxyUrl}
         style={{ width: '100%', height: '100%', border: 'none', background: 'white' }}
         sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
       />

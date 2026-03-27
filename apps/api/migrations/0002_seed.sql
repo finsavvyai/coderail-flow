@@ -1,6 +1,9 @@
 -- D1 migration 0002: seed demo org/project/flow
 
 INSERT OR IGNORE INTO org (id, name, plan, created_at)
+VALUES ('default', 'Default', 'free', datetime('now'));
+
+INSERT OR IGNORE INTO org (id, name, plan, created_at)
 VALUES ('demo-org', 'Demo Org', 'free', datetime('now'));
 
 INSERT OR IGNORE INTO project (id, org_id, name, base_url, env, created_at)

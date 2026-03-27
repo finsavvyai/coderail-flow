@@ -1,8 +1,10 @@
 # CodeRail Flow – Cloudflare-first Workflow Automation Platform
 
-**🎉 Phase 1 Complete!** This repo is now a **fully functional** browser automation platform powered by Cloudflare.
+**🎉 Production Ready!** A fully functional browser automation platform powered by Cloudflare.
 
-**Features**:
+## Features
+
+### Core Platform
 - ✅ Cloudflare **Workers API** (Hono) + **D1** database + **R2** storage
 - ✅ Cloudflare **Pages UI** (React + Vite)
 - ✅ **Real browser automation** via Cloudflare Browser Rendering + Puppeteer
@@ -10,10 +12,23 @@
 - ✅ **Screenshot capture** for every step
 - ✅ **SRT subtitle generation** from narrations
 - ✅ **Element locator resolution** with fallback chain
-- ✅ **Demo flow** ready to run: "Explain a Failed Card Transaction"
+- ✅ **Clerk authentication** with JWT verification
+- ✅ **Lemon Squeezy billing** integration
 
-> **Status**: Phase 1 (Browser Automation Core) is **COMPLETE** and ready for testing.
-> See [PHASE1_COMPLETE.md](PHASE1_COMPLETE.md) for full implementation details.
+### UI Features
+- ✅ **Flow Builder** - Visual drag-and-drop flow creation
+- ✅ **Element Mapper** - Click-to-select element picker with auto-locator generation
+- ✅ **Project Manager** - Organize projects, screens, and elements
+- ✅ **Cookie Manager** - Auth profiles for protected applications
+- ✅ **Live Progress** - Real-time step-by-step execution updates
+- ✅ **Screenshot Gallery** - View and download captured screenshots
+- ✅ **Error Display** - Detailed error information with retry
+
+### Step Types (14 total)
+- **Basic**: goto, caption, click, fill, highlight, waitFor, pause
+- **Advanced**: selectRow, assertText, screenshot, scroll, hover, select, setCookies
+
+> **Documentation**: See [FEATURES.md](FEATURES.md) for complete feature docs and [DEPLOYMENT.md](DEPLOYMENT.md) for production setup.
 
 ## Repo layout
 
@@ -93,6 +108,8 @@ Open **http://localhost:5173** and run the demo flow!
 Migration `0004_demo_flow.sql` creates the full demo with screens, elements, and flow definition.
 
 ### API Endpoints
+- `GET /health` - Liveness endpoint with readiness summary
+- `GET /health/ready` - Readiness endpoint for load balancers / deploy checks
 - `GET /flows` - List flows
 - `POST /runs` - Execute flow (real browser automation!)
 - `GET /runs` - List runs
@@ -101,6 +118,66 @@ Migration `0004_demo_flow.sql` creates the full demo with screens, elements, and
 - `POST /projects` - Create project
 - `POST /screens` - Create screen mapping
 - `POST /elements` - Create element locator
+
+## Testing
+
+### Unit & Integration Tests (Vitest)
+```bash
+# Run all unit tests
+pnpm test
+
+# Run with coverage report
+pnpm test:coverage
+
+# Watch mode
+pnpm test -- --watch
+```
+
+**What's covered** (171+ tests):
+- API routes: `flows`, `runs`, `resources`, `analytics`
+- Security: `pii-redaction`, `encryption`, `encryption-keys`
+
+### E2E Tests (Playwright)
+
+The web dev server is automatically started before tests run. The API server is **not** required — API health tests skip gracefully when the API is unreachable.
+
+```bash
+# Run all E2E tests (headless, starts web server automatically)
+pnpm test:e2e
+
+# Run with browser UI visible
+pnpm test:e2e:headed
+
+# Interactive Playwright UI
+pnpm test:e2e:ui
+
+# Open the HTML report from the last run
+pnpm test:e2e:report
+```
+
+**E2E test files:**
+| File | What it tests |
+|------|--------------|
+| `e2e/landing.spec.ts` | Landing page renders, CTA links, no JS errors |
+| `e2e/app.spec.ts` | `/app` page — app content or Clerk sign-in gate |
+| `e2e/auth.spec.ts` | Protected routes accessible, unknown routes |
+| `e2e/projects.spec.ts` | `/projects` and `/billing` pages |
+| `e2e/api-health.spec.ts` | Local API health + security headers (skipped if API not running) |
+| `e2e/api-health-auth.spec.ts` | Production API health + performance (skipped if unreachable) |
+
+**Auth-protected tests:** When `VITE_CLERK_PUBLISHABLE_KEY` is set, all tests accept either the real app content **or** Clerk's sign-in gate, making them resilient to unauthenticated state. Set `E2E_TEST_EMAIL` + `E2E_TEST_PASSWORD` to run authenticated flows.
+
+### Run Everything
+```bash
+pnpm test:all
+```
+
+### Production Validation
+```bash
+pnpm run validate:production
+```
+
+---
 
 ## ✅ Phase 1 Complete
 
@@ -127,4 +204,3 @@ All core browser automation features are implemented:
 8. **RBAC** - User management and access control
 
 See [PHASE1_COMPLETE.md](PHASE1_COMPLETE.md) for detailed implementation notes.
-

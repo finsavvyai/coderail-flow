@@ -1,52 +1,27 @@
-/**
- * Toast component tests.
- */
-
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import { Toast } from './Toast';
+import { render, screen } from '@testing-library/react';
+import { ToastContainer } from './ToastContainer';
 
-describe('Toast', () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
+vi.mock('react-hot-toast', () => ({
+  Toaster: ({
+    position,
+    toastOptions,
+  }: {
+    position: string;
+    toastOptions: { duration: number };
+  }) => (
+    <div>
+      <span>Toaster position: {position}</span>
+      <span>Default duration: {toastOptions.duration}</span>
+    </div>
+  ),
+}));
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
+describe('ToastContainer', () => {
+  it('renders the shared toaster shell', () => {
+    render(<ToastContainer />);
 
-  it('renders success toast', () => {
-    render(<Toast message="Success!" type="success" />);
-    expect(screen.getByText('Success!')).toBeInTheDocument();
-  });
-
-  it('renders error toast', () => {
-    render(<Toast message="Error occurred" type="error" />);
-    expect(screen.getByText('Error occurred')).toBeInTheDocument();
-  });
-
-  it('auto-dismisses after timeout', async () => {
-    render(<Toast message="Auto dismiss" duration={3000} />);
-
-    vi.advanceTimersByTime(3000);
-
-    await waitFor(() => {
-      expect(screen.queryByText('Auto dismiss')).not.toBeInTheDocument();
-    });
-  });
-
-  it('renders close button', () => {
-    render(<Toast message="Closable" onClose={vi.fn()} />);
-    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
-  });
-
-  it('calls onClose when close button is clicked', async () => {
-    const handleClose = vi.fn();
-    const user = userEvent.setup();
-
-    render(<Toast message="Close me" onClose={handleClose} />);
-
-    await user.click(screen.getByRole('button', { name: /close/i }));
-    expect(handleClose).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('Toaster position: top-right')).toBeInTheDocument();
+    expect(screen.getByText('Default duration: 5000')).toBeInTheDocument();
   });
 });

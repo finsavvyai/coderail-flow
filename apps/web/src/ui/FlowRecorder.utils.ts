@@ -1,5 +1,6 @@
-import { RECENT_URLS_KEY, FAVORITE_URLS_KEY, MAX_RECENT, API_BASE } from './FlowRecorder.types';
+import { RECENT_URLS_KEY, FAVORITE_URLS_KEY, MAX_RECENT } from './FlowRecorder.types';
 import type { RecordedAction, FlowStep } from './FlowRecorder.types';
+import { getRecorderRuntimeConfig } from './recorder-runtime';
 
 export function getRecentUrls(): string[] {
   try {
@@ -44,14 +45,37 @@ export function removeRecentUrl(url: string): string[] {
   return urls;
 }
 
-export function getProxyUrl(targetUrl: string): string {
+export function getProxyUrl(
+  targetUrl: string,
+  apiBase = getRecorderRuntimeConfig(import.meta.env).apiBase
+): string | null {
+  if (!apiBase) return null;
+
   try {
     const parsed = new URL(targetUrl);
     const b64 = btoa(parsed.origin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    return `${API_BASE}/proxy/${b64}${parsed.pathname}${parsed.search}`;
+    return `${apiBase}/proxy/${b64}${parsed.pathname}${parsed.search}`;
   } catch {
-    return targetUrl;
+    return null;
   }
+}
+
+export function mergeRecordedActions(
+  existingActions: RecordedAction[],
+  incomingActions: RecordedAction[]
+): RecordedAction[] {
+  if (incomingActions.length === 0) return existingActions;
+
+  const seen = new Set(existingActions.map((action) => action.id));
+  const merged = [...existingActions];
+
+  for (const action of incomingActions) {
+    if (seen.has(action.id)) continue;
+    seen.add(action.id);
+    merged.push(action);
+  }
+
+  return merged;
 }
 
 export function convertToFlowSteps(actions: RecordedAction[]): FlowStep[] {

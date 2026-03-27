@@ -1,52 +1,59 @@
-/**
- * ProtectedRoute component tests.
- */
-
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import { ProtectedRoute } from './ProtectedRoute';
 
-// Mock Clerk
+const authState = {
+  getToken: vi.fn(async () => 'token-123'),
+  isLoaded: true,
+  isSignedIn: false,
+};
+
 vi.mock('@clerk/clerk-react', () => ({
-  useAuth: () => ({
-    isLoaded: true,
-    isSignedIn: false,
-  }),
-  SignedIn: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  SignedOut: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  RedirectToSignIn: () => <div>Redirecting to sign in...</div>,
+  useAuth: () => authState,
+  SignedIn: ({ children }: { children: ReactNode }) =>
+    authState.isSignedIn ? <>{children}</> : null,
+  SignedOut: ({ children }: { children: ReactNode }) =>
+    authState.isSignedIn ? null : <>{children}</>,
+  SignInButton: ({ children }: { children: ReactNode }) => <>{children}</>,
+  UserButton: () => <div>User Menu</div>,
 }));
 
 describe('ProtectedRoute', () => {
-  it('shows redirect message when not signed in', () => {
-    render(
-      <ProtectedRoute>
-        <div>Protected Content</div>
-      </ProtectedRoute>
-    );
-
-    expect(screen.getByText('Redirecting to sign in')).toBeInTheDocument();
+  beforeEach(() => {
+    authState.isSignedIn = false;
+    authState.getToken.mockClear();
   });
 
-  it('applies custom redirect path', () => {
+  it('shows the sign-in gate when signed out', () => {
     render(
-      <ProtectedRoute redirectPath="/custom-signin">
-        <div>Protected Content</div>
-      </ProtectedRoute>
+      <MemoryRouter>
+        <ProtectedRoute>
+          <div>Protected Content</div>
+        </ProtectedRoute>
+      </MemoryRouter>
     );
 
-    expect(screen.getByText('Redirecting to sign in')).toBeInTheDocument();
+    expect(screen.getByText('Sign in to CodeRail Flow')).toBeInTheDocument();
+    expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
   });
 
-  it('renders fallback component when provided', () => {
-    const Fallback = () => <div>Custom Fallback</div>;
+  it('renders children and topbar once a token is available', async () => {
+    authState.isSignedIn = true;
 
     render(
-      <ProtectedRoute fallback={Fallback}>
-        <div>Protected Content</div>
-      </ProtectedRoute>
+      <MemoryRouter>
+        <ProtectedRoute>
+          <div>Protected Content</div>
+        </ProtectedRoute>
+      </MemoryRouter>
     );
 
-    expect(screen.getByText('Custom Fallback')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('User Menu')).toBeInTheDocument();
   });
 });

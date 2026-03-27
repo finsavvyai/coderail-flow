@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { BillingPlanCards } from './BillingPlanCards';
 import { BillingUsageCard } from './BillingUsageCard';
-
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+import { apiUrl } from './api-core';
 
 type AccountInfo = {
   id: string;
@@ -34,7 +33,7 @@ export function BillingPage() {
     if (!user) return;
     try {
       const token = await getToken();
-      const res = await fetch(`${API_BASE}/billing/account/sync`, {
+      const res = await fetch(apiUrl('/billing/account/sync'), {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -59,7 +58,7 @@ export function BillingPage() {
     setUpgrading(plan);
     try {
       const token = await getToken();
-      const res = await fetch(`${API_BASE}/billing/checkout`, {
+      const res = await fetch(apiUrl('/billing/checkout'), {
         method: 'POST',
         headers: {
           'content-type': 'application/json',

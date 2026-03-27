@@ -1,4 +1,4 @@
-import type { Env } from "./env";
+import type { Env } from './env';
 
 export async function q(env: Env, sql: string, params: any[] = []) {
   const stmt = env.DB.prepare(sql);

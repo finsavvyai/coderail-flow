@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight } from 'lucide-react';
+import { apiUrl } from './api-core';
+import { getWebRuntimeConfig } from './runtime-config';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const runtimeConfig = getWebRuntimeConfig(import.meta.env);
+const waitlistUnavailable = import.meta.env.PROD && !runtimeConfig.apiReady;
 
 export function Waitlist() {
   const [email, setEmail] = useState('');
@@ -10,10 +13,10 @@ export function Waitlist() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email) return;
+    if (!email || waitlistUnavailable) return;
     setStatus('loading');
     try {
-      const res = await fetch(`${API_BASE}/waitlist`, {
+      const res = await fetch(apiUrl('/waitlist'), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email, source: 'landing-page' }),
@@ -49,6 +52,11 @@ export function Waitlist() {
             <div className="lp-cta-success">
               <Check size={20} /> {message}
             </div>
+          ) : waitlistUnavailable ? (
+            <p className="lp-cta-error">
+              Waitlist signups are temporarily unavailable until the production API base URL is
+              configured.
+            </p>
           ) : (
             <form className="lp-cta-form" onSubmit={handleSubmit}>
               <label htmlFor="waitlist-email" className="sr-only">
@@ -61,10 +69,15 @@ export function Waitlist() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={waitlistUnavailable}
                 className="lp-cta-input"
                 aria-label="Email address"
               />
-              <button type="submit" className="lp-btn-primary" disabled={status === 'loading'}>
+              <button
+                type="submit"
+                className="lp-btn-primary"
+                disabled={status === 'loading' || waitlistUnavailable}
+              >
                 {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
                 <ArrowRight size={16} />
               </button>

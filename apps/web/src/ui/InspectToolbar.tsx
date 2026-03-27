@@ -44,7 +44,11 @@ export function InspectToolbar({
         </button>
       </div>
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="inspect-url" className="small" style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}>
+        <label
+          htmlFor="inspect-url"
+          className="small"
+          style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
+        >
           Page URL
         </label>
         <div style={{ display: 'flex', gap: 4 }}>

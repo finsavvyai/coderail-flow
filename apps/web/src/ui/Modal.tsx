@@ -95,7 +95,9 @@ export function Modal({
               borderBottom: '1px solid #2a2a2a',
             }}
           >
-            <h3 id="modal-title" style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>{title}</h3>
+            <h3 id="modal-title" style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>
+              {title}
+            </h3>
             <button
               onClick={onClose}
               aria-label="Close dialog"

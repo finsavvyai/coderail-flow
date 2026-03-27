@@ -46,18 +46,18 @@ export async function uploadArtifact(
   // Upload to R2
   await r2Bucket.put(key, contentBytes, {
     httpMetadata: {
-      contentType: artifact.contentType
+      contentType: artifact.contentType,
     },
     customMetadata: {
       kind: artifact.kind,
-      sha256
-    }
+      sha256,
+    },
   });
 
   return {
     key,
     bytes: contentBytes.length,
-    sha256
+    sha256,
   };
 }
 
@@ -67,7 +67,7 @@ export async function uploadArtifact(
 async function calculateSHA256(data: Uint8Array): Promise<string> {
   const hashBuffer = await crypto.subtle.digest('SHA-256', data as unknown as ArrayBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
   return hashHex;
 }
 
@@ -76,10 +76,7 @@ async function calculateSHA256(data: Uint8Array): Promise<string> {
  * Note: R2 presigned URLs require using S3-compatible API
  * For now, we'll use the R2 public URL (if bucket is public) or implement presigning later
  */
-export function generateDownloadURL(
-  r2Key: string,
-  bucketPublicUrl?: string
-): string {
+export function generateDownloadURL(r2Key: string, bucketPublicUrl?: string): string {
   if (bucketPublicUrl) {
     return `${bucketPublicUrl}/${r2Key}`;
   }

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Clock, Calendar, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { CronBuilder } from './CronBuilder';
+import { apiUrl, getClerkToken } from './api-core';
 interface Schedule {
   id: string;
   flowId: string;
@@ -23,11 +24,20 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
   const [cronExpression, setCronExpression] = useState('0 0 * * *');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (!projectId) {
+      setSchedules([]);
+      return;
+    }
+    void loadSchedules();
+  }, [projectId]);
+
   async function loadSchedules() {
+    if (!projectId) return;
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
-      const res = await fetch(`/api/schedules?projectId=${encodeURIComponent(projectId)}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl(`/schedules?projectId=${encodeURIComponent(projectId)}`), {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
       if (res.ok) {
         const data = await res.json();
@@ -45,10 +55,13 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
     }
     setLoading(true);
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
-      const res = await fetch('/api/schedules', {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl('/schedules'), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ projectId, flowId: selectedFlow, cronExpression }),
       });
       if (!res.ok) {
@@ -69,10 +82,10 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   async function deleteSchedule(scheduleId: string) {
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
-      const res = await fetch(`/api/schedules/${scheduleId}`, {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl(`/schedules/${scheduleId}`), {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
       if (!res.ok) throw new Error('Failed to delete schedule');
       toast.success('Schedule deleted');
@@ -84,10 +97,13 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   async function toggleSchedule(scheduleId: string, enabled: boolean) {
     try {
-      const token = await (window as any).Clerk?.session?.getToken();
-      const res = await fetch(`/api/schedules/${scheduleId}`, {
+      const token = await getClerkToken();
+      const res = await fetch(apiUrl(`/schedules/${scheduleId}`), {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ enabled }),
       });
       if (!res.ok) throw new Error('Failed to update schedule');

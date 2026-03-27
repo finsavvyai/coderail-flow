@@ -1,5 +1,5 @@
-import { MiddlewareHandler } from "hono";
-import type { Env } from "./env";
+import { MiddlewareHandler } from 'hono';
+import type { Env } from './env';
 
 /**
  * Simple in-memory sliding-window rate limiter.
@@ -31,7 +31,7 @@ export function rateLimit(max: number, windowMs: number): MiddlewareHandler<{ Bi
   return async (c, next) => {
     cleanup();
 
-    const ip = c.req.header("cf-connecting-ip") ?? c.req.header("x-forwarded-for") ?? "unknown";
+    const ip = c.req.header('cf-connecting-ip') ?? c.req.header('x-forwarded-for') ?? 'unknown';
     const key = `${ip}:${c.req.path}`;
     const now = Date.now();
 
@@ -44,13 +44,16 @@ export function rateLimit(max: number, windowMs: number): MiddlewareHandler<{ Bi
     bucket.count++;
 
     // Set standard rate-limit headers
-    c.header("X-RateLimit-Limit", String(max));
-    c.header("X-RateLimit-Remaining", String(Math.max(0, max - bucket.count)));
-    c.header("X-RateLimit-Reset", String(Math.ceil(bucket.resetAt / 1000)));
+    c.header('X-RateLimit-Limit', String(max));
+    c.header('X-RateLimit-Remaining', String(Math.max(0, max - bucket.count)));
+    c.header('X-RateLimit-Reset', String(Math.ceil(bucket.resetAt / 1000)));
 
     if (bucket.count > max) {
       return c.json(
-        { error: "rate_limit_exceeded", message: `Too many requests. Try again in ${Math.ceil((bucket.resetAt - now) / 1000)}s.` },
+        {
+          error: 'rate_limit_exceeded',
+          message: `Too many requests. Try again in ${Math.ceil((bucket.resetAt - now) / 1000)}s.`,
+        },
         429
       );
     }

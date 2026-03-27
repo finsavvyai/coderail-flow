@@ -69,8 +69,15 @@ export function ToastContainer() {
               minWidth: 250,
             }}
           >
-            <span aria-hidden="true" style={{ color: color.bg, display: 'flex', alignItems: 'center' }}>{color.icon}</span>
-            <span style={{ flex: 1, fontSize: 13 }} role="status">{toast.message}</span>
+            <span
+              aria-hidden="true"
+              style={{ color: color.bg, display: 'flex', alignItems: 'center' }}
+            >
+              {color.icon}
+            </span>
+            <span style={{ flex: 1, fontSize: 13 }} role="status">
+              {toast.message}
+            </span>
             <button
               onClick={() => {
                 currentToasts = currentToasts.filter((t) => t.id !== toast.id);
