@@ -24,10 +24,17 @@ function isHttpsUrl(value: string): boolean {
   }
 }
 
+function isLiveClerkPublishableKey(value: string): boolean {
+  return value.startsWith('pk_live_');
+}
+
 export function getWebRuntimeConfig(env: ImportMetaEnv): WebRuntimeConfigStatus {
   const issues: WebRuntimeIssue[] = [];
   const apiBase = env.VITE_API_URL?.trim() || '/api';
-  const authReady = isNonEmptyString(env.VITE_CLERK_PUBLISHABLE_KEY);
+  const clerkPublishableKey = env.VITE_CLERK_PUBLISHABLE_KEY?.trim() || '';
+  const authReady = env.PROD
+    ? isLiveClerkPublishableKey(clerkPublishableKey)
+    : isNonEmptyString(clerkPublishableKey);
   const allowDevelopmentFallback = env.DEV && !authReady;
 
   let apiReady = true;
@@ -41,10 +48,17 @@ export function getWebRuntimeConfig(env: ImportMetaEnv): WebRuntimeConfigStatus 
     }
   }
 
-  if (env.PROD && !authReady) {
+  if (env.PROD && !isNonEmptyString(clerkPublishableKey)) {
     issues.push({
       code: 'clerk_publishable_key_missing',
-      message: 'VITE_CLERK_PUBLISHABLE_KEY must be configured for protected production routes.',
+      message:
+        'VITE_CLERK_PUBLISHABLE_KEY must be configured with a live Clerk key for protected production routes.',
+    });
+  } else if (env.PROD && !isLiveClerkPublishableKey(clerkPublishableKey)) {
+    issues.push({
+      code: 'clerk_publishable_key_invalid',
+      message:
+        'VITE_CLERK_PUBLISHABLE_KEY must use a pk_live_ Clerk publishable key in production builds.',
     });
   }
 

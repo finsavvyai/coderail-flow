@@ -33,6 +33,22 @@ describe('getWebRuntimeConfig', () => {
     );
   });
 
+  it('fails protected routes in production when Clerk uses a test key', () => {
+    const config = getWebRuntimeConfig(
+      makeEnv({
+        PROD: true,
+        VITE_API_URL: 'https://api.example.com',
+        VITE_CLERK_PUBLISHABLE_KEY: 'pk_test_example',
+      })
+    );
+
+    expect(config.authReady).toBe(false);
+    expect(config.protectedAppReady).toBe(false);
+    expect(config.issues.some((issue) => issue.code === 'clerk_publishable_key_invalid')).toBe(
+      true
+    );
+  });
+
   it('fails production when API URL is missing or non-https', () => {
     const config = getWebRuntimeConfig(
       makeEnv({
