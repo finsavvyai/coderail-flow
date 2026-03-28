@@ -10,7 +10,6 @@ export default defineConfig({
           if (!id.includes('node_modules')) return;
           if (id.includes('@clerk/')) return 'vendor-clerk';
           if (id.includes('react-router')) return 'vendor-router';
-          if (id.includes('recharts') || id.includes('/d3-')) return 'vendor-charts';
           if (id.includes('lucide-react')) return 'vendor-icons';
           if (id.includes('react') || id.includes('scheduler')) return 'vendor-react';
         },
