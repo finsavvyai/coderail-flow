@@ -37,4 +37,14 @@ describe('resolveCorsOrigin', () => {
       })
     ).toBe('https://coderail-flow.example.com');
   });
+
+  it('allows configured additional origins in production-like envs', () => {
+    expect(
+      resolveCorsOrigin('https://flow.coderail.dev', {
+        APP_ENV: 'production',
+        PUBLIC_BASE_URL: 'https://coderail-flow.pages.dev',
+        ADDITIONAL_PUBLIC_ORIGINS: 'https://flow.coderail.dev, https://staging.coderail.dev',
+      })
+    ).toBe('https://flow.coderail.dev');
+  });
 });

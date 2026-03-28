@@ -61,17 +61,40 @@ export function isProductionLikeEnv(appEnv: string | undefined): boolean {
   return !!appEnv && PRODUCTION_LIKE_ENVS.has(appEnv);
 }
 
+function getAllowedOrigins(
+  env: Pick<Partial<Env>, 'PUBLIC_BASE_URL' | 'ADDITIONAL_PUBLIC_ORIGINS'>
+): string[] {
+  const allowedOrigins: string[] = [];
+  const publicBaseUrl = parseUrl(env.PUBLIC_BASE_URL);
+  if (publicBaseUrl) {
+    allowedOrigins.push(publicBaseUrl.origin);
+  }
+
+  const additionalOrigins = env.ADDITIONAL_PUBLIC_ORIGINS?.split(',') ?? [];
+  for (const value of additionalOrigins) {
+    const parsed = parseUrl(value.trim());
+    if (parsed && !allowedOrigins.includes(parsed.origin)) {
+      allowedOrigins.push(parsed.origin);
+    }
+  }
+
+  return allowedOrigins;
+}
+
 export function resolveCorsOrigin(
   origin: string | undefined,
-  env: Pick<Partial<Env>, 'APP_ENV' | 'PUBLIC_BASE_URL'>
+  env: Pick<Partial<Env>, 'APP_ENV' | 'PUBLIC_BASE_URL' | 'ADDITIONAL_PUBLIC_ORIGINS'>
 ): string {
-  const publicBaseUrl = parseUrl(env.PUBLIC_BASE_URL);
-  if (!publicBaseUrl || !isProductionLikeEnv(env.APP_ENV)) {
+  const allowedOrigins = getAllowedOrigins(env);
+  if (allowedOrigins.length === 0 || !isProductionLikeEnv(env.APP_ENV)) {
     return origin || '*';
   }
 
-  const allowedOrigin = publicBaseUrl.origin;
-  return origin === allowedOrigin ? origin : allowedOrigin;
+  if (origin && allowedOrigins.includes(origin)) {
+    return origin;
+  }
+
+  return allowedOrigins[0];
 }
 
 export function getRuntimeConfig(env: Partial<Env>): RuntimeConfigStatus {

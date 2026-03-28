@@ -7,6 +7,7 @@ export interface Env {
   FLOW_WORKFLOW?: any;
   APP_ENV: string;
   PUBLIC_BASE_URL: string;
+  ADDITIONAL_PUBLIC_ORIGINS?: string;
   SENTRY_DSN?: string;
   SENTRY_ENVIRONMENT?: string;
   SENTRY_RELEASE?: string;

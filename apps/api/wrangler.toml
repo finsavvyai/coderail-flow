@@ -28,6 +28,7 @@ binding = "BROWSER"
 [vars]
 APP_ENV = "production"
 PUBLIC_BASE_URL = "https://coderail-flow.pages.dev"
+ADDITIONAL_PUBLIC_ORIGINS = "https://flow.coderail.dev"
 # AUTH_ENCRYPTION_KEY = "set-via-wrangler-secret"
 
 # ---- Workflows (Durable Execution) ----
