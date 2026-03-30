@@ -78,7 +78,7 @@
   text-decoration: none;
 }
 
-.app-topbar-brand svg { color: #2b7cff; }
+.app-topbar-brand svg { color: var(--accent, #2b7cff); }
 
 /* ---- Auth Gate ---- */
 .auth-gate {
@@ -87,43 +87,67 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
+  background:
+    radial-gradient(ellipse at top, rgba(43, 124, 255, 0.12), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(124, 58, 237, 0.08), transparent 40%),
+    var(--bg, #0b0f19);
 }
 
 .auth-gate-card {
   text-align: center;
-  max-width: 380px;
+  max-width: 420px;
+  width: 100%;
+  background: var(--bg-card, #121a2b);
+  border: 1px solid var(--border, #1f2a44);
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
 .auth-gate-icon {
-  color: #2b7cff;
-  margin-bottom: 16px;
+  color: var(--accent, #2b7cff);
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 12px rgba(43, 124, 255, 0.4));
 }
 
 .auth-gate-card h2 {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  margin: 0 0 8px;
-  color: #e6e9f2;
+  margin: 0 0 10px;
+  color: var(--text, #e6e9f2);
+  letter-spacing: -0.01em;
 }
 
 .auth-gate-card p {
-  font-size: 15px;
-  color: #a8b3cf;
-  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted, #8b95b0);
+  margin: 0 0 28px;
 }
 
 .auth-gate-back {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 16px;
   font-size: 13px;
-  color: #8b95b0;
+  color: var(--text-dim, #5a6580);
   text-decoration: none;
-  transition: color 0.15s;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
 }
 
-.auth-gate-back:hover { color: #e6e9f2; }
+.auth-gate-back:hover {
+  color: var(--text, #e6e9f2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.auth-gate-back:focus-visible {
+  outline: 2px solid var(--accent, #2b7cff);
+  outline-offset: 2px;
+}
 
 /* ---- Spinner ---- */
 @keyframes spin {
