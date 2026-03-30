@@ -1,0 +1,111 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Recorder Step Item ---- */
+.step-item-container {
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.step-item-container.active {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: var(--purple);
+}
+
+.step-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-item-number {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.step-item-number.active {
+  background: var(--purple);
+  color: #fff;
+}
+
+.step-item-action-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-item-action-icon.action-goto { color: #60a5fa; }
+.step-item-action-icon.action-click { color: #f59e0b; }
+.step-item-action-icon.action-fill { color: var(--success); }
+.step-item-action-icon.action-default { color: var(--text-dim); }
+
+.step-item-description {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-item-remove-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  transition: color 0.15s;
+}
+
+.step-item-remove-btn:hover { color: var(--error); }
+
+.step-item-remove-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.step-item-subtitle-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-item-subtitle-icon {
+  color: var(--border);
+  flex-shrink: 0;
+}
+
+.step-item-subtitle-icon.has-subtitle { color: var(--purple); }
+
+.step-item-subtitle-input {
+  flex: 1;
+  font-size: 11px;
+  padding: 4px 8px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+}
+
+.step-item-subtitle-input.has-subtitle {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.2);
+  color: var(--purple);
+}

@@ -1,0 +1,116 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Onboarding Welcome / Complete ---- */
+.onboarding-welcome-wrapper {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.onboarding-welcome-hero-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.onboarding-complete-hero-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--success), #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.onboarding-icon-white {
+  color: #fff;
+}
+
+.onboarding-icon-accent {
+  color: var(--accent);
+}
+
+.onboarding-icon-success {
+  color: var(--success);
+}
+
+.onboarding-icon-warning {
+  color: #f59e0b;
+}
+
+.onboarding-welcome-heading {
+  margin: 0 0 12px;
+  font-size: 24px;
+  color: var(--text);
+}
+
+.onboarding-step-body {
+  padding: 32px 24px;
+}
+
+.onboarding-step-heading {
+  margin: 0 0 24px;
+  font-size: 20px;
+  color: var(--text);
+}
+
+.onboarding-input-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.onboarding-tip-box {
+  padding: 12px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.onboarding-tip-label {
+  color: var(--accent);
+}
+
+.onboarding-path-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.onboarding-next-steps-box {
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.onboarding-next-steps-label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.onboarding-finish-btn {
+  background: var(--success);
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.onboarding-finish-btn:hover {
+  background: #16a34a;
+}

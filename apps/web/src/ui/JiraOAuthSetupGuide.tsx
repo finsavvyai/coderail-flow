@@ -11,33 +11,21 @@ export function JiraOAuthSetupGuide({ instanceUrl }: JiraOAuthSetupGuideProps) {
   const callbackUrl = apiAbsoluteUrl('/integrations/jira/callback');
 
   return (
-    <div
-      style={{
-        padding: 16,
-        background: '#0a1628',
-        borderRadius: 8,
-        border: '1px solid #0052CC',
-        marginBottom: 20,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <ExternalLink size={16} style={{ color: '#0052CC' }} />
-        <span style={{ fontSize: 13, fontWeight: 500, color: '#0052CC' }}>
-          OAuth 2.0 Setup Required
-        </span>
+    <div className="jira-oauth-box">
+      <div className="jira-oauth-header">
+        <ExternalLink size={16} className="jira-oauth-icon" />
+        <span className="jira-oauth-title">OAuth 2.0 Setup Required</span>
       </div>
-      <ol style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: '#a3a3a3', lineHeight: 1.6 }}>
-        <li style={{ marginBottom: 6 }}>
+      <ol className="jira-oauth-steps">
+        <li>
           Go to{' '}
-          <a href={oauthUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0052CC' }}>
+          <a href={oauthUrl} target="_blank" rel="noopener noreferrer" className="jira-oauth-link">
             Jira OAuth 2.0 settings
           </a>
         </li>
-        <li style={{ marginBottom: 6 }}>
+        <li>
           Create a new OAuth 2.0 client with redirect URL:{' '}
-          <code style={{ background: '#1a1a1a', padding: '2px 6px', borderRadius: 3 }}>
-            {callbackUrl}
-          </code>
+          <code className="jira-oauth-code">{callbackUrl}</code>
         </li>
         <li>Copy the Client ID and Secret to this form</li>
       </ol>

@@ -29,45 +29,28 @@ export function CookieEditorModal({
       aria-modal="true"
       aria-labelledby="cookie-editor-title"
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0,0,0,0.8)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="cookie-modal-backdrop"
     >
       <div
-        className="card"
-        style={{ width: 500, maxHeight: '80vh', overflow: 'auto' }}
+        className="card cookie-modal-body"
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-          <div id="cookie-editor-title" className="h2" style={{ margin: 0 }}>
+        <div className="cookie-modal-header">
+          <div id="cookie-editor-title" className="h2">
             Edit Cookie
           </div>
           <button
-            className="btn"
+            className="btn btn-icon"
             onClick={onClose}
             aria-label="Close dialog"
-            style={{ padding: '12px', minHeight: 44, minWidth: 44 }}
           >
             <X size={16} />
           </button>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="cookie-modal-fields">
           <div>
-            <label
-              htmlFor="cookie-name"
-              className="small"
-              style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
-            >
+            <label htmlFor="cookie-name" className="small field-label">
               Name *
             </label>
             <input
@@ -78,11 +61,7 @@ export function CookieEditorModal({
             />
           </div>
           <div>
-            <label
-              htmlFor="cookie-value"
-              className="small"
-              style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
-            >
+            <label htmlFor="cookie-value" className="small field-label">
               Value *
             </label>
             <input
@@ -94,11 +73,7 @@ export function CookieEditorModal({
             />
           </div>
           <div>
-            <label
-              htmlFor="cookie-domain"
-              className="small"
-              style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
-            >
+            <label htmlFor="cookie-domain" className="small field-label">
               Domain *
             </label>
             <input
@@ -110,11 +85,7 @@ export function CookieEditorModal({
             />
           </div>
           <div>
-            <label
-              htmlFor="cookie-path"
-              className="small"
-              style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
-            >
+            <label htmlFor="cookie-path" className="small field-label">
               Path
             </label>
             <input
@@ -124,8 +95,8 @@ export function CookieEditorModal({
               onChange={(e) => onChange({ ...cookie, path: e.target.value })}
             />
           </div>
-          <div style={{ display: 'flex', gap: 16 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+          <div className="cookie-checkbox-row">
+            <label className="cookie-checkbox-label">
               <input
                 type="checkbox"
                 checked={cookie.secure}
@@ -133,7 +104,7 @@ export function CookieEditorModal({
               />
               Secure
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+            <label className="cookie-checkbox-label">
               <input
                 type="checkbox"
                 checked={cookie.httpOnly}
@@ -143,11 +114,7 @@ export function CookieEditorModal({
             </label>
           </div>
           <div>
-            <label
-              htmlFor="cookie-samesite"
-              className="small"
-              style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
-            >
+            <label htmlFor="cookie-samesite" className="small field-label">
               SameSite
             </label>
             <select
@@ -165,11 +132,11 @@ export function CookieEditorModal({
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-          <button className="btn" onClick={() => onSave(cookie)} style={{ flex: 1 }}>
+        <div className="cookie-modal-actions">
+          <button className="btn flex-1" onClick={() => onSave(cookie)}>
             <Save size={16} /> Save Cookie
           </button>
-          <button className="btn" onClick={onClose} style={{ background: '#1a1a1a' }}>
+          <button className="btn btn-cancel" onClick={onClose}>
             Cancel
           </button>
         </div>

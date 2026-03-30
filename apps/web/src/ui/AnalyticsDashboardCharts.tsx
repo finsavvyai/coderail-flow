@@ -1,4 +1,5 @@
 import type { AnalyticsStats, RunRow } from './api';
+import './analytics-ext.css';
 
 export function formatTimeRangeLabel(timeRange: '7d' | '30d' | '90d') {
   return timeRange === '7d' ? 'last 7 days' : timeRange === '30d' ? 'last 30 days' : 'last 90 days';
@@ -55,41 +56,23 @@ export function OpsSnapshotCard({
   onCopySnapshot,
 }: OpsSnapshotCardProps) {
   return (
-    <div
-      className="card"
-      style={{
-        marginBottom: 16,
-        border: '1px solid rgba(43, 124, 255, 0.28)',
-        background: 'linear-gradient(135deg, rgba(43, 124, 255, 0.18), rgba(43, 124, 255, 0.06))',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          gap: 16,
-          flexWrap: 'wrap',
-        }}
-      >
-        <div style={{ maxWidth: 760 }}>
-          <div
-            className="small"
-            style={{ color: '#8fb8ff', textTransform: 'uppercase', letterSpacing: '0.08em' }}
-          >
+    <div className="card ops-snapshot-card">
+      <div className="ops-snapshot-layout">
+        <div className="ops-snapshot-body">
+          <div className="small ops-snapshot-label">
             Shareable ops snapshot
           </div>
-          <div className="h2" style={{ marginTop: 6, marginBottom: 8 }}>
+          <div className="h2 ops-snapshot-heading">
             {snapshot.successRate}% success rate over the {formatTimeRangeLabel(timeRange)}
           </div>
-          <div className="small" style={{ color: '#d6e4ff', marginBottom: 12 }}>
+          <div className="small ops-snapshot-message">
             {snapshot.message}
           </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <span className="badge" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+          <div className="ops-snapshot-badges">
+            <span className="badge badge--translucent">
               {snapshot.benchmark}
             </span>
-            <span className="badge" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff' }}>
+            <span className="badge badge--translucent">
               Avg runtime {(stats.avgDuration / 1000).toFixed(1)}s
             </span>
           </div>
@@ -110,10 +93,8 @@ interface RecentRunsTableProps {
 
 export function RecentRunsTable({ recentRuns, selectedRunId, onSelectRun }: RecentRunsTableProps) {
   return (
-    <div className="card" style={{ marginTop: 16 }}>
-      <div className="h2" style={{ marginBottom: 12 }}>
-        Recent Runs
-      </div>
+    <div className="card recent-runs-card">
+      <div className="h2 analytics-section-title">Recent Runs</div>
       <table className="table">
         <thead>
           <tr>
@@ -128,10 +109,12 @@ export function RecentRunsTable({ recentRuns, selectedRunId, onSelectRun }: Rece
             <tr
               key={run.id}
               onClick={() => onSelectRun?.(run.id)}
-              style={{
-                cursor: onSelectRun ? 'pointer' : 'default',
-                background: selectedRunId === run.id ? 'rgba(43, 124, 255, 0.14)' : undefined,
-              }}
+              className={[
+                onSelectRun ? 'run-row--clickable' : '',
+                selectedRunId === run.id ? 'run-row--selected' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               <td className="mono">{run.id.slice(0, 8)}...</td>
               <td>{run.flow_name}</td>

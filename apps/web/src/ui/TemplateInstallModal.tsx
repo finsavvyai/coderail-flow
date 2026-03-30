@@ -77,59 +77,28 @@ export function TemplateInstallModal({
 
   return (
     <div
+      className="modal-overlay"
       role="dialog"
       aria-modal="true"
       aria-label="Install template"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.7)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
       onClick={onClose}
     >
       <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: 600,
-          maxHeight: '90vh',
-          overflow: 'auto',
-          position: 'relative',
-        }}
+        className="card modal-card"
+        style={{ maxWidth: 600 }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
+          className="modal-close"
           onClick={onClose}
           aria-label="Close dialog"
-          style={{
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: '#ccc',
-            padding: 14,
-            minHeight: 44,
-            minWidth: 44,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
         >
           <X size={20} />
         </button>
         <ModalHeader template={template} />
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 16 }}>
-            <label
-              htmlFor="template-flow-name"
-              style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-            >
+          <div className="modal-form-group">
+            <label htmlFor="template-flow-name" className="modal-form-label">
               Flow Name
             </label>
             <input
@@ -142,11 +111,8 @@ export function TemplateInstallModal({
             />
           </div>
           {projectId && (
-            <div style={{ marginBottom: 16 }}>
-              <label
-                htmlFor="template-auth-profile"
-                style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-              >
+            <div className="modal-form-group">
+              <label htmlFor="template-auth-profile" className="modal-form-label">
                 Authentication Profile (Optional)
               </label>
               <select
@@ -164,7 +130,7 @@ export function TemplateInstallModal({
                   </option>
                 ))}
               </select>
-              <div style={{ fontSize: 11, color: '#a8b3cf', marginTop: 4 }}>
+              <div className="modal-form-hint">
                 Required for authenticated workflows
               </div>
             </div>
@@ -172,24 +138,18 @@ export function TemplateInstallModal({
           {template.params && template.params.length > 0 && (
             <TemplateParamForm params={template.params} values={params} onUpdate={updateParam} />
           )}
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+          <div className="modal-footer-actions">
             <button
               type="button"
-              className="btn"
+              className="btn modal-btn-cancel"
               onClick={onClose}
-              style={{ background: '#2a2a2a' }}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn"
+              className="btn modal-btn-submit"
               disabled={loading || !projectId}
-              style={{
-                background: loading ? '#2a2a2a' : '#3b82f6',
-                opacity: loading || !projectId ? 0.6 : 1,
-                minWidth: 140,
-              }}
             >
               {loading ? 'Creating...' : 'Create Flow'}
             </button>
@@ -202,40 +162,20 @@ export function TemplateInstallModal({
 
 function ModalHeader({ template }: { template: TemplateSummary }) {
   return (
-    <div style={{ marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid #2a2a2a' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: 8,
-            background: '#3b82f6',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <FileText size={24} style={{ color: 'white' }} />
+    <div className="modal-header">
+      <div className="modal-header-row">
+        <div className="modal-header-icon">
+          <FileText size={24} />
         </div>
         <div>
-          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 600 }}>{template.name}</h2>
-          <div style={{ fontSize: 13, color: '#a8b3cf' }}>{template.category}</div>
+          <h2 className="modal-header-title">{template.name}</h2>
+          <div className="modal-header-subtitle">{template.category}</div>
         </div>
       </div>
-      <p style={{ margin: 0, color: '#a8b3cf', lineHeight: 1.5 }}>{template.description}</p>
-      <div style={{ display: 'flex', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
+      <p className="modal-header-desc">{template.description}</p>
+      <div className="modal-header-tags">
         {template.tags.map((tag) => (
-          <span
-            key={tag}
-            style={{
-              padding: '4px 10px',
-              background: '#2a2a2a',
-              borderRadius: 4,
-              fontSize: 11,
-              color: '#a8b3cf',
-              textTransform: 'capitalize',
-            }}
-          >
+          <span key={tag} className="template-tag">
             {tag}
           </span>
         ))}

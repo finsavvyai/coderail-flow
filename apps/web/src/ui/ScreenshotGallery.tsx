@@ -16,58 +16,28 @@ export function ScreenshotGallery({ screenshots }: ScreenshotGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   if (screenshots.length === 0) {
-    return (
-      <div className="small" style={{ color: '#a8b3cf', padding: '16px 0' }}>
-        No screenshots available
-      </div>
-    );
+    return <div className="small gallery-empty">No screenshots available</div>;
   }
 
   const selectedScreenshot = selectedIndex !== null ? screenshots[selectedIndex] : null;
 
   return (
-    <div style={{ marginTop: 16 }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-          gap: 12,
-          marginBottom: 16,
-        }}
-      >
+    <div className="gallery-wrapper">
+      <div className="gallery-grid">
         {screenshots.map((screenshot, index) => (
           <button
             key={screenshot.id}
             onClick={() => setSelectedIndex(index)}
             aria-label={`View screenshot ${getStepNumber(screenshot, index)}`}
-            style={{
-              cursor: 'pointer',
-              border: selectedIndex === index ? '2px solid #2196F3' : '1px solid #3a3a3a',
-              borderRadius: 8,
-              overflow: 'hidden',
-              backgroundColor: '#1a1a1a',
-              transition: 'border-color 0.15s',
-              position: 'relative',
-              padding: 0,
-              textAlign: 'left',
-              width: '100%',
-            }}
-            onMouseEnter={(e) => {
-              if (selectedIndex !== index) e.currentTarget.style.borderColor = '#555';
-            }}
-            onMouseLeave={(e) => {
-              if (selectedIndex !== index) e.currentTarget.style.borderColor = '#3a3a3a';
-            }}
+            className={`gallery-thumb${selectedIndex === index ? ' selected' : ''}`}
           >
             <AuthImage
               artifactId={screenshot.id}
               alt={`Screenshot ${index + 1}`}
-              style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }}
+              className="gallery-thumb-img"
               loading="lazy"
             />
-            <div
-              style={{ padding: '6px 8px', fontSize: 11, color: '#a8b3cf', textAlign: 'center' }}
-            >
+            <div className="gallery-thumb-label">
               Step {getStepNumber(screenshot, index)}
             </div>
           </button>

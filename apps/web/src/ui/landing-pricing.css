@@ -1,0 +1,103 @@
+/* ---- Landing — Pricing Grid, Cards, Badges ---- */
+
+.lp-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.lp-pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.lp-pricing-card:hover {
+  border-color: rgba(43, 124, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.lp-pricing-featured {
+  border-color: var(--accent);
+  box-shadow: 0 0 40px rgba(43, 124, 255, 0.1);
+}
+
+.lp-pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  padding: 4px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lp-pricing-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.lp-pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.lp-pricing-amount {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.lp-pricing-period {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.lp-pricing-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+}
+
+.lp-pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  flex: 1;
+}
+
+.lp-pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.lp-pricing-features li svg {
+  color: #4CAF50;
+  flex-shrink: 0;
+}
+
+.lp-pricing-note {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 15px;
+  color: var(--text-muted);
+}

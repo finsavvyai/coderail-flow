@@ -1,0 +1,135 @@
+/* ---- Landing — Buttons (Ghost, Outline), CTA / Waitlist Section ---- */
+
+.lp-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  min-height: 44px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.lp-btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.lp-btn-ghost:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lp-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text);
+  min-height: 44px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.lp-btn-outline:hover {
+  border-color: var(--accent);
+  background: rgba(43, 124, 255, 0.05);
+}
+
+.lp-btn-outline:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- CTA / Waitlist ---- */
+
+.lp-section-cta {
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(43, 124, 255, 0.05) 100%);
+}
+
+.lp-cta-content {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-cta-content h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.lp-cta-content > p {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin: 0 0 28px;
+}
+
+.lp-cta-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.lp-cta-input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.lp-cta-input:focus {
+  border-color: var(--accent);
+}
+
+.lp-cta-input::placeholder {
+  color: var(--text-dim);
+}
+
+.lp-cta-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #4CAF50;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.lp-cta-error {
+  color: #f44336;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.lp-cta-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 8px 0 0;
+}

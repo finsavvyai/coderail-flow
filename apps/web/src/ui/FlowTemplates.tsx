@@ -59,10 +59,10 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-        <Sparkles size={18} style={{ color: '#3b82f6' }} />
+      <div className="templates-header">
+        <Sparkles size={18} className="templates-icon" />
         <h2 style={{ margin: 0, fontSize: 18 }}>Template Library</h2>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: '#a3a3a3' }}>
+        <span className="templates-count">
           {templates.length} templates
         </span>
       </div>
@@ -73,11 +73,11 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         categories={categories}
       />
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
+        <div className="templates-loading">
           Loading templates...
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+        <div className="templates-grid">
           {filteredTemplates.map((t) => (
             <TemplateCard
               key={t.id}
@@ -90,8 +90,8 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         </div>
       )}
       {!loading && filteredTemplates.length === 0 && (
-        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
-          <FileText size={48} style={{ marginBottom: 16, opacity: 0.5 }} />
+        <div className="templates-empty">
+          <FileText size={48} className="templates-empty-icon" />
           <div>No templates found</div>
           <div className="small" style={{ marginTop: 8 }}>
             Try adjusting your search or filters
@@ -121,18 +121,9 @@ function SearchBar({
   onSearchChange: (v: string) => void;
 }) {
   return (
-    <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-      <div style={{ flex: 1, position: 'relative' }}>
-        <Search
-          size={16}
-          style={{
-            position: 'absolute',
-            left: 12,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#a3a3a3',
-          }}
-        />
+    <div className="templates-search-wrap">
+      <div className="templates-search-box">
+        <Search size={16} className="templates-search-icon" />
         <input
           className="input"
           placeholder="Search templates..."
@@ -155,14 +146,9 @@ function CategoryPills({
   categories: string[];
 }) {
   return (
-    <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+    <div className="templates-category-pills">
       <button
-        className="btn"
-        style={{
-          background: !selectedCategory ? '#3b82f6' : '#2a2a2a',
-          padding: '4px 12px',
-          fontSize: 12,
-        }}
+        className={`btn templates-pill ${!selectedCategory ? 'templates-pill--active' : 'templates-pill--inactive'}`}
         onClick={() => onSelectCategory(null)}
       >
         All
@@ -170,12 +156,7 @@ function CategoryPills({
       {categories.map((cat) => (
         <button
           key={cat}
-          className="btn"
-          style={{
-            background: selectedCategory === cat ? '#3b82f6' : '#2a2a2a',
-            padding: '4px 12px',
-            fontSize: 12,
-          }}
+          className={`btn templates-pill ${selectedCategory === cat ? 'templates-pill--active' : 'templates-pill--inactive'}`}
           onClick={() => onSelectCategory(cat)}
         >
           {cat}

@@ -1,4 +1,5 @@
 import { MessageSquare, Webhook, GitBranch, Github, Globe } from 'lucide-react';
+import { getApiToken } from './api-core';
 
 export const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -78,12 +79,12 @@ export const INTEGRATION_TYPES = [
 ];
 
 export async function apiRequest(path: string, options: RequestInit = {}) {
-  const token = await (window as any).Clerk?.session?.getToken();
+  const token = await getApiToken();
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
   });

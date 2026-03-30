@@ -1,40 +1,34 @@
 import React from 'react';
 import { BarChart3, CheckCircle, XCircle, Clock } from 'lucide-react';
 import type { AnalyticsStats } from './api';
+import './analytics-ext.css';
 
 export function AnalyticsSummaryCards({ stats }: { stats: AnalyticsStats }) {
   const successRate = stats.total > 0 ? Math.round((stats.succeeded / stats.total) * 100) : 0;
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 16,
-        marginBottom: 24,
-      }}
-    >
-      <div className="card" style={{ textAlign: 'center' }}>
-        <BarChart3 size={24} style={{ color: '#3b82f6', marginBottom: 8 }} />
-        <div style={{ fontSize: 28, fontWeight: 600 }}>{stats.total}</div>
-        <div style={{ fontSize: 12, color: '#a3a3a3' }}>Total Runs</div>
+    <div className="analytics-summary-grid">
+      <div className="card analytics-summary-cell">
+        <BarChart3 size={24} className="analytics-summary-icon analytics-summary-icon--accent" />
+        <div className="analytics-summary-value">{stats.total}</div>
+        <div className="analytics-summary-label">Total Runs</div>
       </div>
-      <div className="card" style={{ textAlign: 'center' }}>
-        <CheckCircle size={24} style={{ color: '#22c55e', marginBottom: 8 }} />
-        <div style={{ fontSize: 28, fontWeight: 600, color: '#22c55e' }}>{successRate}%</div>
-        <div style={{ fontSize: 12, color: '#a3a3a3' }}>Success Rate</div>
+      <div className="card analytics-summary-cell">
+        <CheckCircle size={24} className="analytics-summary-icon analytics-summary-icon--success" />
+        <div className="analytics-summary-value analytics-summary-value--success">{successRate}%</div>
+        <div className="analytics-summary-label">Success Rate</div>
       </div>
-      <div className="card" style={{ textAlign: 'center' }}>
-        <XCircle size={24} style={{ color: '#ef4444', marginBottom: 8 }} />
-        <div style={{ fontSize: 28, fontWeight: 600, color: '#ef4444' }}>{stats.failed}</div>
-        <div style={{ fontSize: 12, color: '#a3a3a3' }}>Failed Runs</div>
+      <div className="card analytics-summary-cell">
+        <XCircle size={24} className="analytics-summary-icon analytics-summary-icon--error" />
+        <div className="analytics-summary-value analytics-summary-value--error">{stats.failed}</div>
+        <div className="analytics-summary-label">Failed Runs</div>
       </div>
-      <div className="card" style={{ textAlign: 'center' }}>
-        <Clock size={24} style={{ color: '#f59e0b', marginBottom: 8 }} />
-        <div style={{ fontSize: 28, fontWeight: 600 }}>
+      <div className="card analytics-summary-cell">
+        <Clock size={24} className="analytics-summary-icon analytics-summary-icon--warning" />
+        <div className="analytics-summary-value">
           {(stats.avgDuration / 1000).toFixed(1)}s
         </div>
-        <div style={{ fontSize: 12, color: '#a3a3a3' }}>Avg Duration</div>
+        <div className="analytics-summary-label">Avg Duration</div>
       </div>
     </div>
   );

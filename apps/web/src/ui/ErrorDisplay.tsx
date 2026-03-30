@@ -23,32 +23,16 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: '#2a1a1a',
-        border: '2px solid #f44336',
-        borderRadius: 8,
-        padding: 16,
-        marginTop: 16,
-        marginBottom: 16,
-      }}
-    >
+    <div className="error-display">
       {/* Error Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 12,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <XCircle size={24} style={{ color: '#f44336' }} />
+      <div className="error-display-header">
+        <div className="error-display-header-left">
+          <XCircle size={24} className="error-display-icon" />
           <div>
-            <div className="h2" style={{ color: '#f44336', margin: 0 }}>
+            <div className="h2 error-display-title">
               Execution Failed
             </div>
-            <div className="small" style={{ color: '#fca5a5', marginTop: 4 }}>
+            <div className="small error-display-code">
               {run.error_code || 'UNKNOWN_ERROR'}
             </div>
           </div>
@@ -56,43 +40,30 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
 
         {onRetry && (
           <button
-            className="btn"
+            className="btn error-display-retry"
             onClick={handleRetry}
             disabled={retrying}
-            style={{
-              backgroundColor: '#2196F3',
-              color: '#fff',
-              border: 'none',
-            }}
           >
-            <RefreshCw size={14} style={{ display: 'inline', marginRight: 6 }} />
+            <RefreshCw size={14} className="ftr-inline-icon" />
             {retrying ? 'Retrying...' : 'Retry'}
           </button>
         )}
       </div>
 
       {/* Error Message */}
-      <div
-        style={{
-          backgroundColor: '#1a1a1a',
-          padding: 12,
-          borderRadius: 6,
-          marginBottom: 12,
-          border: '1px solid #3a3a3a',
-        }}
-      >
-        <div className="small" style={{ color: '#a8b3cf', marginBottom: 4 }}>
+      <div className="error-display-panel">
+        <div className="small error-display-label">
           Error Message:
         </div>
-        <div style={{ color: '#fca5a5', fontFamily: 'monospace', fontSize: 14 }}>
+        <div className="error-display-message">
           {run.error_message || 'No error message provided'}
         </div>
       </div>
 
       {/* Error Screenshot */}
       {errorScreenshot && (
-        <div style={{ marginBottom: 12 }}>
-          <div className="small" style={{ color: '#a8b3cf', marginBottom: 8 }}>
+        <div className="error-display-panel">
+          <div className="small error-display-label">
             Screenshot at time of failure:
           </div>
           <button
@@ -100,23 +71,12 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
               window.open(apiUrl(`/artifacts/${errorScreenshot.id}/preview`), '_blank');
             }}
             aria-label="View error screenshot full size"
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              display: 'block',
-            }}
+            className="error-display-screenshot-btn"
           >
             <img
               src={apiUrl(`/artifacts/${errorScreenshot.id}/preview`)}
               alt="Error screenshot"
-              style={{
-                width: '100%',
-                maxWidth: 600,
-                borderRadius: 6,
-                border: '1px solid #3a3a3a',
-              }}
+              className="error-display-screenshot-img"
             />
           </button>
         </div>
@@ -126,36 +86,17 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
       {run.error_message && run.error_message.includes('\n') && (
         <div>
           <button
-            className="btn"
+            className="btn error-display-toggle"
             onClick={() => setShowStack(!showStack)}
             aria-expanded={showStack}
             aria-label={showStack ? 'Hide error details' : 'Show error details'}
-            style={{
-              fontSize: 12,
-              padding: '8px 12px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
           >
             {showStack ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
             {showStack ? 'Hide Details' : 'Show Details'}
           </button>
 
           {showStack && (
-            <pre
-              style={{
-                marginTop: 12,
-                padding: 12,
-                backgroundColor: '#0a0a0a',
-                borderRadius: 6,
-                fontSize: 11,
-                color: '#fca5a5',
-                overflow: 'auto',
-                maxHeight: 300,
-                border: '1px solid #3a3a3a',
-              }}
-            >
+            <pre className="error-display-stack">
               {run.error_message}
             </pre>
           )}
@@ -163,23 +104,15 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
       )}
 
       {/* Troubleshooting Tips */}
-      <div
-        style={{
-          marginTop: 12,
-          padding: 12,
-          backgroundColor: '#1a1a1a',
-          borderRadius: 6,
-          border: '1px solid #3a3a3a',
-        }}
-      >
-        <div className="small" style={{ color: '#a8b3cf', marginBottom: 6 }}>
+      <div className="error-display-panel">
+        <div className="small error-display-tips">
           <Lightbulb
             size={14}
-            style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }}
+            className="error-display-tips-icon"
           />
           Troubleshooting Tips:
         </div>
-        <ul style={{ margin: 0, paddingLeft: 20, color: '#b3b3b3', fontSize: 12 }}>
+        <ul className="error-display-tips-list">
           <li>Check if the target page structure has changed</li>
           <li>Verify element locators are still valid</li>
           <li>Ensure the page loaded completely before interaction</li>

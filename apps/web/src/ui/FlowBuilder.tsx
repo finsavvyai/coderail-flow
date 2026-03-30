@@ -47,16 +47,15 @@ export function FlowBuilder({
       : null;
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 100px)', gap: 16 }}>
+    <div className="flow-builder-layout">
       {/* Left: Flow Info + Step List */}
-      <div style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="flow-builder-sidebar">
         <div className="card">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <div className="flow-builder-header">
             <button
-              className="btn"
+              className="btn flow-builder-back"
               onClick={onCancel}
               aria-label="Go back"
-              style={{ padding: '10px' }}
             >
               <ArrowLeft size={16} />
             </button>
@@ -115,41 +114,29 @@ export function FlowBuilder({
             <div
               id="flow-builder-error"
               role="alert"
-              style={{
-                padding: 10,
-                background: '#2a1a1a',
-                border: '1px solid #f44336',
-                borderRadius: 6,
-                color: '#fca5a5',
-                fontSize: 13,
-                marginBottom: 12,
-              }}
+              className="flow-builder-error"
             >
               {error}
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className="flow-builder-actions">
             <button
-              className="btn"
+              className="btn flow-builder-test-btn"
               onClick={() => setShowTestModal(true)}
               disabled={definition.steps.length === 0}
-              style={{
-                flex: 1,
-                background: definition.steps.length === 0 ? '#2a2a2a' : '#22c55e',
-              }}
             >
               <Play size={16} style={{ display: 'inline', marginRight: 6 }} />
               Test
             </button>
-            <button className="btn" onClick={handleSave} disabled={saving} style={{ flex: 1 }}>
+            <button className="btn flow-builder-save-btn" onClick={handleSave} disabled={saving}>
               <Save size={16} style={{ display: 'inline', marginRight: 6 }} />
               {saving ? 'Saving...' : 'Save'}
             </button>
           </div>
         </div>
 
-        <div className="card" style={{ flex: 1, overflow: 'auto' }}>
+        <div className="card flow-builder-steps">
           <div className="h2" style={{ marginBottom: 12 }}>
             Steps ({definition.steps.length})
           </div>
@@ -163,7 +150,7 @@ export function FlowBuilder({
       </div>
 
       {/* Right: Step Editor or Add Step */}
-      <div className="card" style={{ flex: 1, overflow: 'auto' }}>
+      <div className="card flow-builder-editor">
         {selectedStep !== null && stepConfig ? (
           <StepFieldEditor
             step={definition.steps[selectedStep]}

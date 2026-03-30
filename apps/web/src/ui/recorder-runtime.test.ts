@@ -9,7 +9,6 @@ import {
 function makeEnv(overrides: Partial<ImportMetaEnv> & { DEV?: boolean; PROD?: boolean } = {}) {
   return {
     VITE_API_URL: overrides.VITE_API_URL,
-    VITE_CLERK_PUBLISHABLE_KEY: overrides.VITE_CLERK_PUBLISHABLE_KEY,
     VITE_RUNNER_URL: overrides.VITE_RUNNER_URL,
     DEV: overrides.DEV ?? false,
     PROD: overrides.PROD ?? false,

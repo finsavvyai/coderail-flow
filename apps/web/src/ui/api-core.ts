@@ -14,16 +14,16 @@ export function apiAbsoluteUrl(path: string): string {
   return new URL(apiUrl(path), window.location.origin).toString();
 }
 
-export async function getClerkToken(): Promise<string | null> {
-  return ((window as any).Clerk?.session?.getToken?.() as Promise<string | null>) ?? null;
-}
-
 // ---- Token provider ----
-// Set by the app root once Clerk is initialized via setTokenProvider()
+// Set by authenticated app routes once the Auth.js session has been established.
 let _getToken: (() => Promise<string | null>) | null = null;
 
 export function setTokenProvider(fn: () => Promise<string | null>) {
   _getToken = fn;
+}
+
+export async function getApiToken(): Promise<string | null> {
+  return _getToken ? _getToken() : null;
 }
 
 export async function authHeaders(): Promise<Record<string, string>> {

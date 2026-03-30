@@ -61,55 +61,33 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
   const hasDropdownItems = favoriteUrls.length > 0 || recentUrls.length > 0;
 
   return (
-    <div className="card" style={{ padding: 16 }}>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-        <div ref={urlDropdownRef} style={{ flex: 1, position: 'relative' }}>
+    <div className="card recorder-url-card">
+      <div className="recorder-url-row">
+        <div ref={urlDropdownRef} className="recorder-url-input-wrapper">
           <input
-            className="input"
+            className="input recorder-url-input"
             placeholder="Enter URL to record (e.g., https://your-app.com)"
             value={targetUrl}
             onChange={(e) => setTargetUrl(e.target.value)}
             disabled={isRecording}
-            style={{ width: '100%', paddingRight: 64 }}
             onKeyDown={(e) => e.key === 'Enter' && !isRecording && startRecording()}
             onFocus={() => !isRecording && setShowUrlDropdown(true)}
           />
-          <div
-            style={{
-              position: 'absolute',
-              right: 6,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              display: 'flex',
-              gap: 2,
-            }}
-          >
+          <div className="recorder-url-actions">
             {targetUrl && (
               <button
                 onClick={() => onToggleFavorite(targetUrl)}
                 title={isFav ? 'Remove from favorites' : 'Add to favorites'}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 4,
-                  color: isFav ? '#eab308' : '#555',
-                }}
+                className={`recorder-icon-btn ${isFav ? 'recorder-icon-fav-active' : 'recorder-icon-fav'}`}
               >
-                <Star size={14} fill={isFav ? '#eab308' : 'none'} />
+                <Star size={14} fill={isFav ? 'currentColor' : 'none'} />
               </button>
             )}
             <button
               onClick={() => setShowUrlDropdown(!showUrlDropdown)}
               disabled={isRecording}
               title="Recent & favorite URLs"
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 4,
-                color: '#a3a3a3',
-              }}
+              className="recorder-icon-btn recorder-icon-muted"
             >
               <Clock size={14} />
             </button>
@@ -128,11 +106,10 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
           )}
         </div>
         <button
-          className="btn"
+          className="btn recorder-mode-btn"
           onClick={cycleMode}
           disabled={isRecording || availableModes.length <= 1}
           title={getRecorderModeTitle(mode)}
-          style={{ padding: '8px 10px', background: '#2a2a2a' }}
         >
           {mode === 'server' ? (
             <Monitor size={14} />
@@ -143,11 +120,7 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
           )}
         </button>
         {!isRecording ? (
-          <button
-            className="btn"
-            onClick={startRecording}
-            style={{ background: '#22c55e', whiteSpace: 'nowrap' }}
-          >
+          <button className="btn recorder-start-btn" onClick={startRecording}>
             <Play size={14} />{' '}
             {mode === 'server'
               ? 'Record (Browser)'
@@ -156,33 +129,19 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
                 : 'Start Recording'}
           </button>
         ) : (
-          <button
-            className="btn"
-            onClick={stopRecording}
-            style={{ background: '#ef4444', whiteSpace: 'nowrap' }}
-          >
+          <button className="btn recorder-stop-btn" onClick={stopRecording}>
             <Square size={14} /> Stop
           </button>
         )}
       </div>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div className="recorder-name-row">
         <input
-          className="input"
+          className="input recorder-name-input"
           placeholder="Flow name (e.g., 'User Login Flow')"
           value={flowName}
           onChange={(e) => setFlowName(e.target.value)}
-          style={{ flex: 1 }}
         />
-        <div
-          style={{
-            fontSize: 11,
-            color: '#a3a3a3',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <div className="recorder-mode-label">
           {mode === 'server' ? (
             <Monitor size={11} />
           ) : mode === 'iframe' ? (
@@ -193,7 +152,7 @@ export function RecorderUrlInput(props: RecorderUrlInputProps) {
           {getRecorderModeLabel(mode)}
         </div>
       </div>
-      <div style={{ marginTop: 10, fontSize: 11, color: '#8b95b0' }}>{modeStatusMessage}</div>
+      <div className="recorder-status-msg">{modeStatusMessage}</div>
     </div>
   );
 }

@@ -23,79 +23,47 @@ export function InspectToolbar({
 }: InspectToolbarProps) {
   return (
     <div className="card">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 12,
-        }}
-      >
-        <div className="h2" style={{ margin: 0 }}>
-          Element Mapper
-        </div>
+      <div className="panel-header">
+        <div className="h2">Element Mapper</div>
         <button
-          className="btn"
+          className="btn btn-icon"
           onClick={onCancel}
-          style={{ padding: '10px 12px', minHeight: 44, minWidth: 44 }}
           aria-label="Close inspector"
         >
           <X size={16} />
         </button>
       </div>
-      <div style={{ marginBottom: 12 }}>
+      <div className="field-group">
         <label
           htmlFor="inspect-url"
-          className="small"
-          style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}
+          className="small field-label"
         >
           Page URL
         </label>
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="field-row">
           <input
             id="inspect-url"
-            className="input"
+            className="input flex-1"
             placeholder="https://example.com/page"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && onLoadPage()}
-            style={{ flex: 1 }}
           />
           <button
-            className="btn"
+            className="btn btn-icon"
             onClick={onLoadPage}
             disabled={!url.trim()}
             aria-label="Reload page"
-            style={{ minHeight: 44, minWidth: 44 }}
           >
             <RefreshCw size={16} />
           </button>
         </div>
       </div>
-      {error && (
-        <div
-          style={{
-            padding: 10,
-            background: '#2a1a1a',
-            border: '1px solid #f44336',
-            borderRadius: 6,
-            color: '#fca5a5',
-            fontSize: 13,
-            marginBottom: 12,
-          }}
-        >
-          {error}
-        </div>
-      )}
+      {error && <div className="error-banner">{error}</div>}
       {iframeLoaded && (
         <button
-          className="btn"
+          className={`btn inspect-toggle${inspectMode ? ' inspect-toggle--active' : ''}`}
           onClick={() => setInspectMode(!inspectMode)}
-          style={{
-            width: '100%',
-            background: inspectMode ? '#6366f1' : '#1a1a1a',
-            marginBottom: 12,
-          }}
         >
           <Target size={16} /> {inspectMode ? 'Click element to select' : 'Start Inspecting'}
         </button>

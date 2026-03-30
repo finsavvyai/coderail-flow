@@ -27,20 +27,16 @@ export function IntegrationList({
 }: IntegrationListProps) {
   if (integrations.length === 0) {
     return (
-      <div className="card" style={{ padding: 48, textAlign: 'center', color: '#a3a3a3' }}>
-        <Webhook
-          size={48}
-          strokeWidth={1}
-          style={{ margin: '0 auto 16px', display: 'block', opacity: 0.3 }}
-        />
-        <div style={{ fontSize: 16, marginBottom: 8 }}>No integrations yet</div>
-        <div style={{ fontSize: 13 }}>Add Slack, GitLab, GitHub, or webhook integrations</div>
+      <div className="card integ-empty">
+        <Webhook size={48} strokeWidth={1} className="integ-empty-icon" />
+        <div className="integ-empty-title">No integrations yet</div>
+        <div className="integ-empty-hint">Add Slack, GitLab, GitHub, or webhook integrations</div>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div className="integ-list">
       {integrations.map((integ) => (
         <IntegrationCard
           key={integ.id}
@@ -61,35 +57,15 @@ export function IntegrationList({
 function CodeBlock({ label, url }: { label: string; url: string }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <span style={{ fontSize: 11, color: '#a3a3a3', width: 100, flexShrink: 0 }}>{label}:</span>
-      <code
-        style={{
-          flex: 1,
-          fontSize: 11,
-          color: '#86efac',
-          background: '#0a0a0a',
-          padding: '4px 8px',
-          borderRadius: 4,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}
-      >
-        {url}
-      </code>
+    <div className="codeblock-row">
+      <span className="codeblock-label">{label}:</span>
+      <code className="codeblock-value">{url}</code>
       <button
-        className="btn"
+        className="btn codeblock-copy-btn"
         onClick={() => {
           void navigator.clipboard.writeText(url);
           setCopied(true);
           setTimeout(() => setCopied(false), 1500);
-        }}
-        style={{
-          padding: '8px 12px',
-          fontSize: 10,
-          background: '#1a1a1a',
-          minHeight: 44,
-          minWidth: 44,
         }}
         aria-label="Copy webhook URL"
       >
@@ -101,22 +77,14 @@ function CodeBlock({ label, url }: { label: string; url: string }) {
 
 export function WebhookUrls() {
   return (
-    <div className="card" style={{ padding: 20 }}>
-      <div
-        style={{
-          fontWeight: 500,
-          marginBottom: 12,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-        }}
-      >
+    <div className="card webhook-card">
+      <div className="webhook-header">
         <Globe size={16} /> Incoming Webhook URLs
       </div>
-      <div style={{ fontSize: 12, color: '#a3a3a3', marginBottom: 12 }}>
+      <div className="webhook-hint">
         Use these URLs in your CI/CD pipelines to trigger flows:
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className="webhook-urls">
         <CodeBlock label="GitLab CI" url={`${API_BASE}/triggers/gitlab`} />
         <CodeBlock label="GitHub Actions" url={`${API_BASE}/triggers/github`} />
         <CodeBlock label="Generic (API Key)" url={`${API_BASE}/triggers/run`} />

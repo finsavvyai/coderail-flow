@@ -54,19 +54,9 @@ export function Modal({
 
   if (!open) return null;
 
-  const widths = { sm: 400, md: 500, lg: 700, xl: 900 };
-
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.7)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="modal-overlay"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -75,49 +65,24 @@ export function Modal({
     >
       <div
         ref={dialogRef}
-        style={{
-          background: '#1a1a1a',
-          borderRadius: 12,
-          width: widths[size],
-          maxWidth: '90vw',
-          maxHeight: '90vh',
-          overflow: 'auto',
-        }}
+        className={`modal-card modal-${size}`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '16px 20px',
-              borderBottom: '1px solid #2a2a2a',
-            }}
-          >
-            <h3 id="modal-title" style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>
+          <div className="modal-header">
+            <h3 id="modal-title" className="modal-title">
               {title}
             </h3>
             <button
               onClick={onClose}
               aria-label="Close dialog"
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#ccc',
-                cursor: 'pointer',
-                padding: 14,
-                borderRadius: 6,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              className="modal-close"
             >
               <X size={18} />
             </button>
           </div>
         )}
-        <div style={{ padding: 20 }}>{children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );
@@ -134,14 +99,8 @@ export function Skeleton({
 }) {
   return (
     <div
-      style={{
-        width,
-        height,
-        borderRadius,
-        background: 'linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%)',
-        backgroundSize: '200% 100%',
-        animation: 'shimmer 1.5s infinite',
-      }}
+      className="skeleton"
+      style={{ width, height, borderRadius }}
     />
   );
 }
@@ -150,7 +109,7 @@ export function ProgressRing({
   progress,
   size = 60,
   strokeWidth = 4,
-  color = '#3b82f6',
+  color = 'var(--accent)',
 }: {
   progress: number;
   size?: number;
@@ -168,7 +127,7 @@ export function ProgressRing({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="#2a2a2a"
+        className="progress-ring-track"
         strokeWidth={strokeWidth}
       />
       <circle
@@ -181,7 +140,7 @@ export function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        style={{ transition: 'stroke-dashoffset 0.3s ease' }}
+        className="progress-ring-fill"
       />
     </svg>
   );

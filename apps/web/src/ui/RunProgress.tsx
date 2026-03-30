@@ -87,29 +87,22 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
   const completedSteps = steps.filter((s) => s.status === 'completed').length;
   const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
 
+  const barClass = `rp-bar-fill rp-bar-fill--${status === 'failed' ? 'failed' : status === 'succeeded' ? 'succeeded' : 'running'}`;
+
   return (
     <div className="card">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="rp-header">
+        <div className="rp-status-group">
           {status === 'running' && (
-            <Loader2 size={18} className="spin" style={{ color: '#3b82f6' }} />
+            <Loader2 size={18} className="spin ftr-status-icon-accent" />
           )}
-          {status === 'succeeded' && <CheckCircle size={18} style={{ color: '#22c55e' }} />}
-          {status === 'failed' && <XCircle size={18} style={{ color: '#ef4444' }} />}
-          <span style={{ fontWeight: 500 }}>
+          {status === 'succeeded' && <CheckCircle size={18} className="ftr-status-icon-success" />}
+          {status === 'failed' && <XCircle size={18} className="ftr-status-icon-error" />}
+          <span className="rp-status-label">
             {status === 'running' ? 'Running...' : status === 'succeeded' ? 'Completed' : 'Failed'}
           </span>
         </div>
-        <div
-          style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#a3a3a3', fontSize: 13 }}
-        >
+        <div className="rp-timer">
           <Clock size={14} /> {formatTime(elapsedTime)}
         </div>
       </div>
@@ -120,35 +113,15 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Flow execution progress"
-        style={{
-          height: 8,
-          background: '#2a2a2a',
-          borderRadius: 4,
-          overflow: 'hidden',
-          marginBottom: 16,
-        }}
+        className="rp-bar-track"
       >
         <div
-          style={{
-            height: '100%',
-            width: `${progress}%`,
-            background:
-              status === 'failed' ? '#ef4444' : status === 'succeeded' ? '#22c55e' : '#3b82f6',
-            borderRadius: 4,
-            transition: 'width 0.3s ease',
-          }}
+          className={barClass}
+          style={{ width: `${progress}%` }}
         />
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontSize: 12,
-          color: '#a3a3a3',
-          marginBottom: 16,
-        }}
-      >
+      <div className="rp-meta">
         <span>
           Step {Math.min(currentStep + 1, totalSteps)} of {totalSteps}
         </span>

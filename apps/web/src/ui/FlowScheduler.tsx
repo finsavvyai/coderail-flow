@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Clock, Calendar, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { CronBuilder } from './CronBuilder';
-import { apiUrl, getClerkToken } from './api-core';
+import { apiUrl, getApiToken } from './api-core';
 interface Schedule {
   id: string;
   flowId: string;
@@ -35,7 +35,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
   async function loadSchedules() {
     if (!projectId) return;
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl(`/schedules?projectId=${encodeURIComponent(projectId)}`), {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
@@ -55,7 +55,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
     }
     setLoading(true);
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/schedules'), {
         method: 'POST',
         headers: {
@@ -82,7 +82,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   async function deleteSchedule(scheduleId: string) {
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl(`/schedules/${scheduleId}`), {
         method: 'DELETE',
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -97,7 +97,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   async function toggleSchedule(scheduleId: string, enabled: boolean) {
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl(`/schedules/${scheduleId}`), {
         method: 'PATCH',
         headers: {
@@ -115,25 +115,13 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
 
   return (
     <div className="card">
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Clock size={18} style={{ color: '#3b82f6' }} />
-          <h3 style={{ margin: 0 }}>Flow Scheduler</h3>
+      <div className="schedule-header">
+        <div className="schedule-name">
+          <Clock size={18} className="schedule-icon" />
+          Flow Scheduler
         </div>
-        <button
-          className="btn"
-          onClick={() => setShowAdd(!showAdd)}
-          style={{ background: '#3b82f6', padding: '6px 12px', fontSize: 13 }}
-        >
-          <Plus size={14} style={{ display: 'inline', marginRight: 6 }} />
-          Add Schedule
+        <button className="btn" onClick={() => setShowAdd(!showAdd)}>
+          <Plus size={14} /> Add Schedule
         </button>
       </div>
       {showAdd && (
@@ -149,15 +137,15 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
         />
       )}
       {schedules.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 32, color: '#a8b3cf' }}>
-          <Calendar size={48} style={{ marginBottom: 12, opacity: 0.5 }} />
+        <div className="schedule-empty">
+          <Calendar size={48} style={{ opacity: 0.5, marginBottom: 12 }} />
           <div>No schedules yet</div>
           <div className="small" style={{ marginTop: 8 }}>
             Add a schedule to automatically run flows
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="analytics-flow-list">
           {schedules.map((schedule) => (
             <ScheduleItem
               key={schedule.id}
@@ -182,46 +170,27 @@ function ScheduleItem({
   onDelete: (id: string) => void;
 }) {
   return (
-    <div
-      style={{
-        padding: 12,
-        background: '#1a1a1a',
-        borderRadius: 8,
-        border: `1px solid ${schedule.enabled ? '#3b82f6' : '#2a2a2a'}`,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        transition: 'background 0.15s',
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = '#222')}
-      onMouseLeave={(e) => (e.currentTarget.style.background = '#1a1a1a')}
-    >
+    <div className={`schedule-card ${schedule.enabled ? 'schedule-active' : ''}`}>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>{schedule.flowName}</div>
-        <div style={{ fontSize: 12, color: '#a8b3cf' }}>{schedule.cronExpression}</div>
+        <div className="schedule-name">{schedule.flowName}</div>
+        <div className="schedule-cron-display">{schedule.cronExpression}</div>
         {schedule.nextRun && (
-          <div style={{ fontSize: 11, color: '#a8b3cf', marginTop: 4 }}>
+          <div className="schedule-meta" style={{ marginTop: 4 }}>
             Next run: {new Date(schedule.nextRun).toLocaleString()}
           </div>
         )}
       </div>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      <div className="schedule-actions">
         <button
-          className="btn"
+          className={`schedule-toggle ${schedule.enabled ? 'active' : 'paused'}`}
           onClick={() => onToggle(schedule.id, !schedule.enabled)}
-          style={{
-            padding: '8px 12px',
-            fontSize: 11,
-            background: schedule.enabled ? '#22c55e' : '#2a2a2a',
-          }}
         >
           {schedule.enabled ? 'Enabled' : 'Disabled'}
         </button>
         <button
-          className="btn"
+          className="schedule-toggle schedule-delete"
           onClick={() => onDelete(schedule.id)}
           aria-label="Delete schedule"
-          style={{ padding: '8px 12px', fontSize: 11, background: '#dc2626' }}
         >
           <Trash2 size={14} />
         </button>

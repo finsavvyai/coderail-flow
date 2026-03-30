@@ -7,13 +7,10 @@ interface JiraFormFieldsProps {
   onChange: (config: JiraConfig) => void;
 }
 
-const labelStyle = { display: 'block' as const, marginBottom: 6, fontSize: 13, fontWeight: 500 };
-const hintStyle = { fontSize: 11, color: '#a8b3cf', marginTop: 4 };
-
 export function JiraInstanceUrlField({ config, onChange }: JiraFormFieldsProps) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <label htmlFor="jira-instance-url" style={labelStyle}>
+    <div className="jira-field-group">
+      <label htmlFor="jira-instance-url" className="jira-label">
         Jira Instance URL
       </label>
       <input
@@ -25,7 +22,7 @@ export function JiraInstanceUrlField({ config, onChange }: JiraFormFieldsProps) 
         onChange={(e) => onChange({ ...config, instanceUrl: e.target.value })}
         required
       />
-      <div style={hintStyle}>
+      <div className="jira-hint">
         Your Jira Cloud instance URL (e.g., https://company.atlassian.net)
       </div>
     </div>
@@ -36,9 +33,9 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
   const [showSecret, setShowSecret] = useState(false);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+    <div className="jira-grid-2col">
       <div>
-        <label htmlFor="jira-client-id" style={labelStyle}>
+        <label htmlFor="jira-client-id" className="jira-label">
           Client ID
         </label>
         <input
@@ -52,10 +49,10 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
         />
       </div>
       <div>
-        <label htmlFor="jira-client-secret" style={labelStyle}>
+        <label htmlFor="jira-client-secret" className="jira-label">
           Client Secret
         </label>
-        <div style={{ position: 'relative' }}>
+        <div className="jira-secret-wrapper">
           <input
             id="jira-client-secret"
             className="input"
@@ -69,17 +66,7 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
           <button
             type="button"
             onClick={() => setShowSecret(!showSecret)}
-            style={{
-              position: 'absolute',
-              right: 8,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'none',
-              border: 'none',
-              color: '#a8b3cf',
-              cursor: 'pointer',
-              fontSize: 11,
-            }}
+            className="jira-show-toggle"
           >
             {showSecret ? 'Hide' : 'Show'}
           </button>
@@ -91,9 +78,9 @@ export function JiraCredentialsFields({ config, existingConfig, onChange }: Jira
 
 export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+    <div className="jira-grid-2col">
       <div>
-        <label htmlFor="jira-project-key" style={labelStyle}>
+        <label htmlFor="jira-project-key" className="jira-label">
           Project Key
         </label>
         <input
@@ -105,10 +92,10 @@ export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
           onChange={(e) => onChange({ ...config, projectKey: e.target.value.toUpperCase() })}
           required
         />
-        <div style={hintStyle}>Jira project key (e.g., PROJ)</div>
+        <div className="jira-hint">Jira project key (e.g., PROJ)</div>
       </div>
       <div>
-        <label htmlFor="jira-issue-type" style={labelStyle}>
+        <label htmlFor="jira-issue-type" className="jira-label">
           Default Issue Type
         </label>
         <input
@@ -119,7 +106,7 @@ export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
           value={config.issueType}
           onChange={(e) => onChange({ ...config, issueType: e.target.value })}
         />
-        <div style={hintStyle}>Issue type for created issues</div>
+        <div className="jira-hint">Issue type for created issues</div>
       </div>
     </div>
   );
@@ -127,16 +114,8 @@ export function JiraProjectFields({ config, onChange }: JiraFormFieldsProps) {
 
 export function JiraAutoCreateToggle({ config, onChange }: JiraFormFieldsProps) {
   return (
-    <div
-      style={{
-        padding: 12,
-        background: '#1a1a1a',
-        borderRadius: 8,
-        border: '1px solid #2a2a2a',
-        marginBottom: 16,
-      }}
-    >
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+    <div className="jira-auto-toggle">
+      <label className="jira-auto-label">
         <input
           type="checkbox"
           checked={config.autoCreateOnFailure}
@@ -144,8 +123,8 @@ export function JiraAutoCreateToggle({ config, onChange }: JiraFormFieldsProps) 
           style={{ width: 16, height: 16 }}
         />
         <div>
-          <div style={{ fontSize: 13, fontWeight: 500 }}>Auto-create issues on failure</div>
-          <div style={{ fontSize: 11, color: '#a8b3cf' }}>
+          <div className="jira-auto-title">Auto-create issues on failure</div>
+          <div className="jira-auto-desc">
             Automatically create Jira issues when flows fail
           </div>
         </div>

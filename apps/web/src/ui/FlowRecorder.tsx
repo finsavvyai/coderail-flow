@@ -12,35 +12,23 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
   const recorder = useFlowRecorder(onSaveFlow);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 16 }}>
+    <div className="recorder-layout">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div className="h2" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="recorder-header">
+        <div className="h2 recorder-title">
           Flow Recorder
           {recorder.isRecording && (
-            <span
-              style={{
-                background: '#ef4444',
-                color: 'white',
-                padding: '2px 8px',
-                borderRadius: 4,
-                fontSize: 12,
-                animation: 'pulse 1s infinite',
-              }}
-            >
-              REC
-            </span>
+            <span className="recorder-rec-badge">REC</span>
           )}
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button className="btn" onClick={onCancel} style={{ background: '#2a2a2a' }}>
+        <div className="recorder-actions">
+          <button className="btn recorder-btn-cancel" onClick={onCancel}>
             Cancel
           </button>
           <button
-            className="btn"
+            className={`btn recorder-btn-save ${recorder.recordedActions.length > 0 ? 'recorder-btn-save--active' : 'recorder-btn-save--disabled'}`}
             onClick={recorder.handleSave}
             disabled={recorder.recordedActions.length === 0}
-            style={{ background: recorder.recordedActions.length > 0 ? '#22c55e' : '#2a2a2a' }}
           >
             <Save size={14} /> Save Flow
           </button>
@@ -48,7 +36,7 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
       </div>
 
       {recorder.error && (
-        <div style={{ background: '#7f1d1d', padding: 12, borderRadius: 8, fontSize: 13 }}>
+        <div className="recorder-error">
           {recorder.error}
         </div>
       )}
@@ -76,7 +64,7 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
       />
 
       {/* Main Content */}
-      <div style={{ display: 'flex', gap: 16, flex: 1, minHeight: 0 }}>
+      <div className="recorder-main">
         <RecorderPreview
           targetUrl={recorder.targetUrl}
           isRecording={recorder.isRecording}

@@ -7,9 +7,9 @@ interface OnboardingStepPathProps {
 
 export function OnboardingStepPath({ onChoice }: OnboardingStepPathProps) {
   return (
-    <div style={{ padding: '32px 24px' }}>
-      <h3 style={{ margin: '0 0 24px', fontSize: 20 }}>How would you like to start?</h3>
-      <div style={{ display: 'grid', gap: 12 }}>
+    <div className="onboarding-step-body">
+      <h3 className="onboarding-step-heading">How would you like to start?</h3>
+      <div className="onboarding-path-grid">
         <OptionCard
           title="Record a Flow"
           description="Capture browser actions as you click through your website"

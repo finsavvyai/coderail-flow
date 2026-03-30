@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useUser, useAuth } from '@clerk/clerk-react';
+import { useSession } from '@hono/auth-js/react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { BillingPlanCards } from './BillingPlanCards';
 import { BillingUsageCard } from './BillingUsageCard';
-import { apiUrl } from './api-core';
+import { getSessionUser } from './auth-client';
+import { apiUrl, getApiToken } from './api-core';
 
 type AccountInfo = {
   id: string;
@@ -18,21 +19,21 @@ type AccountInfo = {
 };
 
 export function BillingPage() {
-  const { user, isLoaded } = useUser();
-  const { getToken } = useAuth();
+  const { data: session, status } = useSession();
+  const user = getSessionUser(session);
   const [account, setAccount] = useState<AccountInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoaded || !user) return;
+    if (status !== 'authenticated' || !user) return;
     void syncAccount();
-  }, [isLoaded, user]);
+  }, [status, user?.id]);
 
   async function syncAccount() {
     if (!user) return;
     try {
-      const token = await getToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/billing/account/sync'), {
         method: 'POST',
         headers: {
@@ -40,8 +41,8 @@ export function BillingPage() {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
-          email: user.primaryEmailAddress?.emailAddress ?? '',
-          name: user.fullName,
+          email: user.email ?? '',
+          name: user.name,
         }),
       });
       const data = await res.json();
@@ -57,7 +58,7 @@ export function BillingPage() {
     if (!user) return;
     setUpgrading(plan);
     try {
-      const token = await getToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/billing/checkout'), {
         method: 'POST',
         headers: {
@@ -82,10 +83,10 @@ export function BillingPage() {
     }
   }
 
-  if (!isLoaded || loading) {
+  if (status === 'loading' || loading) {
     return (
       <div className="container" style={{ textAlign: 'center', paddingTop: 80 }}>
-        <Loader2 size={32} className="spin" style={{ color: '#2b7cff' }} />
+        <Loader2 size={32} className="spin billing-loader-icon" />
         <p className="small" style={{ marginTop: 12 }}>
           Loading billing info...
         </p>
@@ -162,7 +163,7 @@ export function BillingPage() {
         onUpgrade={handleUpgrade}
       />
 
-      <p className="small" style={{ textAlign: 'center', color: '#a8b3cf' }}>
+      <p className="small billing-footnote">
         Early-bird special: First 50 users get Pro at $19/mo for life.
         <br />
         Payments secured by Lemon Squeezy. Cancel anytime.

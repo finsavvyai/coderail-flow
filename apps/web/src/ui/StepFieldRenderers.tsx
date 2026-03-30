@@ -7,11 +7,7 @@ export interface FieldProps {
 }
 
 function FieldLabel({ children }: { children: ReactNode }) {
-  return (
-    <label className="small" style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}>
-      {children}
-    </label>
-  );
+  return <label className="small field-label">{children}</label>;
 }
 
 function InputField({
@@ -97,7 +93,7 @@ function TextField({ step, onUpdate }: FieldProps) {
 function FullPageField({ step, onUpdate }: FieldProps) {
   return (
     <div>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+      <label className="field-checkbox-label">
         <input
           type="checkbox"
           checked={step.fullPage || false}
@@ -114,7 +110,7 @@ function CookiesField({ step, onUpdate }: FieldProps) {
     <div>
       <FieldLabel>Cookies (JSON array)</FieldLabel>
       <textarea
-        className="input"
+        className="input field-cookies-textarea"
         placeholder='[{"name": "session", "value": "...", "domain": ".example.com"}]'
         value={JSON.stringify(step.cookies || [], null, 2)}
         onChange={(e) => {
@@ -125,7 +121,6 @@ function CookiesField({ step, onUpdate }: FieldProps) {
           }
         }}
         rows={4}
-        style={{ fontFamily: 'monospace', fontSize: 11 }}
       />
     </div>
   );

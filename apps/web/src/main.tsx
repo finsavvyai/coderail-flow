@@ -1,18 +1,59 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { SessionProvider } from '@hono/auth-js/react';
 import { AppErrorBoundary } from './ui/AppErrorBoundary';
 import { DeploymentConfigPage } from './ui/DeploymentConfigPage';
 import { NotFoundPage } from './ui/NotFoundPage';
 import { ToastContainer } from './ui/ToastContainer';
+import { configureAuthClient } from './ui/auth-client';
 import { getWebRuntimeConfig } from './ui/runtime-config';
 import './ui/styles.css';
 import './ui/landing.css';
+import './ui/landing-features.css';
+import './ui/landing-pricing.css';
+import './ui/landing-cta.css';
+import './ui/landing-footer.css';
 import './ui/dashboard.css';
+import './ui/dashboard-cards.css';
+import './ui/dashboard-states.css';
+import './ui/dashboard-onboarding.css';
+import './ui/dashboard-responsive.css';
+import './ui/recorder-preview.css';
+import './ui/recorder-input.css';
+import './ui/recorder-url.css';
+import './ui/onboarding-parts.css';
+import './ui/onboarding-welcome.css';
+import './ui/analytics.css';
+import './ui/schedule.css';
+import './ui/templates.css';
+import './ui/modal.css';
+import './ui/billing.css';
+import './ui/project.css';
+import './ui/project-screens.css';
+import './ui/steps.css';
+import './ui/api-keys.css';
+import './ui/misc.css';
+import './ui/notfound-skeleton.css';
+import './ui/preview-misc.css';
+import './ui/media.css';
+import './ui/media-ext.css';
+import './ui/integrations.css';
+import './ui/integrations-ext.css';
+import './ui/inspector.css';
+import './ui/inspector-ext.css';
+import './ui/flows.css';
+import './ui/flows-ext.css';
+import './ui/runs.css';
+import './ui/runs-ext.css';
+import './ui/app-shell.css';
+import './ui/app-shell-ext.css';
+import './ui/analytics-ext.css';
+import './ui/last-fixes.css';
+import './ui/recorder-steplist.css';
 
-const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 const runtimeConfig = getWebRuntimeConfig(import.meta.env);
+configureAuthClient();
 const LandingPage = lazy(() =>
   import('./ui/LandingPage').then((module) => ({ default: module.LandingPage }))
 );
@@ -30,23 +71,8 @@ const DashboardPage = lazy(() => import('./ui/DashboardPage'));
 
 function RouteFallback() {
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#07111f',
-        color: '#d6deeb',
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          minWidth: 220,
-          textAlign: 'center',
-        }}
-      >
+    <div className="route-fallback">
+      <div className="card route-fallback-card">
         Loading workspace...
       </div>
     </div>
@@ -65,7 +91,7 @@ function ProtectedAppUnavailable() {
   return (
     <DeploymentConfigPage
       title="The protected app is not configured for this deployment."
-      body="Protected routes stay unavailable until both the production API URL and Clerk publishable key are configured."
+      body="Protected routes stay unavailable until the production API origin is configured for this deployment."
       issues={runtimeConfig.issues}
       actions={
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -82,7 +108,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ToastContainer />
     {runtimeConfig.authReady && runtimeConfig.apiReady ? (
-      <ClerkProvider publishableKey={clerkKey}>
+      <SessionProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={routeElement(<LandingPage />)} />
@@ -137,7 +163,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="*" element={routeElement(<NotFoundPage />)} />
           </Routes>
         </BrowserRouter>
-      </ClerkProvider>
+      </SessionProvider>
     ) : runtimeConfig.allowDevelopmentFallback ? (
       <BrowserRouter>
         <Routes>

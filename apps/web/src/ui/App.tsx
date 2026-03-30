@@ -168,27 +168,15 @@ export function App() {
           onRetry={onRetry}
         />
       </div>
-      <div
-        style={{
-          marginTop: 24,
-          padding: 16,
-          backgroundColor: '#1a1a1a',
-          borderRadius: 8,
-          border: '1px solid #3a3a3a',
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="app-status-bar">
+        <div className="app-status-row">
           <div>
-            <div className="small" style={{ color: '#a8b3cf', marginBottom: 4 }}>
-              Production Status
-            </div>
-            <div style={{ fontSize: 12 }}>
+            <div className="app-status-label">Production Status</div>
+            <div className="app-status-desc">
               Real-time Progress / Screenshot Gallery / Error Handling / Browser Automation
             </div>
           </div>
-          <div className="small" style={{ color: '#22c55e' }}>
-            v1.0.0
-          </div>
+          <div className="app-status-version">v1.0.0</div>
         </div>
       </div>
     </div>

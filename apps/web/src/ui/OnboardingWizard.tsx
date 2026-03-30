@@ -7,7 +7,7 @@ import { OnboardingStepWelcome } from './OnboardingStepWelcome';
 import { OnboardingStepProject } from './OnboardingStepProject';
 import { OnboardingStepPath } from './OnboardingStepPath';
 import { OnboardingStepComplete } from './OnboardingStepComplete';
-import { apiUrl, getClerkToken } from './api-core';
+import { apiUrl, getApiToken } from './api-core';
 
 export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps) {
   const [step, setStep] = useState(0);
@@ -63,7 +63,7 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
     }
     setLoading(true);
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/projects'), {
         method: 'POST',
         headers: {
@@ -111,91 +111,50 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0, 0, 0, 0.8)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
+      className="onboarding-overlay"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="Onboarding wizard"
     >
       <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: 600,
-          maxHeight: '90vh',
-          overflow: 'auto',
-          position: 'relative',
-        }}
+        className="card onboarding-card"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
           aria-label="Close wizard"
-          style={{
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: '#b3b3b3',
-            padding: 10,
-            borderRadius: 6,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          className="onboarding-close"
         >
           <X size={18} />
         </button>
 
         <OnboardingProgressBar step={step} total={steps.length} />
 
-        <div style={{ marginBottom: 24, textAlign: 'center' }}>
-          <StepIcon size={32} style={{ color: '#3b82f6', marginBottom: 12 }} />
-          <h2 style={{ margin: 0, fontSize: 20 }}>{currentStep.title}</h2>
+        <div className="onboarding-header">
+          <StepIcon size={32} />
+          <h2>{currentStep.title}</h2>
         </div>
 
         {currentStep.content}
 
         {step < steps.length - 1 && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '24px',
-              borderTop: '1px solid #2a2a2a',
-            }}
-          >
+          <div className="onboarding-footer">
             <button
               onClick={() => setStep(step - 1)}
               disabled={step === 0}
-              className="btn"
-              style={{
-                background: step === 0 ? '#2a2a2a' : '#1a1a1a',
-              }}
+              className="onboarding-btn-back"
             >
-              <ChevronLeft size={16} style={{ display: 'inline', marginRight: 6 }} />
+              <ChevronLeft size={16} />
               Back
             </button>
             <button
               onClick={handleNext}
               disabled={loading || (step === 1 && (!projectName || !projectUrl))}
-              className="btn"
-              style={{
-                background: loading ? '#2a2a2a' : '#3b82f6',
-              }}
+              className="onboarding-btn-next"
             >
               {loading ? 'Creating...' : 'Continue'}
-              <ChevronRight size={16} style={{ display: 'inline', marginLeft: 6 }} />
+              <ChevronRight size={16} />
             </button>
           </div>
         )}

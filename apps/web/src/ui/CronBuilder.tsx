@@ -40,20 +40,9 @@ export function CronBuilder({
   onCancel,
 }: CronBuilderProps) {
   return (
-    <div
-      style={{
-        padding: 16,
-        background: '#1a1a1a',
-        borderRadius: 8,
-        border: '1px solid #2a2a2a',
-        marginBottom: 16,
-      }}
-    >
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="cron-flow-select"
-          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-        >
+    <div className="cron-container">
+      <div className="cron-field">
+        <label htmlFor="cron-flow-select" className="cron-label">
           Flow
         </label>
         <select
@@ -71,11 +60,8 @@ export function CronBuilder({
         </select>
       </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="cron-schedule-preset"
-          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-        >
+      <div className="cron-field">
+        <label htmlFor="cron-schedule-preset" className="cron-label">
           Schedule
         </label>
         <select
@@ -92,11 +78,8 @@ export function CronBuilder({
         </select>
       </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="cron-expression-input"
-          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-        >
+      <div className="cron-field">
+        <label htmlFor="cron-expression-input" className="cron-label">
           Cron Expression
         </label>
         <input
@@ -110,30 +93,25 @@ export function CronBuilder({
           aria-describedby="cron-error cron-hint"
         />
         {cronExpression.trim() !== '' && !isValidCron(cronExpression) && (
-          <div
-            id="cron-error"
-            role="alert"
-            style={{ fontSize: 12, color: '#f44336', marginTop: 4 }}
-          >
+          <div id="cron-error" role="alert" className="cron-error">
             Invalid cron expression. Must be 5 space-separated fields (minute hour day month
             weekday).
           </div>
         )}
-        <div id="cron-hint" style={{ fontSize: 11, color: '#a3a3a3', marginTop: 4 }}>
+        <div id="cron-hint" className="cron-hint">
           Format: minute hour day month weekday (e.g., 0 9 * * * for daily at 9 AM)
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div className="cron-actions">
         <button
           className="btn"
           onClick={onSubmit}
           disabled={loading || !isValidCron(cronExpression)}
-          style={{ flex: 1 }}
         >
           {loading ? 'Creating...' : 'Create Schedule'}
         </button>
-        <button className="btn" onClick={onCancel} style={{ flex: 1, background: '#2a2a2a' }}>
+        <button className="btn cron-cancel-btn" onClick={onCancel}>
           Cancel
         </button>
       </div>

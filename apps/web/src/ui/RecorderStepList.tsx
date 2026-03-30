@@ -28,10 +28,7 @@ export function RecorderStepList(props: RecorderStepListProps) {
   } = props;
 
   return (
-    <div
-      className="card"
-      style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 300 }}
-    >
+    <div className="card rec-steplist-card">
       <StepListHeader
         count={recordedActions.length}
         activeStepIndex={activeStepIndex}
@@ -41,15 +38,15 @@ export function RecorderStepList(props: RecorderStepListProps) {
         setShowSubtitleOverlay={setShowSubtitleOverlay}
         onClear={onClear}
       />
-      <div style={{ flex: 1, overflow: 'auto', padding: 8 }}>
+      <div className="rec-steplist-body">
         {recordedActions.length === 0 ? (
-          <div style={{ padding: 24, textAlign: 'center', color: '#8b95b0', fontSize: 13 }}>
+          <div className="rec-steplist-empty">
             <Plus size={24} style={{ marginBottom: 8, opacity: 0.5 }} />
             <div>No actions recorded yet</div>
-            <div style={{ fontSize: 11, marginTop: 4 }}>Interact with the page to record steps</div>
+            <div className="rec-steplist-hint">Interact with the page to record steps</div>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className="rec-steplist-items">
             {recordedActions.map((action, idx) => (
               <StepItem
                 key={action.id}
@@ -65,25 +62,13 @@ export function RecorderStepList(props: RecorderStepListProps) {
         )}
       </div>
       {recordedActions.length > 0 && (
-        <div style={{ padding: 12, borderTop: '1px solid #2a2a2a' }}>
-          <div style={{ fontSize: 11, color: '#a8b3cf', marginBottom: 8 }}>Quick Add:</div>
-          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-            <button
-              className="btn"
-              style={{ padding: '8px 12px', fontSize: 11, transition: 'background 0.15s' }}
-              onClick={() => onAddManual('click')}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-            >
+        <div className="rec-steplist-footer">
+          <div className="rec-steplist-footer-label">Quick Add:</div>
+          <div className="rec-steplist-footer-actions">
+            <button className="rec-quick-add-btn" onClick={() => onAddManual('click')}>
               + Click
             </button>
-            <button
-              className="btn"
-              style={{ padding: '8px 12px', fontSize: 11, transition: 'background 0.15s' }}
-              onClick={() => onAddManual('fill')}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-            >
+            <button className="rec-quick-add-btn" onClick={() => onAddManual('fill')}>
               + Fill
             </button>
           </div>
@@ -111,57 +96,39 @@ function StepListHeader({
   onClear: () => void;
 }) {
   return (
-    <div
-      style={{
-        padding: '12px 16px',
-        borderBottom: '1px solid #2a2a2a',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <span style={{ fontWeight: 500 }}>Recorded Steps ({count})</span>
-      <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+    <div className="rec-steplist-header">
+      <span className="rec-steplist-title">Recorded Steps ({count})</span>
+      <div className="rec-steplist-nav">
         {count > 0 && (
           <>
             <button
-              className="btn"
+              className="rec-nav-btn"
               onClick={() => setActiveStepIndex((i) => (i !== null && i > 0 ? i - 1 : i))}
               disabled={activeStepIndex === null || activeStepIndex <= 0}
-              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 44 }}
               aria-label="Previous step"
             >
               <ChevronLeft size={14} />
             </button>
             <button
-              className="btn"
+              className="rec-nav-btn"
               onClick={() => setActiveStepIndex((i) => (i !== null && i < maxIndex ? i + 1 : i))}
               disabled={activeStepIndex === null || activeStepIndex >= maxIndex}
-              style={{ padding: '8px', background: '#2a2a2a', fontSize: 10, minHeight: 44 }}
               aria-label="Next step"
             >
               <ChevronRight size={14} />
             </button>
             <button
-              className="btn"
+              className={`rec-nav-btn${showSubtitleOverlay ? ' active' : ''}`}
               onClick={() => setShowSubtitleOverlay((v) => !v)}
               aria-label={showSubtitleOverlay ? 'Hide subtitles' : 'Show subtitles'}
               aria-pressed={showSubtitleOverlay}
-              style={{
-                padding: '8px',
-                background: showSubtitleOverlay ? 'rgba(99,102,241,0.2)' : '#2a2a2a',
-                fontSize: 10,
-                color: showSubtitleOverlay ? '#a78bfa' : '#888',
-                minHeight: 44,
-              }}
             >
               <MessageSquare size={14} />
             </button>
             <button
-              className="btn"
+              className="rec-nav-btn rec-clear-btn"
               onClick={onClear}
               aria-label="Clear all steps"
-              style={{ padding: '8px 12px', background: '#2a1a1a', fontSize: 11, minHeight: 44 }}
             >
               Clear
             </button>

@@ -1,0 +1,117 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Billing Plan Cards ---- */
+.billing-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.billing-plan-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.billing-plan-card.featured {
+  border-color: var(--accent);
+  box-shadow: 0 0 40px rgba(43, 124, 255, 0.1);
+}
+
+.billing-plan-card.current {
+  border-color: var(--success);
+}
+
+.billing-plan-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.billing-plan-price {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.billing-plan-period {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.billing-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  flex: 1;
+}
+
+.billing-plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.billing-plan-features li svg {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.billing-current-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---- Billing Plan Extras ---- */
+.billing-plan-heading {
+  margin-bottom: 16px;
+}
+
+.billing-popular-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.billing-plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.billing-plan-btn {
+  width: 100%;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.billing-plan-btn-featured {
+  background: var(--accent);
+}
+
+.billing-plan-btn-featured:hover {
+  background: var(--accent-hover);
+}

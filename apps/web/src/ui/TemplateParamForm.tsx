@@ -12,28 +12,21 @@ interface TemplateParamFormProps {
 
 export function TemplateParamForm({ params, values, onUpdate }: TemplateParamFormProps) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}>
+    <div className="tpl-param-wrap">
+      <label className="tpl-param-title">
         Template Parameters
       </label>
-      <div style={{ background: '#1a1a1a', padding: 12, borderRadius: 6 }}>
+      <div className="tpl-param-box">
         {params.map((param) => (
-          <div key={param.name} style={{ marginBottom: 12 }}>
-            <label
-              style={{
-                display: 'block',
-                marginBottom: 4,
-                fontSize: 12,
-                color: '#a3a3a3',
-              }}
-            >
+          <div key={param.name} className="tpl-param-field">
+            <label className="tpl-param-label">
               {param.name}
-              {param.required && <span style={{ color: '#dc3545' }}> *</span>}
-              <span style={{ marginLeft: 8, fontSize: 11, color: '#a3a3a3' }}>({param.type})</span>
+              {param.required && <span className="tpl-param-required"> *</span>}
+              <span className="tpl-param-type">({param.type})</span>
             </label>
             {param.type === 'number' ? (
               <input
-                className="input"
+                className="input tpl-param-input"
                 type="number"
                 value={values[param.name] || ''}
                 onChange={(e) => onUpdate(param.name, Number(e.target.value))}
@@ -41,7 +34,7 @@ export function TemplateParamForm({ params, values, onUpdate }: TemplateParamFor
               />
             ) : (
               <input
-                className="input"
+                className="input tpl-param-input"
                 type="text"
                 value={values[param.name] || ''}
                 onChange={(e) => onUpdate(param.name, e.target.value)}

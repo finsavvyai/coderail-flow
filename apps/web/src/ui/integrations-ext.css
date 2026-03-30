@@ -1,0 +1,64 @@
+/* integrations-ext.css — Jira integration styles */
+
+/* ── JiraFormFields ── */
+.jira-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; }
+.jira-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.jira-field-group { margin-bottom: 16px; }
+.jira-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.jira-secret-wrapper { position: relative; }
+.jira-show-toggle {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--text-muted);
+  cursor: pointer; font-size: 11px; min-height: 44px;
+}
+.jira-show-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jira-auto-toggle {
+  padding: 12px; background: var(--bg-card); border-radius: 8px;
+  border: 1px solid var(--border); margin-bottom: 16px;
+}
+.jira-auto-label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.jira-auto-title { font-size: 13px; font-weight: 500; }
+.jira-auto-desc { font-size: 11px; color: var(--text-muted); }
+
+/* ── JiraIntegrationForm ── */
+.jira-form-card { max-width: 700px; margin: 0 auto; }
+.jira-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.jira-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.jira-header-icon {
+  width: 48px; height: 48px; border-radius: 8px; background: var(--accent-jira);
+  display: flex; align-items: center; justify-content: center;
+}
+.jira-header-subtitle { font-size: 13px; color: var(--text-muted); }
+.jira-form-actions { display: flex; gap: 12px; justify-content: flex-end; }
+.jira-delete-btn {
+  padding: 8px 16px; background: var(--error); border: none; border-radius: 6px;
+  color: white; font-size: 13px; cursor: pointer; min-height: 44px;
+}
+.jira-delete-btn:focus-visible { outline: 2px solid var(--error); outline-offset: 2px; }
+.jira-test-btn {
+  padding: 8px 16px; background: var(--border); border: 1px solid var(--accent);
+  font-size: 13px; cursor: pointer; min-height: 44px;
+}
+.jira-test-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jira-submit-btn { background: var(--accent-jira); cursor: pointer; min-height: 44px; }
+.jira-submit-btn:focus-visible { outline: 2px solid var(--accent-jira); outline-offset: 2px; }
+.jira-submit-btn--loading { background: var(--border); }
+.jira-close-btn { margin-top: 12px; width: 100%; background: var(--border); cursor: pointer; min-height: 44px; }
+.jira-close-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── JiraOAuthSetupGuide ── */
+.jira-oauth-box {
+  padding: 16px; background: var(--accent-jira-bg); border-radius: 8px;
+  border: 1px solid var(--accent-jira); margin-bottom: 20px;
+}
+.jira-oauth-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.jira-oauth-icon { color: var(--accent-jira); }
+.jira-oauth-title { font-size: 13px; font-weight: 500; color: var(--accent-jira); }
+.jira-oauth-steps {
+  margin: 0; padding-left: 20px; font-size: 12px;
+  color: var(--text-muted); line-height: 1.6;
+}
+.jira-oauth-steps li { margin-bottom: 6px; }
+.jira-oauth-steps li:last-child { margin-bottom: 0; }
+.jira-oauth-link { color: var(--accent-jira); }
+.jira-oauth-code { background: var(--bg-card); padding: 2px 6px; border-radius: 3px; }

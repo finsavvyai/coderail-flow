@@ -14,46 +14,25 @@ export function DeploymentConfigPage({
   issues = [],
 }: DeploymentConfigPageProps) {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'grid',
-        placeItems: 'center',
-        padding: 24,
-        background:
-          'radial-gradient(circle at top, rgba(244, 114, 182, 0.16), transparent 36%), radial-gradient(circle at bottom right, rgba(125, 211, 252, 0.16), transparent 28%), #07111f',
-      }}
-    >
+    <main className="deploy-config-backdrop">
       <section
-        className="card"
+        className="card deploy-config-card"
         role="alert"
-        style={{
-          width: 'min(640px, 100%)',
-          padding: 28,
-        }}
       >
-        <div className="eyebrow" style={{ color: '#fda4af', marginBottom: 12 }}>
+        <div className="eyebrow deploy-config-eyebrow">
           Deployment Configuration
         </div>
         <h1 className="h1" style={{ marginBottom: 12 }}>
           {title}
         </h1>
-        <p className="body" style={{ marginBottom: 20, color: '#a8b3cf' }}>
+        <p className="body deploy-config-body">
           {body}
         </p>
         {issues.length > 0 ? (
-          <div
-            style={{
-              marginBottom: 20,
-              padding: 16,
-              borderRadius: 12,
-              border: '1px solid rgba(253, 164, 175, 0.3)',
-              background: 'rgba(20, 24, 36, 0.85)',
-            }}
-          >
+          <div className="deploy-config-issues">
             {issues.map((issue) => (
-              <div key={issue.code} style={{ marginBottom: 10, color: '#fbcfe8' }}>
-                <strong style={{ color: '#fecdd3' }}>{issue.code}</strong>
+              <div key={issue.code} className="deploy-config-issue">
+                <strong>{issue.code}</strong>
                 <div>{issue.message}</div>
               </div>
             ))}

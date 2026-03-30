@@ -1,0 +1,168 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Step List / Add Step ---- */
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  transition: border-color 0.15s;
+}
+
+.step-item:hover {
+  border-color: rgba(43, 124, 255, 0.2);
+}
+
+.step-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(43, 124, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.step-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.step-item-type {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.step-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  transition: color 0.15s, background 0.15s;
+}
+
+.step-delete-btn:hover {
+  color: var(--error);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.step-delete-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.add-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  min-height: 44px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.add-step-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.add-step-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- Add Step Panel ---- */
+.add-step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.add-step-type-btn {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  min-height: 44px;
+  border-radius: 8px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.add-step-type-btn:hover {
+  border-color: var(--accent);
+  background: rgba(43, 124, 255, 0.05);
+}
+
+.add-step-type-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.add-step-type-label {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.add-step-tips {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.add-step-tips-title {
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.add-step-tips-icon {
+  display: inline;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.add-step-tips-list {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding-left: 20px;
+  margin: 0;
+}
+
+.add-step-tips-code {
+  background: var(--bg-dark);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.add-step-heading {
+  margin-bottom: 16px;
+}

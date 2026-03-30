@@ -14,6 +14,7 @@ import { AnalyticsSummaryCards } from './AnalyticsSummaryCards';
 import { RunsOverTimeChart, TopFlowsList } from './AnalyticsCharts';
 import { StepPerformanceCard, ElementReliabilityCard } from './AnalyticsChartItems';
 import { buildOpsSnapshot, OpsSnapshotCard, RecentRunsTable } from './AnalyticsDashboardCharts';
+import './analytics-ext.css';
 
 interface AnalyticsDashboardProps {
   projectId?: string;
@@ -64,8 +65,8 @@ export function AnalyticsDashboard({
 
   if (loading) {
     return (
-      <div className="card" style={{ textAlign: 'center', padding: 40 }}>
-        <Activity size={32} className="spin" style={{ marginBottom: 16 }} />
+      <div className="card analytics-center-card">
+        <Activity size={32} className="spin analytics-spin-icon" />
         <div>Loading analytics...</div>
       </div>
     );
@@ -73,8 +74,8 @@ export function AnalyticsDashboard({
 
   if (!stats) {
     return (
-      <div className="card" style={{ textAlign: 'center', padding: 40 }}>
-        <div style={{ marginBottom: 8 }}>Could not load analytics right now.</div>
+      <div className="card analytics-center-card">
+        <div className="analytics-retry-gap">Could not load analytics right now.</div>
         <button className="btn" onClick={loadStats}>
           Retry
         </button>
@@ -96,16 +97,11 @@ export function AnalyticsDashboard({
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+      <div className="analytics-range-bar">
         {(['7d', '30d', '90d'] as const).map((range) => (
           <button
             key={range}
-            className="btn"
-            style={{
-              background: timeRange === range ? '#3b82f6' : '#2a2a2a',
-              padding: '6px 12px',
-              fontSize: 12,
-            }}
+            className={`btn btn--range ${timeRange === range ? 'btn--range-active' : 'btn--range-inactive'}`}
             onClick={() => setTimeRange(range)}
           >
             {range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : '90 Days'}
@@ -125,14 +121,7 @@ export function AnalyticsDashboard({
       <RunsOverTimeChart stats={stats} />
       <TopFlowsList stats={stats} />
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 16,
-          marginTop: 16,
-        }}
-      >
+      <div className="analytics-detail-grid">
         <StepPerformanceCard stepStats={stepStats} />
         <ElementReliabilityCard elementStats={elementStats} />
       </div>

@@ -5,10 +5,11 @@ interface AuthImageProps {
   artifactId: string;
   alt: string;
   style?: React.CSSProperties;
+  className?: string;
   loading?: 'lazy' | 'eager';
 }
 
-export function AuthImage({ artifactId, alt, style, loading: loadingProp }: AuthImageProps) {
+export function AuthImage({ artifactId, alt, style, className, loading: loadingProp }: AuthImageProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
@@ -28,15 +29,8 @@ export function AuthImage({ artifactId, alt, style, loading: loadingProp }: Auth
   if (error) {
     return (
       <div
-        style={{
-          ...style,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#a3a3a3',
-          fontSize: 11,
-          background: '#1a1a1a',
-        }}
+        className="auth-image-placeholder auth-image-placeholder--error"
+        style={style}
       >
         Failed to load
       </div>
@@ -46,20 +40,13 @@ export function AuthImage({ artifactId, alt, style, loading: loadingProp }: Auth
   if (!src) {
     return (
       <div
-        style={{
-          ...style,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#555',
-          fontSize: 11,
-          background: '#1a1a1a',
-        }}
+        className="auth-image-placeholder auth-image-placeholder--loading"
+        style={style}
       >
         Loading...
       </div>
     );
   }
 
-  return <img src={src} alt={alt} style={style} loading={loadingProp} />;
+  return <img src={src} alt={alt} style={style} className={className} loading={loadingProp} />;
 }

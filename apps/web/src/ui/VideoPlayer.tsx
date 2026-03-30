@@ -74,58 +74,33 @@ export function VideoPlayer({ artifactId, subtitleArtifactId }: VideoPlayerProps
   }
 
   if (error) {
-    return (
-      <div
-        style={{
-          padding: 12,
-          background: '#2a1a1a',
-          border: '1px solid #f44336',
-          borderRadius: 8,
-          color: '#fca5a5',
-        }}
-      >
-        Failed to load video artifact.
-      </div>
-    );
+    return <div className="video-error">Failed to load video artifact.</div>;
   }
 
   if (!src) {
-    return (
-      <div
-        style={{
-          padding: 20,
-          background: '#1a1a1a',
-          border: '1px solid #2a2a2a',
-          borderRadius: 8,
-          color: '#a8b3cf',
-        }}
-      >
-        Loading video…
-      </div>
-    );
+    return <div className="video-loading">Loading video…</div>;
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div className="video-wrapper">
       <video
         ref={videoRef}
         controls
         preload="metadata"
         src={src}
-        style={{ width: '100%', borderRadius: 8, background: '#000', maxHeight: 420 }}
+        className="video-element"
       >
         {subtitleSrc ? (
           <track kind="captions" src={subtitleSrc} srcLang="en" label="Subtitles" default />
         ) : null}
       </video>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-        <label className="small" style={{ color: '#a8b3cf' }}>
+      <div className="video-controls">
+        <label className="small video-speed-label">
           Speed
           <select
-            className="input"
+            className="input video-speed-select"
             value={playbackRate}
             onChange={(e) => updatePlaybackRate(Number(e.target.value))}
-            style={{ marginLeft: 6, width: 90, padding: '4px 8px' }}
           >
             <option value={0.5}>0.5x</option>
             <option value={0.75}>0.75x</option>

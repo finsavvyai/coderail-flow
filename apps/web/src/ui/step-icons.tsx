@@ -79,7 +79,7 @@ export function StepIcon({ type, size = 18 }: { type: string; size?: number }) {
   const Icon = STEP_ICON_MAP[type];
   if (Icon) {
     return (
-      <span aria-hidden="true" style={{ display: 'inline-flex', color: '#3b82f6' }}>
+      <span aria-hidden="true" className="step-icon">
         <Icon size={size} />
       </span>
     );

@@ -1,0 +1,139 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Project Details (merged) ---- */
+.project-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-detail-row:last-child {
+  border-bottom: none;
+}
+
+.project-detail-label {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.project-detail-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.project-detail-url {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.project-empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-empty-content {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.project-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.project-detail-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.project-header-title {
+  margin-bottom: 4px;
+}
+
+.project-header-url {
+  color: var(--text-muted);
+}
+
+.project-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.project-header-actions .btn {
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.btn-accent {
+  background: var(--accent);
+}
+
+.btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-dark);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-danger {
+  background: #dc2626;
+}
+
+.btn-danger:hover {
+  background: var(--error);
+}
+
+.project-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.project-stat-card {
+  padding: 16px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.project-stat-label {
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.project-stat-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stat-color-purple {
+  color: var(--purple);
+}
+
+.stat-color-success {
+  color: var(--success);
+}
+
+.stat-color-warning {
+  color: #facc15;
+}

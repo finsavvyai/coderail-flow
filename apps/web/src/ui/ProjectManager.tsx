@@ -58,11 +58,10 @@ export function ProjectManager() {
 
   if (pm.view === 'integrations' && pm.selectedProject) {
     return (
-      <div style={{ padding: 24 }}>
+      <div className="pm-subpage">
         <button
-          className="btn"
+          className="btn btn-back"
           onClick={() => pm.setView('list')}
-          style={{ marginBottom: 16, background: '#2a2a2a' }}
         >
           &larr; Back to Project
         </button>
@@ -73,7 +72,7 @@ export function ProjectManager() {
 
   if (pm.view === 'auth-profiles' && pm.selectedProject) {
     return (
-      <div style={{ padding: 24 }}>
+      <div className="pm-subpage">
         <CookieManager projectId={pm.selectedProject.id} onClose={() => pm.setView('list')} />
       </div>
     );
@@ -81,11 +80,10 @@ export function ProjectManager() {
 
   if (pm.view === 'templates' && pm.selectedProject) {
     return (
-      <div style={{ padding: 24 }}>
+      <div className="pm-subpage">
         <button
-          className="btn"
+          className="btn btn-back"
           onClick={() => pm.setView('list')}
-          style={{ marginBottom: 16, background: '#2a2a2a' }}
         >
           &larr; Back to Project
         </button>
@@ -95,7 +93,7 @@ export function ProjectManager() {
   }
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 100px)', gap: 16 }}>
+    <div className="pm-layout">
       <ProjectSidebar
         projects={pm.projects}
         selectedProject={pm.selectedProject}

@@ -37,14 +37,10 @@ export function SelectedElementPanel({
   handleSave: () => void;
 }) {
   return (
-    <div className="card" style={{ flex: 1, overflow: 'auto' }}>
-      <div className="h2" style={{ marginBottom: 12 }}>
-        Selected Element
-      </div>
-      <div style={{ marginBottom: 12 }}>
-        <label className="small" style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}>
-          Element Name *
-        </label>
+    <div className="card panel-grow">
+      <div className="h2 mb-12">Selected Element</div>
+      <div className="field-group">
+        <label className="small field-label">Element Name *</label>
         <input
           className="input"
           placeholder="e.g., Search Button"
@@ -52,15 +48,12 @@ export function SelectedElementPanel({
           onChange={(e) => setElementName(e.target.value)}
         />
       </div>
-      <div style={{ marginBottom: 12 }}>
-        <label className="small" style={{ display: 'block', marginBottom: 4, color: '#a8b3cf' }}>
-          Screen
-        </label>
+      <div className="field-group">
+        <label className="small field-label">Screen</label>
         <select
-          className="input"
+          className="input mb-4"
           value={selectedScreen}
           onChange={(e) => setSelectedScreen(e.target.value)}
-          style={{ marginBottom: 4 }}
         >
           <option value="">Select existing screen...</option>
           {screens.map((s: any) => (
@@ -77,41 +70,31 @@ export function SelectedElementPanel({
         />
       </div>
 
-      <div className="h2" style={{ marginBottom: 8, fontSize: 14 }}>
+      <div className="h2 mb-8" style={{ fontSize: 14 }}>
         Generated Locators ({locators.length})
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+      <div className="locator-card-header mb-8">
         <button
-          className="btn"
+          className="btn btn-compact"
           type="button"
           onClick={testSelectedLocator}
-          style={{ padding: '6px 10px' }}
         >
           Test Locator
         </button>
         {locatorTestResult === 'pass' && (
-          <span className="small" style={{ color: '#22c55e' }}>
-            Match found
-          </span>
+          <span className="small locator-pass">Match found</span>
         )}
         {locatorTestResult === 'fail' && (
-          <span className="small" style={{ color: '#ef4444' }}>
-            No match found
-          </span>
+          <span className="small locator-fail">No match found</span>
         )}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div className="locator-list">
         {locators.map((loc, i) => (
           <div
             key={i}
-            style={{
-              padding: 8,
-              background: i === primaryLocatorIndex ? 'rgba(99,102,241,0.15)' : '#1a1a1a',
-              border: `1px solid ${i === primaryLocatorIndex ? '#6366f1' : '#2a2a2a'}`,
-              borderRadius: 6,
-            }}
+            className={`locator-card${i === primaryLocatorIndex ? ' locator-card--primary' : ''}`}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+            <div className="locator-card-header">
               <input
                 type="radio"
                 name="primary-locator"
@@ -125,34 +108,22 @@ export function SelectedElementPanel({
                 {loc.type}
               </span>
               {i === primaryLocatorIndex && (
-                <span className="small" style={{ color: '#6366f1' }}>
-                  Primary
-                </span>
+                <span className="small locator-primary-label">Primary</span>
               )}
-              <span className="small" style={{ color: '#a8b3cf' }}>
+              <span className="small locator-reliability">
                 {Math.round(loc.reliability * 100)}% reliable
               </span>
             </div>
-            <code style={{ fontSize: 11, color: '#a8b3cf', wordBreak: 'break-all' }}>
-              {JSON.stringify(loc.value)}
-            </code>
+            <code className="locator-code">{JSON.stringify(loc.value)}</code>
           </div>
         ))}
       </div>
 
-      <div
-        style={{
-          marginTop: 16,
-          padding: 12,
-          background: '#1a1a1a',
-          borderRadius: 6,
-          border: '1px solid #2a2a2a',
-        }}
-      >
-        <div className="small" style={{ color: '#a8b3cf', marginBottom: 6 }}>
+      <div className="element-info">
+        <div className="small element-info-label">
           <Code size={14} style={{ display: 'inline', marginRight: 4 }} /> Element Info
         </div>
-        <div className="small" style={{ color: '#a8b3cf', fontFamily: 'monospace' }}>
+        <div className="small element-info-mono">
           Tag: {selectedElement.tagName.toLowerCase()}
           <br />
           {selectedElement.id && (
@@ -172,10 +143,9 @@ export function SelectedElementPanel({
       </div>
 
       <button
-        className="btn"
+        className="btn w-full mt-12"
         onClick={handleSave}
         disabled={saving}
-        style={{ width: '100%', marginTop: 12 }}
       >
         <Save size={16} /> {saving ? 'Saving...' : 'Save Element'}
       </button>

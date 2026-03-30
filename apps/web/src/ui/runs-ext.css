@@ -1,0 +1,121 @@
+/* Run styles extension — FlowTestResults, RunShareCard, RunStatusBadge, LiveProgress */
+
+/* --- FlowTestResults --- */
+.ftr-status-box {
+  padding: 16px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ftr-status-box--failed {
+  background: color-mix(in srgb, var(--error) 12%, var(--bg-dark));
+  border-color: var(--error);
+}
+.ftr-status-text { font-size: 15px; font-weight: 500; }
+.ftr-step-list {
+  text-align: left;
+  margin-bottom: 16px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 0;
+}
+.ftr-step-row { display: flex; align-items: center; gap: 10px; padding: 6px 14px; font-size: 13px; }
+.ftr-step-row--ok { color: var(--text-muted); }
+.ftr-step-row--failed { color: color-mix(in srgb, var(--error) 65%, white); }
+.ftr-step-row--default { color: var(--text); }
+.ftr-step-row--running { background: color-mix(in srgb, var(--accent) 10%, var(--bg-dark)); }
+.ftr-step-label { flex: 1; }
+.ftr-step-tag { font-size: 11px; }
+.ftr-step-tag--ok { color: var(--success); }
+.ftr-step-tag--failed { color: var(--error); }
+.ftr-step-tag--running { color: var(--accent); }
+.ftr-progress-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.ftr-progress-bar-fill { height: 100%; background: var(--accent); transition: width 0.3s ease; }
+.ftr-error-box {
+  padding: 12px;
+  background: color-mix(in srgb, var(--error) 12%, var(--bg-dark));
+  border-radius: 8px;
+  border: 1px solid var(--error);
+  margin-bottom: 16px;
+  text-align: left;
+}
+.ftr-error-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.ftr-error-title { font-size: 13px; font-weight: 500; color: color-mix(in srgb, var(--error) 65%, white); }
+.ftr-error-body { font-size: 12px; color: color-mix(in srgb, var(--error) 65%, white); line-height: 1.5; }
+.ftr-actions { display: flex; gap: 12px; justify-content: center; }
+.ftr-btn-start.btn { padding: 10px 24px; font-size: 14px; background: var(--success); cursor: pointer; min-height: 44px; }
+.ftr-btn-start.btn:disabled { opacity: 0.6; background: var(--border); }
+.ftr-btn-start.btn:focus-visible { outline: 2px solid var(--success); outline-offset: 2px; }
+.ftr-btn-view.btn { background: var(--accent); padding: 10px 24px; font-size: 14px; cursor: pointer; min-height: 44px; }
+.ftr-btn-view.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ftr-btn-again.btn { background: var(--border); padding: 10px 24px; font-size: 14px; cursor: pointer; min-height: 44px; }
+.ftr-btn-again.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ftr-btn-close.btn {
+  background: none;
+  border: 1px solid var(--border);
+  padding: 10px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.ftr-btn-close.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* --- RunShareCard --- */
+.rsc-card.card {
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 15%, transparent),
+    color-mix(in srgb, var(--accent) 4%, transparent)
+  );
+}
+.rsc-layout { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.rsc-content { max-width: 720px; }
+.rsc-heading { color: color-mix(in srgb, var(--accent) 60%, white); text-transform: uppercase; letter-spacing: 0.08em; }
+.rsc-summary { font-size: 13px; line-height: 1.7; color: color-mix(in srgb, var(--accent) 40%, white); margin-top: 8px; }
+.rsc-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rsc-actions .btn { cursor: pointer; min-height: 44px; }
+.rsc-actions .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rsc-btn-slack.btn { --slack-brand: #4a154b; background: var(--slack-brand); }
+.rsc-btn-slack.btn:hover { background: color-mix(in srgb, var(--slack-brand) 85%, white); }
+.rsc-btn-slack.btn:focus-visible { outline: 2px solid var(--slack-brand); outline-offset: 2px; }
+.rsc-slack-icon { display: inline; margin-right: 6px; }
+
+/* --- RunStatusBadge --- */
+.rsb { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+.rsb--pending { color: var(--text-muted); background: color-mix(in srgb, var(--text-muted) 12%, transparent); }
+.rsb--running { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.rsb--succeeded { color: var(--success); background: color-mix(in srgb, var(--success) 12%, transparent); }
+.rsb--failed { color: var(--error); background: color-mix(in srgb, var(--error) 12%, transparent); }
+
+/* --- LiveProgress --- */
+.lp-wrapper { margin-top: 16px; margin-bottom: 16px; }
+.lp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.lp-badge-queued.badge { background-color: var(--text-dim); color: var(--text); }
+.lp-badge-running.badge { background-color: var(--accent); color: var(--text); }
+.lp-badge-succeeded.badge { background-color: var(--success); color: var(--text); }
+.lp-badge-failed.badge { background-color: var(--error); color: var(--text); }
+.lp-step-info { margin-left: 8px; }
+.lp-bar-track { width: 100%; height: 8px; background-color: var(--border); border-radius: 4px; overflow: hidden; }
+.lp-bar-fill { height: 100%; transition: width 0.3s ease; }
+.lp-bar-fill--queued { background-color: var(--text-dim); }
+.lp-bar-fill--running { background-color: var(--accent); }
+.lp-bar-fill--succeeded { background-color: var(--success); }
+.lp-bar-fill--failed { background-color: var(--error); }
+.lp-description { margin-top: 8px; color: var(--text-muted); }

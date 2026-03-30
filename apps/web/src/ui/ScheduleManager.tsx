@@ -107,16 +107,9 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
 
   return (
     <div className="card">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 16,
-        }}
-      >
-        <div className="h2" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Calendar size={20} /> Scheduled Flows
+      <div className="schedule-header">
+        <div className="schedule-name">
+          <Calendar size={20} className="schedule-icon" /> Scheduled Flows
         </div>
         <button className="btn" onClick={() => setShowCreate(true)}>
           <Plus size={16} /> New Schedule
@@ -134,56 +127,44 @@ export function ScheduleManager({ flows }: { flows: Flow[] }) {
       )}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 20, color: '#a3a3a3' }}>Loading...</div>
+        <div className="schedule-empty">Loading...</div>
       ) : schedules.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 40, color: '#a3a3a3' }}>
-          <Clock size={48} style={{ marginBottom: 16, opacity: 0.5 }} />
+        <div className="schedule-empty">
+          <Clock size={48} style={{ opacity: 0.5, marginBottom: 16 }} />
           <div>No scheduled flows yet</div>
           <div className="small" style={{ marginTop: 8 }}>
             Create a schedule to run flows automatically
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="analytics-flow-list">
           {schedules.map((schedule) => (
             <div
               key={schedule.id}
-              style={{
-                padding: 12,
-                background: '#1a1a1a',
-                borderRadius: 8,
-                border: `1px solid ${schedule.enabled ? '#2a2a2a' : '#1a1a1a'}`,
-                opacity: schedule.enabled ? 1 : 0.6,
-              }}
+              className="schedule-card"
+              style={{ opacity: schedule.enabled ? 1 : 0.6 }}
             >
-              <div
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-              >
+              <div className="schedule-header">
                 <div>
-                  <div style={{ fontWeight: 500, marginBottom: 4 }}>
-                    {getFlowName(schedule.flow_id)}
-                  </div>
-                  <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#a3a3a3' }}>
+                  <div className="schedule-name">{getFlowName(schedule.flow_id)}</div>
+                  <div className="schedule-meta">
                     <span>{formatCron(schedule.cron_expression)}</span>
+                    {' \u00b7 '}
                     <span>Last: {formatDate(schedule.last_run_at)}</span>
+                    {' \u00b7 '}
                     <span>Next: {formatDate(schedule.next_run_at)}</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div className="schedule-actions">
                   <button
-                    className="btn"
-                    style={{
-                      background: schedule.enabled ? '#22c55e' : '#2a2a2a',
-                      padding: '10px 12px',
-                    }}
+                    className={`schedule-toggle ${schedule.enabled ? 'active' : 'paused'}`}
                     onClick={() => toggleSchedule(schedule.id, schedule.enabled)}
                     aria-label={schedule.enabled ? 'Pause schedule' : 'Resume schedule'}
                   >
                     {schedule.enabled ? <Pause size={14} /> : <Play size={14} />}
                   </button>
                   <button
-                    className="btn"
-                    style={{ background: '#2a2a2a', padding: '10px 12px' }}
+                    className="schedule-toggle schedule-delete"
                     onClick={() => deleteSchedule(schedule.id)}
                     aria-label="Delete schedule"
                   >

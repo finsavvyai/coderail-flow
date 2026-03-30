@@ -26,7 +26,7 @@ export function ProjectSidebar({
   error,
 }: ProjectSidebarProps) {
   return (
-    <div style={{ flex: '0 0 280px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="project-sidebar">
       <div className="card">
         <div className="h2" style={{ marginBottom: 12 }}>
           Projects
@@ -57,26 +57,15 @@ export function ProjectSidebar({
             style={{ marginBottom: 8 }}
           />
           <button
-            className="btn"
+            className="btn btn-fullwidth"
             onClick={onCreateProject}
             disabled={loading}
-            style={{ width: '100%' }}
           >
             <Plus size={16} /> Create Project
           </button>
         </div>
         {error && (
-          <div
-            style={{
-              padding: 8,
-              background: '#2a1a1a',
-              border: '1px solid #f44336',
-              borderRadius: 6,
-              color: '#fca5a5',
-              fontSize: 12,
-              marginBottom: 12,
-            }}
-          >
+          <div className="project-error">
             {error}
           </div>
         )}
@@ -85,19 +74,13 @@ export function ProjectSidebar({
             <div
               key={p.id}
               onClick={() => onSelectProject(p)}
-              style={{
-                padding: 10,
-                background: selectedProject?.id === p.id ? 'rgba(99,102,241,0.15)' : '#1a1a1a',
-                border: `1px solid ${selectedProject?.id === p.id ? '#6366f1' : '#2a2a2a'}`,
-                borderRadius: 6,
-                cursor: 'pointer',
-              }}
+              className={`project-item ${selectedProject?.id === p.id ? 'project-item--selected' : 'project-item--default'}`}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Folder size={16} style={{ color: '#6366f1' }} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 500 }}>{p.name}</div>
-                  <div className="small" style={{ color: '#a8b3cf' }}>
+              <div className="project-item-row">
+                <Folder size={16} className="project-item-icon" />
+                <div className="project-item-info">
+                  <div className="project-item-name">{p.name}</div>
+                  <div className="small project-item-url">
                     {p.base_url}
                   </div>
                 </div>

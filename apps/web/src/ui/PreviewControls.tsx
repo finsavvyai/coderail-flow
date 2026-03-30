@@ -23,17 +23,7 @@ export function IframePreview({
 
   if (!proxyUrl) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          color: '#8b95b0',
-          padding: 24,
-          textAlign: 'center',
-        }}
-      >
+      <div className="preview-empty-state">
         Configure `VITE_API_URL` so the recorder proxy can load this page.
       </div>
     );
@@ -44,7 +34,7 @@ export function IframePreview({
       <iframe
         ref={iframeRef}
         src={proxyUrl}
-        style={{ width: '100%', height: '100%', border: 'none', background: 'white' }}
+        className="preview-iframe"
         sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
       />
       {showSubtitleOverlay && subtitle && (
@@ -68,42 +58,14 @@ function SubtitleOverlay({
   totalSteps: number;
 }) {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        pointerEvents: 'none',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '0 24px 20px',
-        zIndex: 10,
-      }}
-    >
-      <div
-        style={{
-          background: 'rgba(0,0,0,0.82)',
-          backdropFilter: 'blur(12px)',
-          color: '#fff',
-          padding: '12px 24px',
-          borderRadius: 10,
-          fontSize: 16,
-          fontWeight: 500,
-          lineHeight: 1.5,
-          textAlign: 'center',
-          maxWidth: '80%',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          animation: 'subtitleFadeIn 0.3s ease-out',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center' }}>
-          <MessageSquare size={14} style={{ opacity: 0.5, flexShrink: 0 }} />
+    <div className="preview-subtitle-wrapper">
+      <div className="preview-subtitle-box">
+        <div className="preview-subtitle-content">
+          <MessageSquare size={14} className="preview-subtitle-icon" />
           <span>{subtitle}</span>
         </div>
         {totalSteps > 1 && (
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>
+          <div className="preview-subtitle-step">
             Step {(activeStepIndex ?? 0) + 1} of {totalSteps}
           </div>
         )}
@@ -114,52 +76,21 @@ function SubtitleOverlay({
 
 export function WindowModeView({ iframeLoaded }: { iframeLoaded: boolean }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        color: '#a3a3a3',
-        flexDirection: 'column',
-        gap: 16,
-      }}
-    >
-      <div
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: '50%',
-          background: 'rgba(59,130,246,0.1)',
-          border: '2px solid #3b82f6',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Maximize2 size={32} style={{ color: '#3b82f6' }} />
+    <div className="preview-window-mode">
+      <div className="preview-window-icon">
+        <Maximize2 size={32} className="preview-icon-accent" />
       </div>
-      <div style={{ fontSize: 16, fontWeight: 500 }}>Recording in separate window</div>
-      <div style={{ fontSize: 13, color: '#a3a3a3', textAlign: 'center', maxWidth: 360 }}>
+      <div className="preview-window-title">Recording in separate window</div>
+      <div className="preview-window-desc">
         Interact with your site in the popup window.
         <br />
         Actions are recorded here in real-time.
         <br />
-        Click <strong style={{ color: '#ef4444' }}>Stop</strong> when done.
+        Click <strong className="preview-stop-label">Stop</strong> when done.
       </div>
       {iframeLoaded && (
-        <div
-          style={{ fontSize: 12, color: '#22c55e', display: 'flex', alignItems: 'center', gap: 4 }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#22c55e',
-              display: 'inline-block',
-            }}
-          />
+        <div className="preview-connected-status">
+          <span className="preview-connected-dot" />
           Connected — receiving events
         </div>
       )}
@@ -169,20 +100,10 @@ export function WindowModeView({ iframeLoaded }: { iframeLoaded: boolean }) {
 
 export function EmptyPreview() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        color: '#a3a3a3',
-        flexDirection: 'column',
-        gap: 12,
-      }}
-    >
+    <div className="preview-empty-placeholder">
       <MousePointer size={48} strokeWidth={1} />
       <div>Enter a URL and click "Start Recording"</div>
-      <div style={{ fontSize: 12, color: '#444' }}>
+      <div className="preview-empty-hint">
         Your clicks, inputs, and navigation will be captured
       </div>
     </div>

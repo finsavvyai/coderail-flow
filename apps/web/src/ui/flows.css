@@ -1,0 +1,160 @@
+/* ── Slack Message Preview ── */
+.slack-field-group { margin-bottom: 16px; }
+.slack-field-group--lg { margin-bottom: 20px; }
+.slack-field-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.slack-field-label--attach { margin-bottom: 8px; }
+.slack-textarea { min-height: 80px; resize: vertical; }
+.slack-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.slack-checkbox { width: 16px; height: 16px; }
+.slack-checkbox-text { font-size: 13px; }
+.slack-integration-box {
+  padding: 12px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--purple);
+  margin-bottom: 20px;
+}
+.slack-integration-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.slack-integration-icon { color: var(--purple); }
+.slack-integration-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--purple);
+}
+.slack-integration-body {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Share to Slack Modal ── */
+.slack-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.slack-modal-card { width: 100%; max-width: 500px; position: relative; }
+.slack-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+.slack-modal-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.slack-modal-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+.slack-modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius);
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.slack-modal-title { margin: 0; font-size: 20px; }
+.slack-modal-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.slack-modal-actions { display: flex; gap: 12px; }
+.slack-btn-copy { flex: 1; background: var(--bg-card); min-height: 44px; }
+.slack-btn-copy:focus-visible,
+.slack-btn-share:focus-visible,
+.slack-btn-cancel:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.slack-btn-share { flex: 1; background: var(--purple); min-height: 44px; }
+.slack-btn-share:disabled { background: var(--bg-card); opacity: 0.6; }
+.slack-btn-cancel {
+  margin-top: 12px;
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  min-height: 44px;
+}
+
+/* ── Flow Builder ── */
+.flow-builder-layout {
+  display: flex;
+  height: calc(100vh - 100px);
+  gap: 16px;
+}
+.flow-builder-sidebar {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.flow-builder-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.flow-builder-back { padding: 10px; min-height: 44px; }
+.flow-builder-back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.flow-builder-error {
+  padding: 10px;
+  background: color-mix(in srgb, var(--error) 15%, var(--bg));
+  border: 1px solid var(--error);
+  border-radius: 6px;
+  color: var(--error);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.flow-builder-actions { display: flex; gap: 8px; }
+.flow-builder-test-btn { flex: 1; background: var(--success); min-height: 44px; }
+.flow-builder-test-btn:disabled { background: var(--bg-card); }
+.flow-builder-test-btn:focus-visible,
+.flow-builder-save-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.flow-builder-save-btn { flex: 1; min-height: 44px; }
+.flow-builder-steps { flex: 1; overflow: auto; }
+.flow-builder-editor { flex: 1; overflow: auto; }

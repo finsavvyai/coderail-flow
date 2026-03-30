@@ -1,0 +1,147 @@
+/* ---- Landing — Footer, App Topbar, Auth Gate, Spinner, Responsive ---- */
+
+/* ---- Footer ---- */
+.lp-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+}
+
+.lp-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.lp-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.lp-footer-brand svg { color: var(--accent); }
+
+.lp-footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.lp-footer-links a {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s;
+  padding: 10px 8px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lp-footer-links a:hover { color: var(--text); }
+
+.lp-footer-copy {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ---- App Topbar (Dashboard) ---- */
+.app-topbar {
+  background: rgba(11, 15, 25, 0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border, #1f2a44);
+  padding: 10px 24px;
+}
+
+.app-topbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #e6e9f2;
+  text-decoration: none;
+}
+
+.app-topbar-brand svg { color: #2b7cff; }
+
+/* ---- Auth Gate ---- */
+.auth-gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-gate-card {
+  text-align: center;
+  max-width: 380px;
+}
+
+.auth-gate-icon {
+  color: #2b7cff;
+  margin-bottom: 16px;
+}
+
+.auth-gate-card h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #e6e9f2;
+}
+
+.auth-gate-card p {
+  font-size: 15px;
+  color: #a8b3cf;
+  margin: 0 0 24px;
+}
+
+.auth-gate-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #8b95b0;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.auth-gate-back:hover { color: #e6e9f2; }
+
+/* ---- Spinner ---- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin { animation: spin 1s linear infinite; }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .lp-nav-links a:not(.lp-btn-sm) { display: none; }
+  .lp-hero { padding: 48px 20px 40px; }
+  .lp-hero-stats { gap: 20px; }
+  .lp-stat-num { font-size: 20px; }
+  .lp-steps { grid-template-columns: 1fr; }
+  .lp-features-grid { grid-template-columns: 1fr; }
+  .lp-pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .lp-cta-form { flex-direction: column; }
+  .lp-footer-inner { flex-direction: column; text-align: center; }
+  .lp-footer-links { flex-wrap: wrap; justify-content: center; }
+}

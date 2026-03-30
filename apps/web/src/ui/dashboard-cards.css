@@ -1,0 +1,171 @@
+/* ---- Dashboard — Stat Cards, Chart Cards, Runs Table, Badges ---- */
+
+/* ---- Stat Cards ---- */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dash-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s;
+}
+
+.dash-stat-card:hover {
+  border-color: rgba(43, 124, 255, 0.2);
+}
+
+.dash-stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 6px;
+}
+
+.dash-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+  line-height: 1;
+}
+
+.dash-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dash-stat-icon.blue {
+  background: rgba(43, 124, 255, 0.12);
+  color: var(--accent);
+}
+
+.dash-stat-icon.green {
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--success);
+}
+
+.dash-stat-icon.purple {
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--purple);
+}
+
+.dash-stat-icon.red {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--error);
+}
+
+/* ---- Chart Cards ---- */
+.dash-charts-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dash-chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.dash-chart-card.full {
+  grid-column: 1 / -1;
+}
+
+.dash-chart-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+/* ---- Runs Table ---- */
+.dash-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.dash-table-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-table-header h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dash-table th {
+  text-align: left;
+  padding: 10px 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  background: var(--bg-dark);
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(31, 42, 68, 0.5);
+  color: var(--text);
+}
+
+.dash-table tr:last-child td {
+  border-bottom: none;
+}
+
+.dash-table tr:hover td {
+  background: rgba(43, 124, 255, 0.03);
+}
+
+.dash-table .flow-name {
+  font-weight: 600;
+}
+
+.dash-table .muted {
+  color: var(--text-muted);
+}
+
+.dash-table-link {
+  color: var(--accent);
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.dash-table-link:hover {
+  color: var(--accent-hover);
+}
+

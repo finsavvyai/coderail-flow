@@ -33,20 +33,9 @@ export function ScheduleCreateForm({
   onCancel,
 }: ScheduleCreateFormProps) {
   return (
-    <div
-      style={{
-        padding: 16,
-        background: '#1a1a1a',
-        borderRadius: 8,
-        marginBottom: 16,
-        border: '1px solid #2a2a2a',
-      }}
-    >
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="schedule-flow"
-          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
-        >
+    <div className="schedule-form">
+      <div className="schedule-form-group">
+        <label htmlFor="schedule-flow" className="schedule-form-label">
           Flow
         </label>
         <select
@@ -64,11 +53,8 @@ export function ScheduleCreateForm({
         </select>
       </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="schedule-cron"
-          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
-        >
+      <div className="schedule-form-group">
+        <label htmlFor="schedule-cron" className="schedule-form-label">
           Schedule
         </label>
         <select
@@ -85,11 +71,8 @@ export function ScheduleCreateForm({
         </select>
       </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label
-          htmlFor="schedule-params"
-          style={{ display: 'block', fontSize: 12, color: '#a3a3a3', marginBottom: 4 }}
-        >
+      <div className="schedule-form-group">
+        <label htmlFor="schedule-params" className="schedule-form-label">
           Parameters (JSON)
         </label>
         <input
@@ -101,11 +84,11 @@ export function ScheduleCreateForm({
         />
       </div>
 
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div className="schedule-form-actions">
         <button className="btn" onClick={onCreate}>
           Create Schedule
         </button>
-        <button className="btn" style={{ background: '#2a2a2a' }} onClick={onCancel}>
+        <button className="btn schedule-cancel-btn" onClick={onCancel}>
           Cancel
         </button>
       </div>

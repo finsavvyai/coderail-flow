@@ -1,0 +1,131 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- API Keys (merged) ---- */
+.api-key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.api-key-row:last-child {
+  border-bottom: none;
+}
+
+.api-key-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.api-key-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-dark);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.api-key-success {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: var(--success);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.api-key-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.api-key-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.api-key-create-btn {
+  background: var(--accent);
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.api-key-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.api-key-card {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.api-key-icon {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.api-key-info {
+  flex: 1;
+}
+
+.api-key-info-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.api-key-info-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.api-key-delete-btn {
+  padding: 10px 12px;
+  font-size: 11px;
+  background: rgba(239, 68, 68, 0.08);
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.api-key-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.api-key-usage-card {
+  padding: 20px;
+}
+
+.api-key-usage-title {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.api-key-usage-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.api-key-usage-label.spaced {
+  margin-top: 16px;
+}
+
+.api-key-code-block {
+  background: var(--bg-dark);
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--success);
+  overflow: auto;
+}

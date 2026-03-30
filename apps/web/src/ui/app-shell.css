@@ -1,0 +1,155 @@
+/* app-shell.css — Profile, project, header, billing styles */
+
+/* ── ProfileEditor ── */
+.profile-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.profile-toolbar h2 { margin: 0; }
+.profile-toolbar-actions { display: flex; gap: 8px; }
+
+.btn-dark {
+  background: var(--bg-card);
+  cursor: pointer;
+  min-height: 44px;
+}
+.btn-dark:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.btn-delete {
+  padding: 8px 12px;
+  min-height: 44px;
+  min-width: 44px;
+  background: rgba(239, 68, 68, 0.12);
+  cursor: pointer;
+}
+.btn-delete:focus-visible {
+  outline: 2px solid var(--error);
+  outline-offset: 2px;
+}
+.cookies-section { margin-bottom: 24px; }
+.cookies-section h2 { font-size: 14px; margin-bottom: 8px; }
+.cookies-empty {
+  padding: 20px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  text-align: center;
+  color: var(--text-muted);
+}
+.cookies-table { width: 100%; }
+.cookies-table .mono { font-size: 12px; }
+.cookie-value {
+  font-size: 11px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cookie-actions { display: flex; gap: 4px; }
+.btn-edit { padding: 8px 12px; min-height: 44px; cursor: pointer; }
+.btn-edit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.import-section {
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.import-section h2 { font-size: 14px; margin-bottom: 8px; }
+.import-textarea {
+  margin-bottom: 8px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+/* ── ProjectForm / Sidebar ── */
+.project-sidebar {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.project-error {
+  padding: 8px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid var(--error);
+  border-radius: 6px;
+  color: var(--error);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.project-item { padding: 10px; border-radius: 6px; cursor: pointer; }
+.project-item--default {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+.project-item--selected {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid var(--purple);
+}
+.project-item-row { display: flex; align-items: center; gap: 8px; }
+.project-item-icon { color: var(--purple); }
+.project-item-info { flex: 1; }
+.project-item-name { font-size: 13px; font-weight: 500; }
+.project-item-url { color: var(--text-muted); }
+
+/* ── ProjectManager ── */
+.pm-subpage { padding: 24px; }
+.btn-back {
+  margin-bottom: 16px;
+  background: var(--border);
+  cursor: pointer;
+  min-height: 44px;
+}
+.btn-back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.pm-layout { display: flex; height: calc(100vh - 100px); gap: 16px; }
+
+/* ── AppHeader ── */
+.app-header-subtitle { color: var(--text-muted); }
+.badge-production {
+  background-color: var(--success);
+  color: #fff;
+  font-size: 11px;
+}
+.app-header-error {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: rgba(239, 68, 68, 0.12);
+  border: 1px solid var(--error);
+  border-radius: 6px;
+  color: var(--error);
+}
+
+/* ── BillingPage ── */
+.billing-loader-icon { color: var(--accent); }
+.billing-footnote { text-align: center; color: var(--text-muted); }
+
+/* ── BillingUsageCard ── */
+.usage-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.usage-big-number { font-size: 28px; font-weight: 800; color: var(--text); }
+.usage-big-limit { font-size: 14px; font-weight: 400; color: var(--text-muted); }
+.usage-bar-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--border);
+  border-radius: 3px;
+}
+.usage-bar-fill {
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+.usage-bar-fill--over { background-color: var(--error); }

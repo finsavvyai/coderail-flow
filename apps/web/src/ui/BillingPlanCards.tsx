@@ -25,79 +25,46 @@ export function BillingPlanCards({
 }: BillingPlanCardsProps) {
   return (
     <>
-      <div className="h2" style={{ marginBottom: 16 }}>
-        Choose Your Plan
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 16,
-          marginBottom: 24,
-        }}
-      >
-        {plans.map((p) => (
-          <div
-            key={p.key}
-            className="card"
-            style={{
-              border: p.featured ? '1px solid #2b7cff' : undefined,
-              position: 'relative',
-            }}
-          >
-            {p.featured && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: '#2b7cff',
-                  color: '#fff',
-                  padding: '2px 12px',
-                  borderRadius: 999,
-                  fontSize: 11,
-                  fontWeight: 700,
-                }}
-              >
-                Most Popular
+      <div className="h2 billing-plan-heading">Choose Your Plan</div>
+      <div className="billing-plan-grid">
+        {plans.map((p) => {
+          const cardClass = [
+            'billing-plan-card',
+            p.featured ? 'featured' : '',
+            p.current ? 'current' : '',
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          return (
+            <div key={p.key} className={cardClass}>
+              {p.featured && (
+                <div className="billing-popular-badge">Most Popular</div>
+              )}
+              <div className="billing-plan-name">{p.name}</div>
+              <div className="billing-plan-price-row">
+                <span className="billing-plan-price">{p.price}</span>
+                <span className="billing-plan-period">{p.period}</span>
               </div>
-            )}
-            <div className="h2" style={{ marginBottom: 4 }}>
-              {p.name}
+              <ul className="billing-plan-features">
+                {p.features.map((f, i) => (
+                  <li key={i}>
+                    <Check size={13} aria-hidden="true" /> {f}
+                  </li>
+                ))}
+              </ul>
+              <PlanButton
+                planKey={p.key}
+                current={p.current}
+                featured={p.featured}
+                accountPlan={accountPlan}
+                upgrading={upgrading}
+                name={p.name}
+                onUpgrade={onUpgrade}
+              />
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 12 }}>
-              <span style={{ fontSize: 32, fontWeight: 800 }}>{p.price}</span>
-              <span className="small">{p.period}</span>
-            </div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px' }}>
-              {p.features.map((f, i) => (
-                <li
-                  key={i}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '4px 0',
-                    fontSize: 13,
-                    color: '#a8b3cf',
-                  }}
-                >
-                  <Check size={13} style={{ color: '#22c55e' }} aria-hidden="true" /> {f}
-                </li>
-              ))}
-            </ul>
-            <PlanButton
-              planKey={p.key}
-              current={p.current}
-              featured={p.featured}
-              accountPlan={accountPlan}
-              upgrading={upgrading}
-              name={p.name}
-              onUpgrade={onUpgrade}
-            />
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );
@@ -122,22 +89,21 @@ function PlanButton({
 }) {
   if (current) {
     return (
-      <button className="btn" disabled style={{ width: '100%' }}>
+      <button className="btn billing-plan-btn" disabled>
         Current Plan
       </button>
     );
   }
   if (planKey === 'free') {
     return (
-      <button className="btn" disabled style={{ width: '100%' }}>
+      <button className="btn billing-plan-btn" disabled>
         {accountPlan !== 'free' ? 'Downgrade' : 'Active'}
       </button>
     );
   }
   return (
     <button
-      className="btn"
-      style={{ width: '100%', background: featured ? '#2b7cff' : undefined }}
+      className={`btn billing-plan-btn${featured ? ' billing-plan-btn-featured' : ''}`}
       onClick={() => onUpgrade(planKey as 'pro' | 'team')}
       disabled={!!upgrading}
     >

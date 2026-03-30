@@ -73,7 +73,7 @@ export function ElementMapper({
     }
     setLocatorTestResult('pass');
     const prevOutline = el.style.outline;
-    el.style.outline = '3px solid #22c55e';
+    el.style.outline = '3px solid var(--success)';
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     window.setTimeout(() => {
       el.style.outline = prevOutline;
@@ -130,8 +130,8 @@ export function ElementMapper({
   }
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 100px)', gap: 16 }}>
-      <div style={{ flex: '0 0 360px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="inspector-layout">
+      <div className="inspector-sidebar">
         <InspectToolbar
           url={url}
           setUrl={setUrl}
@@ -165,7 +165,7 @@ export function ElementMapper({
         )}
       </div>
 
-      <div className="card" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <div className="card inspector-preview">
         <ElementMapperPreview
           iframeLoaded={iframeLoaded}
           inspectMode={inspectMode}

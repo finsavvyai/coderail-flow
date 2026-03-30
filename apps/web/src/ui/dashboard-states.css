@@ -1,0 +1,110 @@
+/* ---- Dashboard — Empty State, Loading State, Spinner ---- */
+
+/* ---- Empty State ---- */
+.dash-empty {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.dash-empty-icon {
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.dash-empty h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.dash-empty p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+}
+
+.dash-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dash-empty-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* ---- Table empty row ---- */
+.dash-table-empty {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.dash-table-empty p {
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+/* ---- Loading State ---- */
+.dash-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.dash-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ---- Status Badges ---- */
+.dash-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.dash-badge.succeeded {
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(76, 175, 80, 0.25);
+}
+
+.dash-badge.failed {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--error);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.dash-badge.running {
+  background: rgba(43, 124, 255, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(43, 124, 255, 0.25);
+}
+
+.dash-badge.pending {
+  background: rgba(139, 149, 176, 0.12);
+  color: var(--text-muted);
+  border: 1px solid rgba(139, 149, 176, 0.25);
+}

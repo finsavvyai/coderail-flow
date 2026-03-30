@@ -14,6 +14,20 @@ type LiveProgressProps = {
   onComplete?: () => void;
 };
 
+const BADGE_CLASS: Record<string, string> = {
+  queued: 'badge lp-badge-queued',
+  running: 'badge lp-badge-running',
+  succeeded: 'badge lp-badge-succeeded',
+  failed: 'badge lp-badge-failed',
+};
+
+const BAR_CLASS: Record<string, string> = {
+  queued: 'lp-bar-fill lp-bar-fill--queued',
+  running: 'lp-bar-fill lp-bar-fill--running',
+  succeeded: 'lp-bar-fill lp-bar-fill--succeeded',
+  failed: 'lp-bar-fill lp-bar-fill--failed',
+};
+
 export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
   const [progress, setProgress] = useState<ProgressState>({
     step: 0,
@@ -30,14 +44,10 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
         const data = await getRun(runId);
         const run = data.run;
 
-        // Calculate progress based on artifacts (screenshots indicate completed steps)
         const screenshots = (data.artifacts || []).filter((a: any) =>
           a.kind?.startsWith('screenshot')
         );
         const step = screenshots.length;
-
-        // Estimate total from flow definition or default to unknown
-        // For now, we'll show progress as we go
         const status = run.status;
 
         setProgress({
@@ -55,7 +65,6 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
                   : 0,
         });
 
-        // If complete, stop polling
         if (status === 'succeeded' || status === 'failed') {
           if (interval) clearInterval(interval);
           if (onComplete) onComplete();
@@ -65,10 +74,8 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
       }
     };
 
-    // Poll immediately
     void pollProgress();
 
-    // Then poll every 1 second while running
     if (progress.status !== 'succeeded' && progress.status !== 'failed') {
       interval = setInterval(() => void pollProgress(), 1000);
     }
@@ -78,28 +85,18 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
     };
   }, [runId, onComplete, progress.status]);
 
+  const badgeClass = BADGE_CLASS[progress.status] || BADGE_CLASS.queued;
+  const barFillClass = BAR_CLASS[progress.status] || BAR_CLASS.queued;
+
   return (
-    <div style={{ marginTop: 16, marginBottom: 16 }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 8,
-        }}
-      >
+    <div className="lp-wrapper">
+      <div className="lp-header">
         <div>
-          <span
-            className="badge"
-            style={{
-              backgroundColor: getStatusColor(progress.status),
-              color: '#fff',
-            }}
-          >
+          <span className={badgeClass}>
             {progress.status}
           </span>
           {progress.step > 0 && (
-            <span className="small" style={{ marginLeft: 8 }}>
+            <span className="small lp-step-info">
               Step {progress.step} {progress.total > 0 ? `of ${progress.total}` : ''}
             </span>
           )}
@@ -114,47 +111,22 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label="Flow execution progress"
-        style={{
-          width: '100%',
-          height: 8,
-          backgroundColor: '#2a2a2a',
-          borderRadius: 4,
-          overflow: 'hidden',
-        }}
+        className="lp-bar-track"
       >
         <div
-          style={{
-            width: `${progress.percentage}%`,
-            height: '100%',
-            backgroundColor: getStatusColor(progress.status),
-            transition: 'width 0.3s ease',
-          }}
-        ></div>
+          className={barFillClass}
+          style={{ width: `${progress.percentage}%` }}
+        />
       </div>
 
       {/* Description */}
       {progress.description && (
-        <div className="small" style={{ marginTop: 8, color: '#a8b3cf' }}>
+        <div className="small lp-description">
           {progress.description}
         </div>
       )}
     </div>
   );
-}
-
-function getStatusColor(status: string): string {
-  switch (status) {
-    case 'succeeded':
-      return '#22c55e';
-    case 'failed':
-      return '#f44336';
-    case 'running':
-      return '#3b82f6';
-    case 'queued':
-      return '#6b7280';
-    default:
-      return '#6b7280';
-  }
 }
 
 function getStatusDescription(status: string, step: number): string {

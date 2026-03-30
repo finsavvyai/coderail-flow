@@ -18,51 +18,29 @@ export function TemplateLibrary({
         Template Library
       </div>
       {templates.length === 0 ? (
-        <div className="small" style={{ color: '#a8b3cf' }}>
+        <div className="small tpl-lib-empty">
           No templates available yet.
         </div>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: 10,
-          }}
-        >
+        <div className="tpl-lib-grid">
           {templates.map((t) => (
-            <div
-              key={t.id}
-              style={{
-                background: '#161616',
-                border: '1px solid #2a2a2a',
-                borderRadius: 8,
-                padding: 12,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 6,
-                }}
-              >
-                <div style={{ fontWeight: 600, fontSize: 13 }}>{t.name}</div>
+            <div key={t.id} className="tpl-lib-card">
+              <div className="tpl-lib-card-header">
+                <div className="tpl-lib-card-name">{t.name}</div>
                 <span className="badge">{t.category}</span>
               </div>
-              <div className="small" style={{ color: '#a8b3cf', minHeight: 36 }}>
+              <div className="small tpl-lib-card-desc">
                 {t.description}
               </div>
-              <div className="small" style={{ marginTop: 8, color: '#6f6f6f' }}>
+              <div className="small tpl-lib-card-params">
                 Params: {t.params?.length ?? 0}
               </div>
               <button
-                className="btn"
-                style={{ marginTop: 10, width: '100%' }}
+                className="btn tpl-lib-card-btn"
                 disabled={installingTemplateId === t.id}
                 onClick={() => onInstall(t)}
               >
-                {installingTemplateId === t.id ? 'Installing…' : 'Install Template'}
+                {installingTemplateId === t.id ? 'Installing...' : 'Install Template'}
               </button>
             </div>
           ))}

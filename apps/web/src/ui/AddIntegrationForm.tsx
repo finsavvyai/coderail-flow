@@ -21,66 +21,48 @@ export function AddIntegrationForm({ onSubmit, onCancel }: AddIntegrationFormPro
   }
 
   return (
-    <div className="card" style={{ padding: 20 }}>
-      <div style={{ fontWeight: 500, marginBottom: 16 }}>New Integration</div>
+    <div className="card add-form-card">
+      <div className="add-form-title">New Integration</div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: 8,
-          marginBottom: 16,
-        }}
-      >
+      <div className="add-form-types">
         {INTEGRATION_TYPES.map((t) => (
           <button
             key={t.value}
-            className="btn"
+            className={`btn add-form-type-btn${addType === t.value ? ' add-form-type-btn--selected' : ''}`}
             onClick={() => {
               setAddType(t.value);
               setAddConfig({});
             }}
-            style={{
-              background: addType === t.value ? 'rgba(59,130,246,0.15)' : '#1a1a1a',
-              border: addType === t.value ? '1px solid #3b82f6' : '1px solid #2a2a2a',
-              padding: '12px 8px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 6,
-            }}
           >
             <t.icon size={20} style={{ color: t.color }} />
-            <span style={{ fontSize: 12 }}>{t.label}</span>
+            <span className="add-form-type-label">{t.label}</span>
           </button>
         ))}
       </div>
 
       <input
-        className="input"
+        className="input add-form-input-gap"
         placeholder="Integration name (e.g., 'Engineering Slack')"
         value={addName}
         onChange={(e) => setAddName(e.target.value)}
-        style={{ marginBottom: 12 }}
       />
 
       {getConfigFields(addType).map((field) => (
         <input
           key={field.key}
-          className="input"
+          className="input add-form-input-gap-sm"
           type={field.secret ? 'password' : 'text'}
           placeholder={field.placeholder}
           value={addConfig[field.key] || ''}
           onChange={(e) => setAddConfig({ ...addConfig, [field.key]: e.target.value })}
-          style={{ marginBottom: 8 }}
         />
       ))}
 
-      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-        <button className="btn" onClick={handleCreate} style={{ background: '#22c55e' }}>
+      <div className="add-form-actions">
+        <button className="btn add-form-create-btn" onClick={handleCreate}>
           <Check size={14} /> Create
         </button>
-        <button className="btn" onClick={onCancel} style={{ background: '#2a2a2a' }}>
+        <button className="btn add-form-cancel-btn" onClick={onCancel}>
           Cancel
         </button>
       </div>

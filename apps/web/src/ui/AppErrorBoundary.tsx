@@ -32,48 +32,22 @@ export class AppErrorBoundary extends React.Component<
     }
 
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'grid',
-          placeItems: 'center',
-          padding: 24,
-          background:
-            'radial-gradient(circle at top, rgba(48, 79, 142, 0.35), transparent 48%), #07111f',
-          color: '#d6deeb',
-        }}
-      >
+      <div className="error-boundary-backdrop">
         <div
-          className="card"
+          className="card error-boundary-card"
           role="alert"
-          style={{
-            width: 'min(560px, 100%)',
-            padding: 24,
-            border: '1px solid rgba(112, 132, 168, 0.28)',
-          }}
         >
-          <div className="eyebrow" style={{ color: '#7dd3fc', marginBottom: 12 }}>
+          <div className="eyebrow error-boundary-eyebrow">
             Application Error
           </div>
           <h1 className="h1" style={{ marginBottom: 12 }}>
             The workspace failed to load.
           </h1>
-          <p className="body" style={{ marginBottom: 20, color: '#a8b3cf' }}>
+          <p className="body error-boundary-body">
             Reload the page to retry. If this persists, check the browser console and API health
             endpoints before routing traffic to this deployment.
           </p>
-          <div
-            style={{
-              marginBottom: 20,
-              padding: 12,
-              borderRadius: 12,
-              background: 'rgba(7, 17, 31, 0.7)',
-              border: '1px solid rgba(112, 132, 168, 0.22)',
-              fontFamily: 'monospace',
-              fontSize: 13,
-              overflowX: 'auto',
-            }}
-          >
+          <div className="error-boundary-trace">
             {this.state.error.message}
           </div>
           <button className="btn btn-primary" type="button" onClick={this.handleReload}>

@@ -25,11 +25,8 @@ export function SlackMessagePreview({
 }: SlackMessagePreviewProps) {
   return (
     <>
-      <div style={{ marginBottom: 16 }}>
-        <label
-          htmlFor="slack-channel"
-          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-        >
+      <div className="slack-field-group">
+        <label htmlFor="slack-channel" className="slack-field-label">
           Channel
         </label>
         <input
@@ -42,73 +39,53 @@ export function SlackMessagePreview({
         />
       </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <label
-          htmlFor="slack-message"
-          style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500 }}
-        >
+      <div className="slack-field-group">
+        <label htmlFor="slack-message" className="slack-field-label">
           Message
         </label>
         <textarea
           id="slack-message"
-          className="input"
+          className="input slack-textarea"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Check out this flow..."
-          style={{ minHeight: 80, resize: 'vertical' }}
         />
       </div>
 
-      <div style={{ marginBottom: 20 }}>
-        <label style={{ display: 'block', marginBottom: 8, fontSize: 13, fontWeight: 500 }}>
+      <div className="slack-field-group--lg">
+        <label className="slack-field-label slack-field-label--attach">
           Attachments
         </label>
-        <label
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            cursor: 'pointer',
-            marginBottom: 8,
-          }}
-        >
+        <label className="slack-checkbox-label">
           <input
             type="checkbox"
             checked={includeScreenshot}
             onChange={(e) => setIncludeScreenshot(e.target.checked)}
-            style={{ width: 16, height: 16 }}
+            className="slack-checkbox"
           />
-          <span style={{ fontSize: 13 }}>Include screenshot</span>
+          <span className="slack-checkbox-text">Include screenshot</span>
         </label>
         {runId && (
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+          <label className="slack-checkbox-label">
             <input
               type="checkbox"
               checked={includeVideo}
               onChange={(e) => setIncludeVideo(e.target.checked)}
-              style={{ width: 16, height: 16 }}
+              className="slack-checkbox"
             />
-            <span style={{ fontSize: 13 }}>Include video recording</span>
+            <span className="slack-checkbox-text">Include video recording</span>
           </label>
         )}
       </div>
 
-      <div
-        style={{
-          padding: 12,
-          background: '#0a1628',
-          borderRadius: 8,
-          border: '1px solid #4A154B',
-          marginBottom: 20,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-          <AlertCircle size={16} style={{ color: '#4A154B' }} />
-          <span style={{ fontSize: 12, fontWeight: 500, color: '#4A154B' }}>
+      <div className="slack-integration-box">
+        <div className="slack-integration-header">
+          <AlertCircle size={16} className="slack-integration-icon" />
+          <span className="slack-integration-title">
             Slack Integration Required
           </span>
         </div>
-        <div style={{ fontSize: 11, color: '#a3a3a3', lineHeight: 1.5 }}>
+        <div className="slack-integration-body">
           You need to configure a Slack integration first. Go to Settings → Integrations → Add
           Integration → Slack.
         </div>

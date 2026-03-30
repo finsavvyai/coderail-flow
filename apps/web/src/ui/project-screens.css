@@ -1,0 +1,67 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- Project Screens ---- */
+.project-screens-list {
+  flex: 1;
+  overflow: auto;
+}
+
+.project-screens-heading {
+  margin-bottom: 12px;
+}
+
+.project-screens-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+.project-screens-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-screen-item {
+  padding: 12px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.project-screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.project-screen-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.project-screen-path {
+  color: var(--text-muted);
+}
+
+.project-element-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.project-element-tag {
+  padding: 4px 10px;
+  background: var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.project-element-tag-icon {
+  color: var(--purple);
+}

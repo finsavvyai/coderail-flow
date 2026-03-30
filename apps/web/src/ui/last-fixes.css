@@ -1,0 +1,159 @@
+/* Inherits variables from .dash-page and .landing */
+
+/* ---- App Status Bar ---- */
+.app-status-bar {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.app-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-status-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.app-status-desc {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.app-status-version {
+  font-size: 12px;
+  color: var(--success);
+}
+
+/* ---- Step List ---- */
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-list-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+}
+
+.step-list-item {
+  padding: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.step-list-item:hover {
+  border-color: rgba(43, 124, 255, 0.2);
+}
+
+.step-list-item.selected {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: var(--purple);
+}
+
+.step-list-grip {
+  color: var(--text-muted);
+}
+
+.step-list-content {
+  flex: 1;
+}
+
+.step-list-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.step-list-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- Element Mapper Preview ---- */
+.mapper-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+}
+
+.mapper-empty-inner {
+  text-align: center;
+}
+
+.mapper-viewport {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  cursor: default;
+  position: relative;
+}
+
+.mapper-viewport.inspect {
+  cursor: crosshair;
+}
+
+.mapper-demo-content {
+  padding: 24px;
+  color: #000;
+}
+
+.mapper-demo-btn {
+  padding: 10px 20px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.mapper-demo-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mapper-demo-input {
+  margin-left: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.mapper-demo-section {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.mapper-inspect-banner {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--purple);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 1000;
+}

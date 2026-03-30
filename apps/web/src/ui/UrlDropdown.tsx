@@ -15,58 +15,12 @@ export function UrlDropdown({
   onRemoveFavorite,
   onRemoveRecent,
 }: UrlDropdownProps) {
-  const rowStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '6px 12px',
-    cursor: 'pointer',
-    fontSize: 13,
-    color: '#e0e0e0',
-  };
-  const removeBtn = {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 10,
-    color: '#a8b3cf',
-    minHeight: 44,
-    minWidth: 44,
-    display: 'flex' as const,
-    alignItems: 'center' as const,
-    justifyContent: 'center' as const,
-    borderRadius: 4,
-  };
-
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        right: 0,
-        zIndex: 10,
-        background: '#1e1e1e',
-        border: '1px solid #333',
-        borderRadius: 8,
-        maxHeight: 260,
-        overflowY: 'auto',
-        marginTop: 4,
-        boxShadow: '0 8px 24px rgba(0,0,0,.5)',
-      }}
-    >
+    <div className="url-dropdown">
       {favoriteUrls.length > 0 && (
         <>
-          <div
-            style={{
-              padding: '8px 12px',
-              fontSize: 11,
-              color: '#a8b3cf',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}
-          >
-            <Star size={10} fill="#eab308" color="#eab308" aria-hidden="true" /> Favorites
+          <div className="url-section-header">
+            <Star size={10} className="star-gold" aria-hidden="true" /> Favorites
           </div>
           {favoriteUrls.map((url) => (
             <UrlRow
@@ -74,8 +28,6 @@ export function UrlDropdown({
               url={url}
               onSelect={onSelect}
               onRemove={onRemoveFavorite}
-              rowStyle={rowStyle}
-              removeBtn={removeBtn}
             />
           ))}
         </>
@@ -83,15 +35,7 @@ export function UrlDropdown({
       {recentUrls.length > 0 && (
         <>
           <div
-            style={{
-              padding: '8px 12px',
-              fontSize: 11,
-              color: '#a8b3cf',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-              borderTop: favoriteUrls.length > 0 ? '1px solid #333' : 'none',
-            }}
+            className={`url-section-header${favoriteUrls.length > 0 ? ' url-section-header--border' : ''}`}
           >
             <Clock size={10} aria-hidden="true" /> Recent
           </div>
@@ -101,8 +45,6 @@ export function UrlDropdown({
               url={url}
               onSelect={onSelect}
               onRemove={onRemoveRecent}
-              rowStyle={rowStyle}
-              removeBtn={removeBtn}
             />
           ))}
         </>
@@ -115,22 +57,16 @@ function UrlRow({
   url,
   onSelect,
   onRemove,
-  rowStyle,
-  removeBtn,
 }: {
   url: string;
   onSelect: (url: string) => void;
   onRemove: (url: string) => void;
-  rowStyle: React.CSSProperties;
-  removeBtn: React.CSSProperties;
 }) {
   return (
     <div
       role="option"
       tabIndex={0}
-      style={rowStyle}
-      onMouseEnter={(e) => (e.currentTarget.style.background = '#2a2a2a')}
-      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+      className="url-row"
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -138,10 +74,7 @@ function UrlRow({
         }
       }}
     >
-      <div
-        style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-        onClick={() => onSelect(url)}
-      >
+      <div className="url-row-text" onClick={() => onSelect(url)}>
         {url}
       </div>
       <button
@@ -149,7 +82,7 @@ function UrlRow({
           e.stopPropagation();
           onRemove(url);
         }}
-        style={removeBtn}
+        className="url-remove-btn"
         aria-label="Remove URL"
       >
         <X size={12} />

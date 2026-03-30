@@ -1,0 +1,137 @@
+/* Run / progress / error display styles */
+
+/* --- ErrorDisplay --- */
+.error-display {
+  background-color: color-mix(in srgb, var(--error) 12%, var(--bg-dark));
+  border: 2px solid var(--error);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.error-display-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.error-display-header-left { display: flex; align-items: center; gap: 8px; }
+.error-display-icon { color: var(--error); }
+.error-display-title { color: var(--error); margin: 0; }
+.error-display-code { color: color-mix(in srgb, var(--error) 65%, white); margin-top: 4px; }
+.error-display-retry.btn {
+  background-color: var(--accent);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+}
+.error-display-retry.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.error-display-panel {
+  background-color: var(--bg-dark);
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.error-display-label { color: var(--text-muted); margin-bottom: 4px; }
+.error-display-message {
+  color: color-mix(in srgb, var(--error) 65%, white);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+.error-display-screenshot-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  min-height: 44px;
+}
+.error-display-screenshot-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.error-display-screenshot-img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.error-display-toggle.btn {
+  font-size: 12px;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.error-display-toggle.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.error-display-stack {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: var(--bg-dark);
+  border-radius: 6px;
+  font-size: 11px;
+  color: color-mix(in srgb, var(--error) 65%, white);
+  overflow: auto;
+  max-height: 300px;
+  border: 1px solid var(--border);
+}
+.error-display-tips { color: var(--text-muted); margin-bottom: 6px; }
+.error-display-tips-icon { display: inline; margin-right: 6px; vertical-align: middle; }
+.error-display-tips-list { margin: 0; padding-left: 20px; color: var(--text-muted); font-size: 12px; }
+
+/* --- Shared status icon classes --- */
+.ftr-status-icon-accent { color: var(--accent); }
+.ftr-status-icon-success { color: var(--success); }
+.ftr-status-icon-error { color: var(--error); }
+.ftr-status-icon-muted { color: var(--text-muted); }
+.ftr-status-icon-dim { color: var(--text-dim); }
+.ftr-inline-icon { display: inline; margin-right: 8px; }
+
+/* --- RunProgress --- */
+.rp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.rp-status-group { display: flex; align-items: center; gap: 8px; }
+.rp-status-label { font-weight: 500; }
+.rp-timer { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 13px; }
+.rp-bar-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.rp-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+.rp-bar-fill--running { background: var(--accent); }
+.rp-bar-fill--succeeded { background: var(--success); }
+.rp-bar-fill--failed { background: var(--error); }
+.rp-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* --- RunProgressStepList --- */
+.rpsl-list { display: flex; flex-direction: column; gap: 4px; }
+.rpsl-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.rpsl-step--running { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.rpsl-pending-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text-dim); }
+.rpsl-step-name--pending { color: var(--text-muted); }
+.rpsl-step-name--running { color: var(--text); }
+.rpsl-step-name--completed { color: var(--text-dim); }
+.rpsl-step-name--failed { color: var(--error); }
+.rpsl-duration { margin-left: auto; font-size: 11px; color: var(--text-muted); }

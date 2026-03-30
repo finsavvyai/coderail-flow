@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Monitor } from 'lucide-react';
 import type { RecordedAction, RecorderMode } from './FlowRecorder.types';
 import { IframePreview, WindowModeView, EmptyPreview } from './PreviewControls';
 
@@ -30,10 +30,7 @@ export function RecorderPreview(props: RecorderPreviewProps) {
   } = props;
 
   return (
-    <div
-      className="card"
-      style={{ flex: 2, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
-    >
+    <div className="card recorder-preview-card">
       <PreviewHeader
         targetUrl={targetUrl}
         isRecording={isRecording}
@@ -41,7 +38,7 @@ export function RecorderPreview(props: RecorderPreviewProps) {
         iframeLoaded={iframeLoaded}
         onPopOut={onPopOut}
       />
-      <div style={{ flex: 1, background: '#0a0a0a', position: 'relative' }}>
+      <div className="recorder-preview-viewport">
         {targetUrl && isRecording && mode === 'server' ? (
           <ServerModeView screenshot={serverScreenshot} iframeLoaded={iframeLoaded} />
         ) : targetUrl && isRecording && mode === 'iframe' ? (
@@ -74,26 +71,15 @@ function ServerModeView({
       <img
         src={screenshot}
         alt="Live browser preview"
-        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        className="recorder-preview-img"
       />
     );
   }
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        color: '#666',
-        fontSize: 14,
-        flexDirection: 'column',
-        gap: 8,
-      }}
-    >
-      <div style={{ fontSize: 24 }}>🖥️</div>
+    <div className="recorder-preview-placeholder">
+      <Monitor size={24} />
       <div>{iframeLoaded ? 'Loading preview…' : 'Launching browser…'}</div>
-      <div style={{ fontSize: 11, color: '#555' }}>
+      <div className="recorder-preview-hint">
         Interact with the Puppeteer browser window to record actions
       </div>
     </div>
@@ -114,29 +100,17 @@ function PreviewHeader({
   onPopOut: () => void;
 }) {
   return (
-    <div
-      style={{
-        padding: '8px 12px',
-        background: '#1a1a1a',
-        borderBottom: '1px solid #2a2a2a',
-        fontSize: 12,
-        color: '#a8b3cf',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+    <div className="recorder-preview-header">
+      <span className="recorder-preview-url">
         {targetUrl || 'Enter a URL above to start recording'}
       </span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        {isRecording && iframeLoaded && <span style={{ color: '#22c55e' }}>Connected</span>}
+      <span className="recorder-preview-status">
+        {isRecording && iframeLoaded && <span className="recorder-connected">Connected</span>}
         {isRecording && mode === 'iframe' && (
           <button
-            className="btn"
+            className="btn recorder-popout-btn"
             onClick={onPopOut}
             title="Pop out to new window"
-            style={{ padding: '2px 6px', background: '#2a2a2a', fontSize: 10 }}
           >
             <ExternalLink size={10} /> Pop Out
           </button>
