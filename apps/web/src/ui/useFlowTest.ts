@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { apiUrl, getClerkToken } from './api-core';
+import { apiUrl, getApiToken } from './api-core';
 
 export type FlowTestStatus = 'idle' | 'running' | 'succeeded' | 'failed';
 
@@ -42,7 +42,7 @@ export function useFlowTest({
 
   async function pollRunStatus(id: string) {
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const headers: Record<string, string> = {};
       if (token) headers.Authorization = `Bearer ${token}`;
 
@@ -122,7 +122,7 @@ export function useFlowTest({
     setStepDetails([]);
 
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       if (token) headers.Authorization = `Bearer ${token}`;
 

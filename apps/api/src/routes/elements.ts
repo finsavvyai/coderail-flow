@@ -1,5 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { requireAuth } from '../auth';
+import type { Env } from '../env';
 import {
   ElementSchema,
   verifyProjectMembership,
@@ -8,12 +10,12 @@ import {
   buildElementUpdateFields,
 } from './elements-validation';
 
-export const elementRoutes = new Hono<{ Bindings: Env }>();
+export const elementRoutes = new Hono<{ Bindings: Env; Variables: { userId: string } }>();
+elementRoutes.use('*', requireAuth());
 
 // POST /elements - Create element with locators
 elementRoutes.post('/', async (c) => {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const element = ElementSchema.parse(await c.req.json());
@@ -22,7 +24,7 @@ elementRoutes.post('/', async (c) => {
       .first();
     if (!screen) return c.json({ error: 'screen_not_found' }, 404);
 
-    if (!(await verifyProjectMembership(c.env.DB, screen.project_id as string, token))) {
+    if (!(await verifyProjectMembership(c.env.DB, screen.project_id as string, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -55,8 +57,7 @@ elementRoutes.post('/', async (c) => {
 
 // GET /elements - List elements for a screen
 elementRoutes.get('/', async (c) => {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   const screenId = c.req.query('screenId');
   if (!screenId) return c.json({ error: 'screen_id_required' }, 400);
@@ -69,7 +70,7 @@ elementRoutes.get('/', async (c) => {
       .first();
     if (!screen) return c.json({ error: 'screen_not_found' }, 404);
 
-    if (!(await verifyProjectMembership(c.env.DB, screen.project_id as string, token))) {
+    if (!(await verifyProjectMembership(c.env.DB, screen.project_id as string, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -88,14 +89,13 @@ elementRoutes.get('/', async (c) => {
 
 // GET /elements/:id - Get element details
 elementRoutes.get('/:id', async (c) => {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const element = await getElementWithProject(c.env.DB, c.req.param('id'));
     if (!element) return c.json({ error: 'element_not_found' }, 404);
 
-    if (!(await verifyProjectMembership(c.env.DB, element.project_id, token))) {
+    if (!(await verifyProjectMembership(c.env.DB, element.project_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
     return c.json(parseElementRow(element));
@@ -107,15 +107,14 @@ elementRoutes.get('/:id', async (c) => {
 
 // PUT /elements/:id - Update element
 elementRoutes.put('/:id', async (c) => {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const updates = ElementSchema.partial().parse(await c.req.json());
     const element = await getElementWithProject(c.env.DB, c.req.param('id'));
     if (!element) return c.json({ error: 'element_not_found' }, 404);
 
-    if (!(await verifyProjectMembership(c.env.DB, element.project_id, token))) {
+    if (!(await verifyProjectMembership(c.env.DB, element.project_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -139,14 +138,13 @@ elementRoutes.put('/:id', async (c) => {
 
 // DELETE /elements/:id - Delete element
 elementRoutes.delete('/:id', async (c) => {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const element = await getElementWithProject(c.env.DB, c.req.param('id'));
     if (!element) return c.json({ error: 'element_not_found' }, 404);
 
-    if (!(await verifyProjectMembership(c.env.DB, element.project_id, token))) {
+    if (!(await verifyProjectMembership(c.env.DB, element.project_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 

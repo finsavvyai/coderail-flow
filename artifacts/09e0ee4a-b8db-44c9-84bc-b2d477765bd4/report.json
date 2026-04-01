@@ -1,0 +1,27 @@
+{
+  "runId": "09e0ee4a-b8db-44c9-84bc-b2d477765bd4",
+  "flowId": "hello-flow",
+  "flowName": "Hello Flow",
+  "status": "succeeded",
+  "runnerVersion": "local-puppeteer-1.0",
+  "duration": 3869,
+  "stepsExecuted": 2,
+  "stepsFailed": 0,
+  "steps": [
+    {
+      "idx": 0,
+      "type": "caption",
+      "status": "ok",
+      "narrate": "Hello from CodeRail Flow!",
+      "durationMs": 3009
+    },
+    {
+      "idx": 1,
+      "type": "pause",
+      "status": "ok",
+      "durationMs": 801
+    }
+  ],
+  "params": {},
+  "generatedAt": "2026-02-21T21:37:04.863Z"
+}

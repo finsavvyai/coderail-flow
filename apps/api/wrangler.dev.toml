@@ -21,3 +21,4 @@ bucket_name = "coderail-flow-artifacts"
 [vars]
 APP_ENV = "development"
 PUBLIC_BASE_URL = "http://localhost:5173"
+AUTH_URL = "http://localhost:8787/auth"

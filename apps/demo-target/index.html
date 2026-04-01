@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Admin — Transactions</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+    .topbar { background: #1a1d2e; border-bottom: 1px solid #2d3148; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-size: 18px; color: #818cf8; }
+    .topbar .user { font-size: 13px; color: #8b95b0; }
+    .sidebar { position: fixed; left: 0; top: 49px; bottom: 0; width: 200px; background: #1a1d2e; border-right: 1px solid #2d3148; padding: 16px 0; }
+    .sidebar a { display: block; padding: 10px 24px; color: #8b95b0; text-decoration: none; font-size: 14px; transition: all 0.2s; }
+    .sidebar a:hover, .sidebar a.active { color: #e2e8f0; background: rgba(99,102,241,0.1); }
+    .sidebar a.active { border-left: 3px solid #818cf8; }
+    .main { margin-left: 200px; padding: 24px; margin-top: 49px; }
+    .page-title { font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+    .search-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+    .search-bar input { flex: 1; padding: 10px 14px; background: #1a1d2e; border: 1px solid #2d3148; border-radius: 8px; color: #e2e8f0; font-size: 14px; outline: none; }
+    .search-bar input:focus { border-color: #818cf8; }
+    .search-bar button { padding: 10px 20px; background: #6366f1; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
+    .search-bar button:hover { background: #4f46e5; }
+    table { width: 100%; border-collapse: collapse; background: #1a1d2e; border-radius: 8px; overflow: hidden; }
+    th { text-align: left; padding: 12px 16px; background: #252838; color: #8b95b0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    td { padding: 14px 16px; border-top: 1px solid #2d3148; font-size: 14px; }
+    tr { cursor: pointer; transition: background 0.15s; }
+    tr:hover { background: rgba(99,102,241,0.05); }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+    .badge-failed { background: #3b1a1a; color: #f87171; }
+    .badge-success { background: #1a3b2a; color: #4ade80; }
+    .badge-pending { background: #3b3a1a; color: #facc15; }
+    .amount { font-family: 'SF Mono', 'Fira Code', monospace; }
+    /* Detail panel */
+    .detail-panel { display: none; margin-top: 24px; background: #1a1d2e; border-radius: 8px; padding: 24px; border: 1px solid #2d3148; }
+    .detail-panel.visible { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .detail-field { }
+    .detail-field .label { font-size: 12px; color: #8b95b0; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .detail-field .value { font-size: 15px; color: #e2e8f0; padding: 8px 12px; background: #252838; border-radius: 6px; }
+    .detail-field .value.error { color: #f87171; border: 1px solid #7f1d1d; }
+    .status-timeline { margin-top: 20px; padding: 16px; background: #252838; border-radius: 8px; }
+    .status-timeline h4 { font-size: 13px; color: #8b95b0; margin-bottom: 12px; }
+    .timeline-item { display: flex; gap: 12px; padding: 8px 0; font-size: 13px; }
+    .timeline-item .time { color: #8b95b0; min-width: 80px; }
+    /* Dashboard page */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #1a1d2e; border: 1px solid #2d3148; border-radius: 8px; padding: 20px; }
+    .stat-card .stat-label { font-size: 12px; color: #8b95b0; text-transform: uppercase; margin-bottom: 8px; }
+    .stat-card .stat-value { font-size: 28px; font-weight: 600; }
+    .stat-card .stat-value.red { color: #f87171; }
+    .stat-card .stat-value.green { color: #4ade80; }
+    .stat-card .stat-value.blue { color: #818cf8; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1 data-testid="app-logo">Acme Payments</h1>
+    <span class="user" data-testid="user-badge">admin@acme.com</span>
+  </div>
+
+  <nav class="sidebar">
+    <a href="#" data-testid="nav-dashboard" class="active" onclick="showPage('dashboard')">Dashboard</a>
+    <a href="#" data-testid="nav-transactions" onclick="showPage('transactions')">Transactions</a>
+    <a href="#" data-testid="nav-customers" onclick="showPage('customers')">Customers</a>
+    <a href="#" data-testid="nav-settings" onclick="showPage('settings')">Settings</a>
+  </nav>
+
+  <!-- DASHBOARD PAGE -->
+  <div class="main" id="page-dashboard">
+    <div class="page-title" data-testid="page-title">Dashboard</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Volume</div>
+        <div class="stat-value blue" data-testid="stat-volume">$1,284,392</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Successful</div>
+        <div class="stat-value green" data-testid="stat-success">12,847</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Failed</div>
+        <div class="stat-value red" data-testid="stat-failed">342</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Decline Rate</div>
+        <div class="stat-value red" data-testid="stat-decline-rate">2.6%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSACTIONS PAGE -->
+  <div class="main" id="page-transactions" style="display:none">
+    <div class="page-title" data-testid="page-title">Transactions</div>
+
+    <div class="search-bar">
+      <input type="text" data-testid="transaction-search" placeholder="Search by card ID, customer, or reference..." />
+      <button data-testid="search-button" role="button" aria-label="Search" onclick="filterTransactions()">Search</button>
+    </div>
+
+    <table data-testid="transactions-table">
+      <thead>
+        <tr><th>Reference</th><th>Customer</th><th>Card</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+      </thead>
+      <tbody id="txn-body">
+        <tr data-testid="transaction-row-0" onclick="showDetail(0)">
+          <td>TXN-90812</td><td>Sarah Chen</td><td>****7842</td>
+          <td class="amount">$249.00</td><td><span class="badge badge-failed">Declined</span></td><td>Feb 21, 2026</td>
+        </tr>
+        <tr data-testid="transaction-row-1" onclick="showDetail(1)">
+          <td>TXN-90811</td><td>Marcus Johnson</td><td>****3291</td>
+          <td class="amount">$1,200.00</td><td><span class="badge badge-success">Approved</span></td><td>Feb 21, 2026</td>
+        </tr>
+        <tr data-testid="transaction-row-2" onclick="showDetail(2)">
+          <td>TXN-90810</td><td>Aisha Patel</td><td>****5567</td>
+          <td class="amount">$89.50</td><td><span class="badge badge-success">Approved</span></td><td>Feb 20, 2026</td>
+        </tr>
+        <tr data-testid="transaction-row-3" onclick="showDetail(3)">
+          <td>TXN-90809</td><td>James Wilson</td><td>****1104</td>
+          <td class="amount">$3,450.00</td><td><span class="badge badge-failed">Declined</span></td><td>Feb 20, 2026</td>
+        </tr>
+        <tr data-testid="transaction-row-4" onclick="showDetail(4)">
+          <td>TXN-90808</td><td>Elena Rodriguez</td><td>****8823</td>
+          <td class="amount">$560.00</td><td><span class="badge badge-pending">Pending</span></td><td>Feb 20, 2026</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="txn-detail" class="detail-panel" data-testid="transaction-detail">
+      <h3 data-testid="detail-title">Transaction Detail — TXN-90812</h3>
+      <div class="detail-grid">
+        <div class="detail-field">
+          <div class="label">Customer</div>
+          <div class="value" data-testid="detail-customer">Sarah Chen</div>
+        </div>
+        <div class="detail-field">
+          <div class="label">Card</div>
+          <div class="value" data-testid="detail-card">Visa ****7842</div>
+        </div>
+        <div class="detail-field">
+          <div class="label">Amount</div>
+          <div class="value" data-testid="detail-amount">$249.00</div>
+        </div>
+        <div class="detail-field">
+          <div class="label">Status</div>
+          <div class="value error" data-testid="status-badge">Declined</div>
+        </div>
+        <div class="detail-field">
+          <div class="label">Error Code</div>
+          <div class="value error" data-testid="error-code-field">ERR_AUTH_051 — Insufficient Funds</div>
+        </div>
+        <div class="detail-field">
+          <div class="label">Processor Response</div>
+          <div class="value" data-testid="detail-processor">Issuer declined: balance insufficient for requested amount</div>
+        </div>
+      </div>
+      <div class="status-timeline" data-testid="status-timeline">
+        <h4>Timeline</h4>
+        <div class="timeline-item"><span class="time">14:32:01</span> Authorization request sent to Visa network</div>
+        <div class="timeline-item"><span class="time">14:32:02</span> Issuer response received: DECLINED (code 051)</div>
+        <div class="timeline-item"><span class="time">14:32:02</span> Transaction marked as failed</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(page) {
+      document.querySelectorAll('.main').forEach(p => p.style.display = 'none');
+      document.getElementById('page-' + page).style.display = 'block';
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      document.querySelector('[data-testid="nav-' + page + '"]').classList.add('active');
+    }
+
+    function filterTransactions() {
+      const q = document.querySelector('[data-testid="transaction-search"]').value.toLowerCase();
+      document.querySelectorAll('#txn-body tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function showDetail(idx) {
+      document.getElementById('txn-detail').classList.add('visible');
+      // Highlight the clicked row
+      document.querySelectorAll('#txn-body tr').forEach((r, i) => {
+        r.style.background = i === idx ? 'rgba(99,102,241,0.1)' : '';
+      });
+    }
+  </script>
+</body>
+</html>

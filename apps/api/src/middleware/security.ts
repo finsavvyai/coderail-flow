@@ -4,11 +4,28 @@
 
 import type { MiddlewareHandler } from 'hono';
 
+function isProxyRequest(path: string): boolean {
+  return path === '/proxy' || path.startsWith('/proxy/');
+}
+
 /**
  * Add Content Security Policy headers.
  */
 export const cspHeaders: MiddlewareHandler = async (c, next) => {
   await next();
+
+  if (isProxyRequest(c.req.path)) {
+    c.header('X-Content-Type-Options', 'nosniff');
+    c.header('X-XSS-Protection', '1; mode=block');
+    c.header('Referrer-Policy', 'no-referrer');
+    if (!c.res.headers.get('Cache-Control')) {
+      c.header('Cache-Control', 'no-store');
+    }
+    if (c.req.url.startsWith('https://')) {
+      c.header('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+    }
+    return;
+  }
 
   const csp = [
     "default-src 'self'",

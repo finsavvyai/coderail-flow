@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CoderailFlow: Automate any browser workflow in minutes. No code required. Visual flow builder on Cloudflare Workers.">
+  <meta name="theme-color" content="#4c1d95">
+  <title>CoderailFlow - Browser Automation Platform</title>
+  <style>
+    /* Base Styles & Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Apple System Font Stack */
+      --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+
+      /* Colors: Dark Indigo/Violet Gradient Theme */
+      --color-primary: #6366f1;
+      --color-primary-hover: #818cf8;
+      --color-secondary: #8b5cf6;
+      --color-accent: #d946ef;
+
+      --bg-dark: #0f172a;
+      --bg-darker: #0a0e27;
+      --bg-card: #1e1b4b;
+      --bg-card-hover: #2e2a52;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+
+      --border-color: #334155;
+      --border-color-light: #475569;
+
+      /* Grid & Spacing (8pt base) */
+      --spacing-xs: 0.5rem;    /* 8px */
+      --spacing-sm: 1rem;       /* 16px */
+      --spacing-md: 1.5rem;     /* 24px */
+      --spacing-lg: 2rem;       /* 32px */
+      --spacing-xl: 3rem;       /* 48px */
+      --spacing-2xl: 4rem;      /* 64px */
+
+      /* Border Radius (Apple-consistent) */
+      --radius-sm: 0.375rem;    /* 6px */
+      --radius-md: 0.5rem;      /* 8px */
+      --radius-lg: 0.75rem;     /* 12px */
+
+      /* Transitions */
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-system);
+      background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* High Contrast Mode Support */
+    @media (prefers-contrast: more) {
+      :root {
+        --color-primary: #4f46e5;
+        --text-secondary: #e2e8f0;
+      }
+    }
+
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ========== Header & Navigation ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 14, 39, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+      padding: var(--spacing-sm) var(--spacing-lg);
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--spacing-lg);
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: var(--transition-fast);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      outline-offset: 2px;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .nav-links a:focus {
+      outline: 2px solid var(--color-primary);
+    }
+
+    .cta-header {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      outline-offset: 2px;
+    }
+
+    .cta-header:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3);
+    }
+
+    .cta-header:focus {
+      outline: 2px solid var(--color-primary);
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: var(--spacing-xs);
+      outline-offset: 2px;
+    }
+
+    .menu-toggle:focus {
+      outline: 2px solid var(--color-primary);
+    }
+
+    /* ========== Hero Section ========== */
+    .hero {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: var(--spacing-lg);
+      letter-spacing: -0.5px;
+    }
+
+    .hero .highlight {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xl);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========== Stats Bar ========== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+      border-radius: var(--radius-lg);
+      margin-top: var(--spacing-xl);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: var(--spacing-xs);
+      font-weight: 500;
+    }
+
+    /* ========== Features Grid ========== */
+    .features {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .features-heading {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .features-heading h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .features-heading p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), transparent);
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--color-primary);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(99, 102, 241, 0.15);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    /* ========== How It Works ========== */
+    .how-it-works {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .how-heading {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .how-heading h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step::after {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: calc(100% + var(--spacing-lg));
+      width: var(--spacing-lg);
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-primary), transparent);
+      display: none;
+    }
+
+    .step:last-child::after {
+      display: none;
+    }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 auto var(--spacing-md);
+      color: white;
+      box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+    }
+
+    .step h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ========== Pricing Section ========== */
+    .pricing {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .pricing-heading {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .pricing-heading h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .price-card.featured {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+      border: 1px solid var(--color-primary);
+      transform: scale(1.05);
+    }
+
+    .price-card:hover {
+      border-color: var(--color-primary);
+      background: var(--bg-card-hover);
+    }
+
+    .price-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .price-value {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .price-period {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-lg);
+      font-weight: 500;
+    }
+
+    .price-features {
+      list-style: none;
+      margin-bottom: var(--spacing-lg);
+      flex-grow: 1;
+    }
+
+    .price-features li {
+      padding: var(--spacing-xs) 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .price-features li::before {
+      content: '✓';
+      color: var(--color-primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ========== Integrations Section ========== */
+    .integrations {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .integrations-heading {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .integrations-heading h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--spacing-lg);
+      justify-items: center;
+    }
+
+    .integration-logo {
+      width: 120px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: var(--transition-fast);
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .integration-logo:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* ========== CTA Banner ========== */
+    .cta-banner {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: var(--radius-lg);
+      text-align: center;
+      max-width: 900px;
+      margin: var(--spacing-2xl) auto;
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 800;
+      color: white;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .cta-banner p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: var(--spacing-lg);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      background: var(--bg-darker);
+      border-top: 1px solid var(--border-color);
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .footer-column h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-primary);
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: block;
+      padding: var(--spacing-xs) 0;
+      transition: var(--transition-fast);
+    }
+
+    .footer-column a:hover {
+      color: var(--color-primary);
+    }
+
+    .footer-column a:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-color);
+      padding-top: var(--spacing-lg);
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+    }
+
+    /* ========== Buttons ========== */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      outline-offset: 2px;
+      font-family: var(--font-system);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:focus {
+      outline: 2px solid var(--color-primary);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color-light);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .btn-secondary:focus {
+      outline: 2px solid var(--color-primary);
+    }
+
+    /* ========== Responsive Design ========== */
+    @media (max-width: 768px) {
+      :root {
+        --spacing-xl: 2rem;
+        --spacing-2xl: 2.5rem;
+      }
+
+      .nav-links {
+        gap: var(--spacing-md);
+      }
+
+      .nav-links a {
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: var(--spacing-xl) var(--spacing-md);
+      }
+
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+
+      .features-grid,
+      .pricing-grid,
+      .integrations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-card.featured {
+        transform: scale(1);
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-cta .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step::after {
+        display: none;
+      }
+
+      header nav {
+        padding: var(--spacing-sm) 0;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --spacing-lg: 1.5rem;
+        --spacing-md: 1rem;
+      }
+
+      .logo {
+        font-size: 1.25rem;
+      }
+
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      .stats {
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg);
+      }
+
+      .stat-value {
+        font-size: 1.25rem;
+      }
+
+      header nav {
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header>
+    <nav>
+      <div class="logo">⚡ CoderailFlow</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#integrations">Integrations</a>
+      </div>
+      <a href="https://app.coderailflow.dev/signup" class="cta-header">Launch App</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Automate any <span class="highlight">browser workflow</span> in minutes — no code required</h1>
+      <p>Build visual automation flows on Cloudflare. Real-time execution, screenshot monitoring, SRT subtitle generation, and smart scheduling all built-in.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="window.location.href='https://app.coderailflow.dev/signup'">Get Started Free</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See Features</button>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value">10,000+</div>
+          <div class="stat-label">Automations Created</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">&lt;50ms</div>
+          <div class="stat-label">Edge Execution</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">99.9%</div>
+          <div class="stat-label">Uptime SLA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="features-heading">
+      <h2>Powerful Features Built-In</h2>
+      <p>Everything you need to automate complex browser workflows at enterprise scale.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Visual Flow Builder</h3>
+        <p>Drag-and-drop interface to compose browser automation workflows. Connect clicks, form fills, and navigations visually without writing code.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3>Cloudflare-Native</h3>
+        <p>Runs entirely on Cloudflare Workers and Pages. No servers to manage, automatic scaling, and enterprise-grade reliability built-in.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Screenshot Monitoring</h3>
+        <p>Capture screenshots at any step. Store in R2, track visual changes, and debug workflows with full context and historical comparison.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>SRT Subtitle Generation</h3>
+        <p>Auto-generate subtitle files from workflow execution. Perfect for documentation, tutorial videos, and compliance recording.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Smart Scheduling</h3>
+        <p>Schedule automations by time, frequency, or custom triggers. Intelligent retry logic and backoff strategies built-in for reliability.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Real-Time Tracking</h3>
+        <p>Monitor execution in real-time. View logs, performance metrics, success rates, and full audit trails for every automation run.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="how-heading">
+      <h2>Three Steps to Automation</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Design Your Flow</h3>
+        <p>Use the visual builder to define your workflow steps. Click, scroll, type, and wait for elements with an intuitive interface.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Configure & Test</h3>
+        <p>Set parameters, integrations, and schedule. Test your workflow with real browser execution to ensure it works perfectly.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Deploy & Monitor</h3>
+        <p>Go live with a single click. Monitor real-time execution, review logs, and adjust based on detailed performance analytics.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <div class="pricing-heading">
+      <h2>Simple, Transparent Pricing</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="price-value">$0</div>
+        <div class="price-period">Forever free tier</div>
+        <ul class="price-features">
+          <li>3 automation flows</li>
+          <li>100 executions/month</li>
+          <li>Basic analytics</li>
+          <li>Community support</li>
+          <li>Screenshot storage (5GB)</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="window.location.href='https://app.coderailflow.dev/signup'">Get Started</button>
+      </div>
+      <div class="price-card featured">
+        <h3>Pro</h3>
+        <div class="price-value">$29</div>
+        <div class="price-period">/month, billed monthly</div>
+        <ul class="price-features">
+          <li>Unlimited flows</li>
+          <li>10,000 executions/month</li>
+          <li>Advanced analytics</li>
+          <li>Priority email support</li>
+          <li>Custom integrations</li>
+          <li>Screenshot storage (100GB)</li>
+          <li>SRT generation</li>
+        </ul>
+        <button class="btn btn-primary" onclick="window.location.href='https://app.coderailflow.dev/signup?plan=pro'">Start Free Trial</button>
+      </div>
+      <div class="price-card">
+        <h3>Enterprise</h3>
+        <div class="price-value">Custom</div>
+        <div class="price-period">Contact sales for quote</div>
+        <ul class="price-features">
+          <li>Unlimited everything</li>
+          <li>Dedicated infrastructure</li>
+          <li>99.99% SLA guarantees</li>
+          <li>24/7 phone & email support</li>
+          <li>Custom integrations</li>
+          <li>Unlimited storage</li>
+          <li>On-premise option</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="window.location.href='mailto:sales@coderailflow.dev?subject=Enterprise%20Plan'">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <h2>Ready to automate?</h2>
+    <p>Join thousands of teams using CoderailFlow to eliminate manual browser workflows.</p>
+    <button class="btn btn-primary" onclick="window.location.href='https://app.coderailflow.dev/signup'" style="background: white; color: #4c1d95; font-weight: 700;">Start Your Free Trial Today</button>
+  </section>
+
+  <!-- Integrations Section -->
+  <section id="integrations" class="integrations">
+    <div class="integrations-heading">
+      <h2>Works With Your Stack</h2>
+    </div>
+    <div class="integrations-grid">
+      <div class="integration-logo">Cloudflare</div>
+      <div class="integration-logo">Auth.js</div>
+      <div class="integration-logo">LemonSqueezy</div>
+      <div class="integration-logo">Puppeteer</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="https://docs.coderailflow.dev" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+          <li><a href="https://blog.coderailflow.dev" target="_blank" rel="noopener noreferrer">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="https://docs.coderailflow.dev/tutorials" target="_blank" rel="noopener noreferrer">Tutorials</a></li>
+          <li><a href="https://docs.coderailflow.dev/api" target="_blank" rel="noopener noreferrer">API Reference</a></li>
+          <li><a href="https://status.coderailflow.dev" target="_blank" rel="noopener noreferrer">Status</a></li>
+          <li><a href="https://community.coderailflow.dev" target="_blank" rel="noopener noreferrer">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://coderailflow.dev/about" target="_blank" rel="noopener noreferrer">About Us</a></li>
+          <li><a href="https://coderailflow.dev/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
+          <li><a href="https://coderailflow.dev/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+          <li><a href="https://coderailflow.dev/terms" target="_blank" rel="noopener noreferrer">Terms</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="https://coderailflow.dev/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
+          <li><a href="https://coderailflow.dev/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a></li>
+          <li><a href="https://coderailflow.dev/security" target="_blank" rel="noopener noreferrer">Security</a></li>
+          <li><a href="https://coderailflow.dev/compliance" target="_blank" rel="noopener noreferrer">Compliance</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CoderailFlow. Built on Cloudflare Workers. | Made with care for automation engineers everywhere.</p>
+    </div>
+  </footer>
+
+  <!-- Accessibility: Skip Links -->
+  <a href="#features" style="position: absolute; top: -40px; left: 0; background: var(--color-primary); color: white; padding: 8px; text-decoration: none; z-index: 9999;">Skip to Features</a>
+</body>
+</html>

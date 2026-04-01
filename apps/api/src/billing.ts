@@ -5,8 +5,10 @@ import { uuid } from './ids';
 import { requireAuth } from './auth';
 import {
   PLAN_LIMITS,
+  findOrClaimUserAccount,
   formatUserResponse,
   lemonSqueezyRequest,
+  syncUserAccount,
   type BillingVariables,
 } from './billing_helpers';
 import { webhookRouter } from './billing_webhook';
@@ -17,26 +19,15 @@ const auth = requireAuth();
 // ---- Get or create user account ----
 billing.post('/account/sync', auth, async (c) => {
   const env = c.env;
-  const clerkId = c.get('userId');
+  const authSubject = c.get('userId');
   const body = await c.req.json<{ email: string; name?: string }>();
+  const email = body.email?.trim() || c.get('userEmail');
 
-  if (!body.email) {
+  if (!email) {
     return c.json({ error: 'email required' }, 400);
   }
 
-  let user = await q1<any>(env, 'SELECT * FROM user_account WHERE clerk_id = ?', [clerkId]);
-
-  if (!user) {
-    const id = uuid();
-    const now = new Date().toISOString();
-    await q(
-      env,
-      `INSERT INTO user_account (id, clerk_id, email, name, plan, runs_this_month, runs_reset_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, 'free', 0, ?, ?, ?)`,
-      [id, clerkId, body.email, body.name ?? null, now, now, now]
-    );
-    user = await q1<any>(env, 'SELECT * FROM user_account WHERE id = ?', [id]);
-  }
+  const user = await syncUserAccount(env, authSubject, email, body.name ?? null);
 
   const limits = PLAN_LIMITS[user.plan] ?? PLAN_LIMITS.free;
   return c.json(formatUserResponse(user, limits));
@@ -45,9 +36,9 @@ billing.post('/account/sync', auth, async (c) => {
 // ---- Get account info ----
 billing.get('/account', auth, async (c) => {
   const env = c.env;
-  const clerkId = c.get('userId');
+  const authSubject = c.get('userId');
 
-  const user = await q1<any>(env, 'SELECT * FROM user_account WHERE clerk_id = ?', [clerkId]);
+  const user = await findOrClaimUserAccount(env, authSubject, c.get('userEmail'));
   if (!user) return c.json({ error: 'user_not_found' }, 404);
 
   const limits = PLAN_LIMITS[user.plan] ?? PLAN_LIMITS.free;
@@ -61,9 +52,9 @@ billing.post('/checkout', auth, async (c) => {
     return c.json({ error: 'Lemon Squeezy not configured' }, 503);
   }
 
-  const clerkId = c.get('userId');
+  const authSubject = c.get('userId');
   const body = await c.req.json<{ plan: 'pro' | 'team' }>();
-  const user = await q1<any>(env, 'SELECT * FROM user_account WHERE clerk_id = ?', [clerkId]);
+  const user = await findOrClaimUserAccount(env, authSubject, c.get('userEmail'));
   if (!user) return c.json({ error: 'user_not_found' }, 404);
 
   const variantId =
@@ -82,7 +73,7 @@ billing.post('/checkout', auth, async (c) => {
           name: user.name ?? undefined,
           custom: {
             coderail_user_id: user.id,
-            clerk_id: user.clerk_id,
+            auth_subject: user.auth_subject,
             plan: body.plan,
           },
         },

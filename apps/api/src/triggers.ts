@@ -1,6 +1,6 @@
 /**
  * External trigger endpoints — GitLab CI, GitHub Actions, generic webhooks
- * These use API key auth (Bearer crf_...) instead of Clerk JWT
+ * These use API key auth (Bearer crf_...) instead of session-backed user auth
  */
 import { Hono } from 'hono';
 import type { Env } from './env';

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import type { JiraConfig } from './JiraIntegrationForm.types';
 import { DEFAULT_JIRA_CONFIG } from './JiraIntegrationForm.types';
-import { apiUrl, getClerkToken } from './api-core';
+import { apiUrl, getApiToken } from './api-core';
 
 export function useJiraConfig(projectId: string) {
   const [config, setConfig] = useState<JiraConfig>({ ...DEFAULT_JIRA_CONFIG });
@@ -17,7 +17,7 @@ export function useJiraConfig(projectId: string) {
       return;
     }
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(
         apiUrl(`/integrations/jira/config?projectId=${encodeURIComponent(projectId)}`),
         {
@@ -54,7 +54,7 @@ export function useJiraConfig(projectId: string) {
     }
     setLoading(true);
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/integrations/jira/config'), {
         method: 'POST',
         headers: {
@@ -93,7 +93,7 @@ export function useJiraConfig(projectId: string) {
     }
     setTesting(true);
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/integrations/jira/test'), {
         method: 'POST',
         headers: {
@@ -122,7 +122,7 @@ export function useJiraConfig(projectId: string) {
     if (!confirm('Are you sure you want to remove the Jira integration?')) return;
     if (!projectId) return;
     try {
-      const token = await getClerkToken();
+      const token = await getApiToken();
       const res = await fetch(apiUrl('/integrations/jira/config'), {
         method: 'DELETE',
         headers: {

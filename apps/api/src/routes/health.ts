@@ -7,6 +7,7 @@
 import { Hono } from 'hono';
 import type { Env } from '../env';
 import { requireAuth } from '../auth';
+import { getConfiguredAuthProviderIds } from '../auth-config';
 import type { Variables } from '../index';
 import { getRuntimeConfig } from '../runtime-config';
 
@@ -91,6 +92,23 @@ health.get('/detailed', requireAuth(), async (c) => {
           .join(' '),
   };
 
+  const authIssues = config.issues
+    .filter((issue) => issue.code.startsWith('auth_'))
+    .map((issue) => issue.message)
+    .join(' ');
+  const configuredProviders = getConfiguredAuthProviderIds(c.env);
+  checks.auth = {
+    name: 'auth',
+    status: config.features.auth
+      ? 'pass'
+      : isRuntimeReadyEnoughForWarnings(config)
+        ? 'warn'
+        : 'fail',
+    message: config.features.auth
+      ? `Configured Auth.js providers: ${configuredProviders.join(', ')}`
+      : authIssues || 'Authentication is not fully configured.',
+  };
+
   // Check database
   checks.database = await checkDatabase(c.env);
 
@@ -99,11 +117,6 @@ health.get('/detailed', requireAuth(), async (c) => {
 
   // Check browser rendering service
   checks.browser = await checkBrowser(c.env);
-
-  // Check Clerk (optional)
-  if (c.env.CLERK_ISSUER) {
-    checks.clerk = await checkClerk(c.env);
-  }
 
   // Determine overall status
   const checkValues = Object.values(checks);
@@ -198,37 +211,8 @@ async function checkBrowser(env: Env): Promise<HealthCheckResult> {
   }
 }
 
-/**
- * Check Clerk service availability.
- */
-async function checkClerk(env: Env): Promise<HealthCheckResult> {
-  const start = Date.now();
-  try {
-    const url = `${env.CLERK_ISSUER}/.well-known/jwks.json`;
-    const response = await fetch(url, { method: 'HEAD' });
-
-    if (response.ok) {
-      return {
-        name: 'clerk',
-        status: 'pass',
-        duration: Date.now() - start,
-      };
-    } else {
-      return {
-        name: 'clerk',
-        status: 'warn',
-        duration: Date.now() - start,
-        message: `Clerk returned ${response.status}`,
-      };
-    }
-  } catch (error: any) {
-    return {
-      name: 'clerk',
-      status: 'fail',
-      duration: Date.now() - start,
-      message: error.message,
-    };
-  }
+function isRuntimeReadyEnoughForWarnings(config: ReturnType<typeof getRuntimeConfig>): boolean {
+  return !config.issues.some((issue) => issue.level === 'fail');
 }
 
 export { health };

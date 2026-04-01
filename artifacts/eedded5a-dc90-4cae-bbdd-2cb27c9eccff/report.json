@@ -1,0 +1,104 @@
+{
+  "runId": "eedded5a-dc90-4cae-bbdd-2cb27c9eccff",
+  "flowId": "real-txn-flow",
+  "flowName": "Investigate Failed Transaction",
+  "status": "succeeded",
+  "runnerVersion": "local-puppeteer-1.0",
+  "duration": 28113,
+  "stepsExecuted": 13,
+  "stepsFailed": 0,
+  "steps": [
+    {
+      "idx": 0,
+      "type": "goto",
+      "status": "ok",
+      "narrate": "Opening the Acme Payments admin dashboard",
+      "durationMs": 2447
+    },
+    {
+      "idx": 1,
+      "type": "caption",
+      "status": "ok",
+      "narrate": "We will investigate a failed card transaction and identify the decline reason.",
+      "durationMs": 3001
+    },
+    {
+      "idx": 2,
+      "type": "click",
+      "status": "ok",
+      "narrate": "Navigating to the Transactions page",
+      "durationMs": 2079
+    },
+    {
+      "idx": 3,
+      "type": "pause",
+      "status": "ok",
+      "durationMs": 801
+    },
+    {
+      "idx": 4,
+      "type": "fill",
+      "status": "ok",
+      "narrate": "Searching for the card ending in {{cardId}}",
+      "durationMs": 1855
+    },
+    {
+      "idx": 5,
+      "type": "click",
+      "status": "ok",
+      "narrate": "Executing the search",
+      "durationMs": 2009
+    },
+    {
+      "idx": 6,
+      "type": "pause",
+      "status": "ok",
+      "durationMs": 601
+    },
+    {
+      "idx": 7,
+      "type": "highlight",
+      "status": "ok",
+      "narrate": "Found the declined transaction for this card",
+      "durationMs": 3004
+    },
+    {
+      "idx": 8,
+      "type": "click",
+      "status": "ok",
+      "narrate": "Opening the transaction detail view",
+      "durationMs": 2011
+    },
+    {
+      "idx": 9,
+      "type": "pause",
+      "status": "ok",
+      "durationMs": 501
+    },
+    {
+      "idx": 10,
+      "type": "highlight",
+      "status": "ok",
+      "narrate": "The error code ERR_AUTH_051 indicates Insufficient Funds",
+      "durationMs": 3003
+    },
+    {
+      "idx": 11,
+      "type": "highlight",
+      "status": "ok",
+      "narrate": "Transaction status: Declined",
+      "durationMs": 3002
+    },
+    {
+      "idx": 12,
+      "type": "caption",
+      "status": "ok",
+      "narrate": "Resolution: The cardholder has insufficient funds. They should contact their bank or use a different payment method.",
+      "durationMs": 3002
+    }
+  ],
+  "params": {
+    "cardId": "7842"
+  },
+  "generatedAt": "2026-02-21T18:15:06.296Z"
+}

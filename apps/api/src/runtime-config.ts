@@ -1,4 +1,5 @@
 import type { Env } from './env';
+import { hasConfiguredAuthProvider } from './auth-config';
 
 export type RuntimeIssueLevel = 'warn' | 'fail';
 
@@ -149,24 +150,40 @@ export function getRuntimeConfig(env: Partial<Env>): RuntimeConfigStatus {
     });
   }
 
-  const clerkIssuer = parseUrl(env.CLERK_ISSUER);
-  if (!isNonEmptyString(env.CLERK_ISSUER)) {
+  const authUrl = parseUrl(env.AUTH_URL);
+  if (!isNonEmptyString(env.AUTH_URL)) {
     issues.push({
-      code: 'clerk_issuer_missing',
+      code: 'auth_url_missing',
       level: productionLike ? 'fail' : 'warn',
-      message: 'CLERK_ISSUER is not configured.',
+      message: 'AUTH_URL is not configured.',
     });
-  } else if (!clerkIssuer) {
+  } else if (!authUrl) {
     issues.push({
-      code: 'clerk_issuer_invalid',
+      code: 'auth_url_invalid',
       level: 'fail',
-      message: 'CLERK_ISSUER must be a valid absolute URL.',
+      message: 'AUTH_URL must be a valid absolute URL.',
     });
-  } else if (productionLike && clerkIssuer.protocol !== 'https:') {
+  } else if (productionLike && authUrl.protocol !== 'https:') {
     issues.push({
-      code: 'clerk_issuer_https_required',
+      code: 'auth_url_https_required',
       level: 'fail',
-      message: 'CLERK_ISSUER must use HTTPS outside local development.',
+      message: 'AUTH_URL must use HTTPS outside local development.',
+    });
+  }
+
+  if (!isNonEmptyString(env.AUTH_SECRET)) {
+    issues.push({
+      code: 'auth_secret_missing',
+      level: productionLike ? 'fail' : 'warn',
+      message: 'AUTH_SECRET is not configured.',
+    });
+  }
+
+  if (!hasConfiguredAuthProvider(env)) {
+    issues.push({
+      code: 'auth_provider_missing',
+      level: productionLike ? 'fail' : 'warn',
+      message: 'At least one Auth.js OAuth provider must be configured.',
     });
   }
 
@@ -209,7 +226,10 @@ export function getRuntimeConfig(env: Partial<Env>): RuntimeConfigStatus {
     environment,
     issues,
     features: {
-      auth: isNonEmptyString(env.CLERK_ISSUER),
+      auth:
+        isNonEmptyString(env.AUTH_SECRET) &&
+        !!parseUrl(env.AUTH_URL) &&
+        hasConfiguredAuthProvider(env),
       browser: hasMethod(env.BROWSER, 'fetch'),
       billing: configuredBillingKeys.length === BILLING_KEYS.length,
       cache: hasMethod(env.CACHE, 'get') && hasMethod(env.CACHE, 'put'),

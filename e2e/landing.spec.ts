@@ -27,11 +27,11 @@ test.describe("Landing page", () => {
   });
 
   test("navigates to /app or shows sign-in on CTA click", async ({ page }) => {
-    const ctaLink = page.locator("a[href='/app'], a[href='/sign-in'], a[href*='app']").first();
+    const ctaLink = page.locator("a[href='/app'], a[href*='app']").first();
     const count = await ctaLink.count();
     if (count > 0) {
       await ctaLink.click();
-      await page.waitForURL(/(\/app|\/sign-in|clerk)/, { timeout: 10_000 });
+      await page.waitForURL(/(\/app|\/auth\/signin|oauth|login)/i, { timeout: 10_000 });
     }
   });
 
@@ -47,9 +47,7 @@ test.describe("Landing page", () => {
         !e.includes("favicon") &&
         !e.includes("404") &&
         !e.includes("ERR_CONNECTION_REFUSED") &&
-        !e.includes("Failed to fetch") &&
-        !e.includes("clerk") &&
-        !e.includes("Clerk")
+        !e.includes("Failed to fetch")
     );
     expect(criticalErrors).toHaveLength(0);
   });

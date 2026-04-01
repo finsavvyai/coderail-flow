@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:02,447
+Opening the Acme Payments admin dashboard
+
+2
+00:00:02,447 --> 00:00:05,448
+We will investigate a failed card transaction and identify the decline reason.
+
+3
+00:00:05,448 --> 00:00:07,527
+Navigating to the Transactions page
+
+4
+00:00:08,328 --> 00:00:10,328
+Searching for the card ending in {{cardId}}
+
+5
+00:00:10,328 --> 00:00:12,337
+Executing the search
+
+6
+00:00:12,938 --> 00:00:15,942
+Found the declined transaction for this card
+
+7
+00:00:15,942 --> 00:00:17,953
+Opening the transaction detail view
+
+8
+00:00:18,454 --> 00:00:21,457
+The error code ERR_AUTH_051 indicates Insufficient Funds
+
+9
+00:00:21,457 --> 00:00:24,459
+Transaction status: Declined
+
+10
+00:00:24,459 --> 00:00:27,461
+Resolution: The cardholder has insufficient funds. They should contact their bank or use a different payment method.

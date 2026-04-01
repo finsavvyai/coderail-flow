@@ -6,7 +6,7 @@
 
 export interface UserAccount {
   id: string;
-  clerk_id: string;
+  auth_subject: string;
   email: string;
   name: string | null;
   plan: 'free' | 'pro' | 'team' | 'enterprise';

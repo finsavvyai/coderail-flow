@@ -5,7 +5,10 @@ function createEnv(overrides: Record<string, unknown> = {}) {
   return {
     APP_ENV: 'production',
     PUBLIC_BASE_URL: 'https://coderail-flow.example.com',
-    CLERK_ISSUER: 'https://clerk.example.com',
+    AUTH_URL: 'https://api.example.com/auth',
+    AUTH_SECRET: 'super-secret-auth',
+    GOOGLE_CLIENT_ID: 'google-client-id',
+    GOOGLE_CLIENT_SECRET: 'google-client-secret',
     AUTH_ENCRYPTION_KEY: 'super-secret-key',
     DB: {
       prepare: vi.fn(() => ({
@@ -34,13 +37,13 @@ describe('health routes', () => {
   });
 
   it('returns 503 from /health/ready when production config is incomplete', async () => {
-    const res = await health.request('/ready', {}, createEnv({ CLERK_ISSUER: undefined }));
+    const res = await health.request('/ready', {}, createEnv({ AUTH_SECRET: undefined }));
 
     expect(res.status).toBe(503);
     const body = await res.json();
     expect(body.ok).toBe(false);
     expect(
-      body.issues.some((issue: { code: string }) => issue.code === 'clerk_issuer_missing')
+      body.issues.some((issue: { code: string }) => issue.code === 'auth_secret_missing')
     ).toBe(true);
   });
 

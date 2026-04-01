@@ -1,6 +1,7 @@
 // Element validation schemas and access helpers
 
 import { z } from 'zod';
+import { resolveUserLookup } from '../auth-subject';
 
 export const ElementSchema = z.object({
   screen_id: z.string().uuid(),
@@ -33,13 +34,14 @@ export type ElementType = z.infer<typeof ElementSchema>;
 export async function verifyProjectMembership(
   db: any,
   projectId: string,
-  token: string
+  userId: string
 ): Promise<boolean> {
+  const { tableName, subjectColumn } = await resolveUserLookup(db);
   const membership = await db
     .prepare(
-      'SELECT om.* FROM org_members om JOIN projects p ON p.org_id = om.org_id WHERE p.id = ? AND om.user_id = (SELECT id FROM users WHERE clerk_id = ?)'
+      `SELECT om.* FROM org_members om JOIN projects p ON p.org_id = om.org_id WHERE p.id = ? AND om.user_id = (SELECT id FROM ${tableName} WHERE ${subjectColumn} = ?)`
     )
-    .bind(projectId, token)
+    .bind(projectId, userId)
     .first();
   return !!membership;
 }

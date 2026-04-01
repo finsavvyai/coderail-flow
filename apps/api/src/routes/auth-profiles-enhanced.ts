@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { requireAuth } from '../auth';
 import {
   encryptCookies,
   decryptCookies,
@@ -11,24 +12,24 @@ import {
 } from '../cookie-encryption';
 import {
   AuthProfileSchema,
-  extractToken,
   verifyProjectAccess,
   verifyOrgAccess,
   getProfileWithOrg,
 } from './auth-profiles-validation';
+import type { Env } from '../env';
 
-export const authProfileRoutes = new Hono<{ Bindings: Env }>();
+export const authProfileRoutes = new Hono<{ Bindings: Env; Variables: { userId: string } }>();
+authProfileRoutes.use('*', requireAuth());
 
 // POST /auth-profiles - Create auth profile with encrypted cookies
 authProfileRoutes.post('/', async (c) => {
-  const token = extractToken(c);
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const body = await c.req.json();
     const data = AuthProfileSchema.parse(body);
 
-    if (!(await verifyProjectAccess(c.env.DB, data.project_id, token))) {
+    if (!(await verifyProjectAccess(c.env.DB, data.project_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
     if (!validateCookieFormat(data.cookies)) {
@@ -73,14 +74,13 @@ authProfileRoutes.post('/', async (c) => {
 
 // GET /auth-profiles - List auth profiles for a project
 authProfileRoutes.get('/', async (c) => {
-  const token = extractToken(c);
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   const projectId = c.req.query('projectId');
   if (!projectId) return c.json({ error: 'project_id_required' }, 400);
 
   try {
-    if (!(await verifyProjectAccess(c.env.DB, projectId, token))) {
+    if (!(await verifyProjectAccess(c.env.DB, projectId, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -118,13 +118,12 @@ authProfileRoutes.get('/', async (c) => {
 
 // GET /auth-profiles/:id - Get auth profile details
 authProfileRoutes.get('/:id', async (c) => {
-  const token = extractToken(c);
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const profile = await getProfileWithOrg(c.env.DB, c.req.param('id'));
     if (!profile) return c.json({ error: 'auth_profile_not_found' }, 404);
-    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, token))) {
+    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -154,14 +153,13 @@ authProfileRoutes.get('/:id', async (c) => {
 
 // PUT /auth-profiles/:id - Update auth profile
 authProfileRoutes.put('/:id', async (c) => {
-  const token = extractToken(c);
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const updates = AuthProfileSchema.partial().parse(await c.req.json());
     const profile = await getProfileWithOrg(c.env.DB, c.req.param('id'));
     if (!profile) return c.json({ error: 'auth_profile_not_found' }, 404);
-    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, token))) {
+    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 
@@ -199,13 +197,12 @@ authProfileRoutes.put('/:id', async (c) => {
 
 // DELETE /auth-profiles/:id - Delete auth profile
 authProfileRoutes.delete('/:id', async (c) => {
-  const token = extractToken(c);
-  if (!token) return c.json({ error: 'unauthorized' }, 401);
+  const userId = c.get('userId');
 
   try {
     const profile = await getProfileWithOrg(c.env.DB, c.req.param('id'));
     if (!profile) return c.json({ error: 'auth_profile_not_found' }, 404);
-    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, token))) {
+    if (!(await verifyOrgAccess(c.env.DB, profile.org_id, userId))) {
       return c.json({ error: 'forbidden' }, 403);
     }
 

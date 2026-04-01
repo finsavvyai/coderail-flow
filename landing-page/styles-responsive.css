@@ -1,0 +1,33 @@
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+  }
+
+  .features,
+  .pricing {
+    padding: 40px 20px;
+  }
+
+  .price-card.featured {
+    transform: scale(1);
+  }
+}

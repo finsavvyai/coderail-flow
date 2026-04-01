@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@sentry/cloudflare": "^10.42.0",
-    "hono": "^4.11.10",
-    "hono-jwt": "^0.1.2"
+    "hono": "^4.11.10"
   }
 }

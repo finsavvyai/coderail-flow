@@ -1,7 +1,11 @@
 import { test, expect } from "@playwright/test";
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 test.describe("Authentication & protected routes", () => {
-  test("GET /app redirects to sign-in or renders app when Clerk not configured", async ({ page }) => {
+  test("GET /app resolves to the workspace or auth gate", async ({ page }) => {
     const response = await page.goto("/app");
     await page.waitForLoadState("networkidle");
     const url = page.url();
@@ -12,7 +16,7 @@ test.describe("Authentication & protected routes", () => {
 
   test("GET /billing is accessible (protected or fallback)", async ({ page }) => {
     await page.goto("/billing");
-    // Clerk hides the page until initialized; wait for auth gate or app content
+    // Wait for either the auth gate or the page content.
     await page.waitForSelector(".auth-gate, .container", { timeout: 30_000 }).catch(() => {});
     const html = await page.content();
     expect(html.length).toBeGreaterThan(100);
@@ -33,28 +37,26 @@ test.describe("Authentication & protected routes", () => {
     expect(html.length).toBeGreaterThan(100);
   });
 
-  test.describe("Clerk-authenticated flows (requires E2E credentials)", () => {
+  test.describe("Configured auth provider handoff", () => {
     test.skip(
-      !process.env.E2E_TEST_EMAIL || !process.env.E2E_TEST_PASSWORD,
-      "Skipped: set E2E_TEST_EMAIL and E2E_TEST_PASSWORD to run"
+      !process.env.E2E_AUTH_PROVIDER,
+      "Skipped: set E2E_AUTH_PROVIDER to validate a configured sign-in button"
     );
 
-    test("can sign in and reach /app", async ({ page }) => {
-      await page.goto("/");
-      const signInLink = page.locator("a[href*='sign-in'], button:has-text('Sign in'), a:has-text('Sign in')").first();
-      await signInLink.click();
-      await page.waitForURL(/(sign-in|accounts\.clerk)/, { timeout: 15_000 });
+    test("opens the configured provider flow", async ({ page }) => {
+      const providerName = process.env.E2E_AUTH_PROVIDER!;
+      await page.goto("/app");
+      await page.waitForSelector(".auth-gate", { timeout: 30_000 });
 
-      const emailInput = page.locator("input[type='email'], input[name='identifier']");
-      await emailInput.fill(process.env.E2E_TEST_EMAIL!);
-      await page.keyboard.press("Enter");
+      const providerButton = page.getByRole("button", {
+        name: new RegExp(`Continue with ${escapeRegExp(providerName)}`, "i"),
+      });
 
-      const passwordInput = page.locator("input[type='password']");
-      await passwordInput.fill(process.env.E2E_TEST_PASSWORD!);
-      await page.keyboard.press("Enter");
-
-      await page.waitForURL(/\/app/, { timeout: 20_000 });
-      await expect(page.locator("body")).toBeVisible();
+      await expect(providerButton).toBeVisible({ timeout: 10_000 });
+      await Promise.all([
+        page.waitForURL(/(\/auth\/signin|oauth|login|accounts)/i, { timeout: 15_000 }),
+        providerButton.click(),
+      ]);
     });
   });
 });

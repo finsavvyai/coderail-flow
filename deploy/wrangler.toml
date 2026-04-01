@@ -1,0 +1,57 @@
+name = "coderailflow-api"
+main = "src/index.ts"
+type = "service"
+env = "production"
+
+compatibility_date = "2025-03-20"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Workers Configuration
+workers_dev = true
+route = "api.coderailflow.dev/*"
+zone_id = "YOUR_ZONE_ID"
+
+# Database - D1
+[[d1_databases]]
+binding = "db"
+database_name = "coderailflow"
+database_id = "YOUR_D1_ID"
+
+# Object Storage - R2
+[[r2_buckets]]
+binding = "r2"
+bucket_name = "coderailflow-storage"
+
+# Key-Value Storage - KV
+[[kv_namespaces]]
+binding = "kv"
+id = "YOUR_KV_NAMESPACE_ID"
+
+# Browser Rendering
+[env.production.services]
+browser = { binding = "BROWSER", service = "cloudflare-browser-rendering" }
+
+# Environment Variables
+[env.production.vars]
+PUBLIC_BASE_URL = "https://flow.coderailflow.dev"
+AUTH_URL = "https://api.coderailflow.dev/auth"
+LEMON_SQUEEZY_API_STORE_ID = "YOUR_STORE_ID"
+MAX_FLOWS_FREE = "3"
+MAX_EXECUTIONS_FREE = "100"
+MAX_FLOWS_PRO = "999"
+MAX_EXECUTIONS_PRO = "10000"
+ENVIRONMENT = "production"
+
+# Secrets (via wrangler secret put)
+# AUTH_SECRET - Set via: wrangler secret put AUTH_SECRET --env production
+# GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET or GITHUB_CLIENT_ID / GITHUB_CLIENT_SECRET
+# LEMON_SQUEEZY_API_KEY - Set via: wrangler secret put LEMON_SQUEEZY_API_KEY --env production
+
+# Upload Rules
+[upload]
+main = "src/index.ts"
+format = "modules"
+
+# Observability
+[observability]
+enabled = true

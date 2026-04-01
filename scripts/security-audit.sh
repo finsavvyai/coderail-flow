@@ -73,7 +73,7 @@ echo ""
 
 echo "7. Infrastructure Security"
 echo "------------------------"
-check_item "if secrets are configured" "cd apps/api && wrangler secret list 2>&1 | grep -q 'CLERK_ISSUER'" "warning"
+check_item "if auth secrets are configured" "cd apps/api && wrangler secret list 2>&1 | grep -q 'AUTH_SECRET'" "warning"
 echo ""
 
 echo "8. CORS Configuration"

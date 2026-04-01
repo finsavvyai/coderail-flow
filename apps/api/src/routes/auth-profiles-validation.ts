@@ -1,6 +1,7 @@
 // Auth profile validation schemas and access helpers
 
 import { z } from 'zod';
+import { resolveUserLookup } from '../auth-subject';
 
 export const AuthProfileSchema = z.object({
   project_id: z.string().uuid(),
@@ -21,33 +22,30 @@ export const AuthProfileSchema = z.object({
 
 export type AuthProfileType = z.infer<typeof AuthProfileSchema>;
 
-/** Extract bearer token from Authorization header */
-export function extractToken(c: any): string | null {
-  return c.req.header('Authorization')?.replace('Bearer ', '') || null;
-}
-
 /** Verify user has access to a project via org membership */
 export async function verifyProjectAccess(
   db: any,
   projectId: string,
-  token: string
+  userId: string
 ): Promise<boolean> {
+  const { tableName, subjectColumn } = await resolveUserLookup(db);
   const membership = await db
     .prepare(
-      'SELECT om.* FROM org_members om JOIN projects p ON p.org_id = om.org_id WHERE p.id = ? AND om.user_id = (SELECT id FROM users WHERE clerk_id = ?)'
+      `SELECT om.* FROM org_members om JOIN projects p ON p.org_id = om.org_id WHERE p.id = ? AND om.user_id = (SELECT id FROM ${tableName} WHERE ${subjectColumn} = ?)`
     )
-    .bind(projectId, token)
+    .bind(projectId, userId)
     .first();
   return !!membership;
 }
 
 /** Verify user has access via org ID */
-export async function verifyOrgAccess(db: any, orgId: string, token: string): Promise<boolean> {
+export async function verifyOrgAccess(db: any, orgId: string, userId: string): Promise<boolean> {
+  const { tableName, subjectColumn } = await resolveUserLookup(db);
   const membership = await db
     .prepare(
-      'SELECT om.* FROM org_members om WHERE om.org_id = ? AND om.user_id = (SELECT id FROM users WHERE clerk_id = ?)'
+      `SELECT om.* FROM org_members om WHERE om.org_id = ? AND om.user_id = (SELECT id FROM ${tableName} WHERE ${subjectColumn} = ?)`
     )
-    .bind(orgId, token)
+    .bind(orgId, userId)
     .first();
   return !!membership;
 }

@@ -8,10 +8,12 @@
     "migrate": "wrangler d1 migrations apply coderail_flow_dev --cwd ."
   },
   "dependencies": {
-    "hono": "^4.11.1",
-    "zod": "^3.25.76",
+    "@auth/core": "^0.34.3",
+    "@coderail-flow/dsl": "workspace:*",
     "@coderail-flow/runner": "workspace:*",
-    "@coderail-flow/dsl": "workspace:*"
+    "@hono/auth-js": "^1.1.1",
+    "hono": "^4.11.1",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251201.0",

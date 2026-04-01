@@ -6,10 +6,13 @@
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { authHandler, getAuthUser, initAuthConfig } from '@hono/auth-js';
 import * as Sentry from '@sentry/cloudflare';
 import type { Env } from './env';
 import { billing } from './billing';
 import { requireAuth } from './auth';
+import { getAuthConfig, getSessionUserProfile } from './auth-config';
+import { encodeApiToken } from './auth-token';
 import { proxy } from './proxy';
 import { integrationRoutes, apiKeyRoutes, apiKeyAuth } from './integrations';
 import { triggerRoutes } from './triggers';
@@ -45,6 +48,10 @@ export type Variables = {
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 app.use('*', loggerMiddleware());
 app.use('*', validationErrorHandler);
+app.use(
+  '*',
+  initAuthConfig((c) => getAuthConfig(c.env))
+);
 
 // Security headers
 app.use('*', cspHeaders);
@@ -74,8 +81,9 @@ app.use(
       const env = (c as any).env as Env;
       return resolveCorsOrigin(origin, env);
     },
-    allowHeaders: ['Content-Type', 'Authorization'],
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization', 'X-Auth-Return-Redirect'],
+    allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
     exposeHeaders: [
       'X-RateLimit-Limit',
       'X-RateLimit-Remaining',
@@ -158,6 +166,33 @@ app.notFound((c) => {
 
 // Health check
 app.route('/health', health);
+
+app.get('/auth/token', async (c) => {
+  const authUser = await getAuthUser(c);
+  const user = getSessionUserProfile(authUser);
+
+  if (!user) {
+    return c.json({ error: 'unauthorized', message: 'No active session.' }, 401);
+  }
+
+  if (!c.env.AUTH_SECRET) {
+    return c.json(
+      {
+        error: 'service_unavailable',
+        message: 'Authentication is not configured for this environment.',
+      },
+      503
+    );
+  }
+
+  c.header('Cache-Control', 'no-store');
+  return c.json({
+    token: await encodeApiToken(user.id, user.email, c.env.AUTH_SECRET),
+    user,
+  });
+});
+
+app.use('/auth/*', authHandler());
 
 // Stats endpoint for dashboard (alias to /analytics/stats)
 app.get('/stats', async (c) => {
