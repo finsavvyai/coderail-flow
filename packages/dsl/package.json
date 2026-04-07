@@ -1,9 +1,29 @@
 {
-  "name": "@coderail-flow/dsl",
-  "private": true,
+  "name": "coderailflow-dsl",
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {
     "zod": "^3.25.76"
-  }
+  },
+  "version": "1.0.0",
+  "description": "CodeRailFlow DSL \u2014 define browser automation flows with typed schemas",
+  "types": "src/index.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finsavvyai/coderail-flow"
+  },
+  "keywords": [
+    "browser",
+    "automation",
+    "flow",
+    "dsl",
+    "testing",
+    "coderail"
+  ],
+  "files": [
+    "src/",
+    "package.json",
+    "README.md"
+  ]
 }
