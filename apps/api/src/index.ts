@@ -5,13 +5,13 @@
  */
 
 import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { authHandler, getAuthUser, initAuthConfig } from '@hono/auth-js';
+import { authHandler, getAuthUser } from '@hono/auth-js';
 import * as Sentry from '@sentry/cloudflare';
 import type { Env } from './env';
+import type { ExecutionContext } from '@cloudflare/workers-types';
 import { billing } from './billing';
 import { requireAuth } from './auth';
-import { getAuthConfig, getSessionUserProfile } from './auth-config';
+import { getSessionUserProfile } from './auth-config';
 import { encodeApiToken } from './auth-token';
 import { proxy } from './proxy';
 import { integrationRoutes, apiKeyRoutes, apiKeyAuth } from './integrations';
@@ -27,13 +27,14 @@ import { resources } from './routes/resources';
 import { artifacts } from './routes/artifacts';
 import { authProfiles } from './routes/auth-profiles';
 import { schedules, scheduled } from './routes/schedules';
+import { visualRegression } from './routes/visual-regression';
+import { runEvents } from './routes/run-events';
+import { skills } from './routes/skills';
 import { misc } from './routes/misc';
 import { health } from './routes/health';
 import { captureException, flushSentry, getSentryOptions, initSentry } from './monitoring/sentry';
-import { getLogger, loggerMiddleware } from './monitoring/logger';
-import { cspHeaders, requestTimeout } from './middleware/security';
-import { validationErrorHandler } from './middleware/validation';
-import { getRuntimeConfig, isProductionLikeEnv, resolveCorsOrigin } from './runtime-config';
+import { getLogger } from './monitoring/logger';
+import { applyMiddlewareStack } from './middleware/stack';
 
 export { FlowExecutionWorkflow } from './workflow';
 export { scheduled };
@@ -45,86 +46,16 @@ export type Variables = {
   requestId: string;
   logger: ReturnType<typeof getLogger>;
 };
+
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
-app.use('*', loggerMiddleware());
-app.use('*', validationErrorHandler);
-app.use(
-  '*',
-  initAuthConfig((c) => getAuthConfig(c.env))
-);
 
-// Security headers
-app.use('*', cspHeaders);
-app.use('*', requestTimeout(30000)); // 30 second timeout
-
-// Payload size guard (1MB limit)
-app.use('*', async (c, next) => {
-  const method = c.req.method.toUpperCase();
-  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
-    const lengthHeader = c.req.header('content-length');
-    const contentLength = lengthHeader ? Number(lengthHeader) : 0;
-    if (contentLength > 1_000_000) {
-      return c.json(
-        { error: 'payload_too_large', message: 'Request payload exceeds 1MB limit.' },
-        413
-      );
-    }
-  }
-  await next();
-});
-
-// CORS
-app.use(
-  '*',
-  cors({
-    origin: (origin, c) => {
-      const env = (c as any).env as Env;
-      return resolveCorsOrigin(origin, env);
-    },
-    allowHeaders: ['Content-Type', 'Authorization', 'X-Auth-Return-Redirect'],
-    allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    credentials: true,
-    exposeHeaders: [
-      'X-RateLimit-Limit',
-      'X-RateLimit-Remaining',
-      'X-RateLimit-Reset',
-      'X-Request-Id',
-      'Server-Timing',
-    ],
-  })
-);
-
-app.use('*', async (c, next) => {
-  if (
-    !isProductionLikeEnv(c.env.APP_ENV) ||
-    c.req.path === '/health' ||
-    c.req.path.startsWith('/health/')
-  ) {
-    return next();
-  }
-
-  const config = getRuntimeConfig(c.env);
-  if (config.ok) {
-    return next();
-  }
-
-  const requestId = c.get('requestId') || crypto.randomUUID();
-  c.header('X-Request-Id', requestId);
-
-  return c.json(
-    {
-      error: 'service_unavailable',
-      message: 'Service is not ready to receive traffic. Check /health/ready for details.',
-      requestId,
-    },
-    503
-  );
-});
+applyMiddlewareStack(app);
 
 app.onError((err, c) => {
-  const requestId = c.get('requestId') || crypto.randomUUID();
+  const requestId = c.get('requestId') || globalThis.crypto.randomUUID();
   const logger = c.get('logger') || getLogger(requestId);
   const error = err instanceof Error ? err : new Error(String(err));
+  const userId = c.get('userId');
 
   logger.error('Unhandled request error', error, {
     method: c.req.method,
@@ -136,11 +67,10 @@ app.onError((err, c) => {
     requestId,
     method: c.req.method,
     path: c.req.path,
-    user: c.get('userId') ? { id: c.get('userId') } : undefined,
+    user: userId ? { id: userId } : undefined,
   });
 
   c.header('X-Request-Id', requestId);
-
   return c.json(
     {
       error: 'internal_error',
@@ -152,54 +82,33 @@ app.onError((err, c) => {
 });
 
 app.notFound((c) => {
-  const requestId = c.get('requestId') || crypto.randomUUID();
+  const requestId = c.get('requestId') || globalThis.crypto.randomUUID();
   c.header('X-Request-Id', requestId);
-  return c.json(
-    {
-      error: 'not_found',
-      message: 'Route not found.',
-      requestId,
-    },
-    404
-  );
+  return c.json({ error: 'not_found', message: 'Route not found.', requestId }, 404);
 });
 
-// Health check
 app.route('/health', health);
 
 app.get('/auth/token', async (c) => {
   const authUser = await getAuthUser(c);
   const user = getSessionUserProfile(authUser);
-
-  if (!user) {
-    return c.json({ error: 'unauthorized', message: 'No active session.' }, 401);
-  }
-
+  if (!user) return c.json({ error: 'unauthorized', message: 'No active session.' }, 401);
   if (!c.env.AUTH_SECRET) {
     return c.json(
-      {
-        error: 'service_unavailable',
-        message: 'Authentication is not configured for this environment.',
-      },
+      { error: 'service_unavailable', message: 'Authentication is not configured.' },
       503
     );
   }
-
   c.header('Cache-Control', 'no-store');
-  return c.json({
-    token: await encodeApiToken(user.id, user.email, c.env.AUTH_SECRET),
-    user,
-  });
+  return c.json({ token: await encodeApiToken(user.id, user.email, c.env.AUTH_SECRET), user });
 });
 
 app.use('/auth/*', authHandler());
 
-// Stats endpoint for dashboard (alias to /analytics/stats)
 app.get('/stats', async (c) => {
   const { buildAnalyticsPayload } = await import('./routes/analytics.js');
-  const auth = requireAuth();
-  // Apply auth middleware inline
-  const authResult = await auth(c, async () => {});
+  const authMiddleware = requireAuth<Variables>();
+  const authResult = await authMiddleware(c, async () => {});
   if (authResult) return authResult;
 
   const payload = await buildAnalyticsPayload(
@@ -212,34 +121,29 @@ app.get('/stats', async (c) => {
     succeeded_runs: payload.succeeded,
     failed_runs: payload.failed,
     avg_duration: payload.avgDuration,
-    runs_by_flow: payload.byFlow.map((f) => ({
-      flow_name: f.flowName,
-      count: f.count,
-    })),
-    runs_over_time: payload.byDay.map((d) => ({
-      date: d.date,
-      count: d.count,
-    })),
+    runs_by_flow: payload.byFlow.map((f) => ({ flow_name: f.flowName, count: f.count })),
+    runs_over_time: payload.byDay.map((d) => ({ date: d.date, count: d.count })),
   });
 });
 
-// Audit logging for mutations
 app.use('*', auditMutationMiddleware());
 
-// Mount route modules
 app.route('/analytics', analytics);
 app.route('/runs', runs);
+app.route('/runs', runEvents);
 app.route('/flows', flows);
 app.route('/artifacts', artifacts);
 app.route('/auth-profiles', authProfiles);
 app.route('/elements', elementRoutes);
 app.route('/schedules', schedules);
+app.route('/visual-regression', visualRegression);
+app.route('/skills', skills);
 app.route('/proxy', proxy);
 app.route('/billing', billing);
 app.route('/', resources);
 app.route('/', misc);
 
-// Sub-apps with auth wrappers
+// Auth-wrapped sub-apps
 const auth = requireAuth();
 
 app.route(
@@ -286,10 +190,11 @@ app.route(
 );
 
 const handler = {
-  fetch(request, env, executionCtx) {
+  fetch(request: Parameters<typeof app.fetch>[0], env: Env, executionCtx: ExecutionContext) {
     return app.fetch(request, env, executionCtx);
   },
   scheduled,
-} satisfies ExportedHandler<Env>;
+};
 
-export default Sentry.withSentry<Env>(getSentryOptions, handler);
+const withSentry = Sentry.withSentry as unknown as (options: unknown, handler: unknown) => unknown;
+export default withSentry(getSentryOptions, handler);

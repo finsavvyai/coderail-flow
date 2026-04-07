@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS schedule (
   updated_at TEXT
 );
 
-CREATE INDEX idx_schedule_flow ON schedule(flow_id);
-CREATE INDEX idx_schedule_enabled ON schedule(enabled);
-CREATE INDEX idx_schedule_next_run ON schedule(next_run_at);
+CREATE INDEX IF NOT EXISTS idx_schedule_flow ON schedule(flow_id);
+CREATE INDEX IF NOT EXISTS idx_schedule_enabled ON schedule(enabled);
+CREATE INDEX IF NOT EXISTS idx_schedule_next_run ON schedule(next_run_at);

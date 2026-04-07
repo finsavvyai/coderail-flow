@@ -124,7 +124,6 @@ function buildProviders(env: Env) {
       Google({
         clientId: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
-        allowDangerousEmailAccountLinking: true,
       })
     );
   }
@@ -134,7 +133,6 @@ function buildProviders(env: Env) {
       GitHub({
         clientId: env.GITHUB_CLIENT_ID,
         clientSecret: env.GITHUB_CLIENT_SECRET,
-        allowDangerousEmailAccountLinking: true,
       })
     );
   }
@@ -144,7 +142,6 @@ function buildProviders(env: Env) {
       LinkedIn({
         clientId: env.LINKEDIN_CLIENT_ID,
         clientSecret: env.LINKEDIN_CLIENT_SECRET,
-        allowDangerousEmailAccountLinking: true,
       })
     );
   }
@@ -155,7 +152,6 @@ function buildProviders(env: Env) {
         clientId: env.AZURE_AD_CLIENT_ID,
         clientSecret: env.AZURE_AD_CLIENT_SECRET,
         issuer: `https://login.microsoftonline.com/${env.AZURE_AD_TENANT_ID ?? 'common'}/v2.0`,
-        allowDangerousEmailAccountLinking: true,
       })
     );
   }

@@ -10,11 +10,14 @@ importers:
     dependencies:
       '@sentry/cloudflare':
         specifier: ^10.42.0
-        version: 10.42.0(@cloudflare/workers-types@4.20260101.0)
+        version: 10.42.0(@cloudflare/workers-types@4.20260405.1)
       hono:
         specifier: ^4.11.10
         version: 4.12.9
     devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20260405.1
+        version: 4.20260405.1
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.0.2)
@@ -167,6 +170,9 @@ importers:
       '@coderail-flow/dsl':
         specifier: workspace:*
         version: link:../dsl
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20241127.0
@@ -357,6 +363,9 @@ packages:
 
   '@cloudflare/workers-types@4.20260101.0':
     resolution: {integrity: sha512-C28o4U1T4dPe8avLv1xMQ4MtSE6G4skbVA3VfVZIrpTqklvO+homKB1uFEtNbuZlaKg+Znv8sjmGQUInTH17gA==}
+
+  '@cloudflare/workers-types@4.20260405.1':
+    resolution: {integrity: sha512-PokTmySa+D6MY01R1UfYH48korsN462NK/fl3aw47Hg7XuLuSo/RTpjT0vtWaJhJoFY5tHGOBBIbDcIc8wltLg==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3378,6 +3387,8 @@ snapshots:
 
   '@cloudflare/workers-types@4.20260101.0': {}
 
+  '@cloudflare/workers-types@4.20260405.1': {}
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -3897,12 +3908,12 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.54.0':
     optional: true
 
-  '@sentry/cloudflare@10.42.0(@cloudflare/workers-types@4.20260101.0)':
+  '@sentry/cloudflare@10.42.0(@cloudflare/workers-types@4.20260405.1)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@sentry/core': 10.42.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20260101.0
+      '@cloudflare/workers-types': 4.20260405.1
 
   '@sentry/core@10.42.0': {}
 

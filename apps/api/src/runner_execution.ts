@@ -6,6 +6,8 @@ import { deliverWebhooks } from './integrations';
 import { loadElementsForFlow, loadScreensForFlow } from './runner_data_loaders';
 import { persistRunSteps, storeArtifacts } from './runner_artifacts';
 import type { RunEvent } from './integration_types';
+import { runVisualRegression } from './visual-regression-service';
+import { publishRunEvent, closeRunChannel } from './routes/run-events';
 
 /**
  * Real flow runner using Browser Rendering + Puppeteer.
@@ -54,6 +56,18 @@ export async function runFlowReal(env: Env, runId: string) {
       orgId: flow.org_id,
       projectId: flow.project_id,
       runId,
+      onProgress: async (progress) => {
+        const type = progress.status === 'failed' ? 'step_failed'
+          : progress.status === 'completed' ? 'step_completed' : 'step_started';
+        publishRunEvent(runId, {
+          type: type as any,
+          runId,
+          stepIndex: progress.step - 1,
+          stepType: progress.type,
+          description: progress.description,
+          timestamp: progress.timestamp,
+        });
+      },
     };
 
     if (authCookies.length > 0) {
@@ -70,8 +84,28 @@ export async function runFlowReal(env: Env, runId: string) {
     await persistRunSteps(env, runId, result.reportJson);
     await storeArtifacts(env, runId, result);
 
+    // Visual regression check (non-blocking)
+    try {
+      await runVisualRegression(env, {
+        runId,
+        flowId: run.flow_id,
+        orgId: flow.org_id,
+        projectId: flow.project_id,
+      });
+    } catch {
+      /* don't fail the run if VR check fails */
+    }
+
     const finished = new Date().toISOString();
     await q(env, "UPDATE run SET status='succeeded', finished_at=? WHERE id=?", [finished, runId]);
+
+    publishRunEvent(runId, {
+      type: 'run_completed',
+      runId,
+      status: 'succeeded',
+      timestamp: Date.now(),
+    });
+    closeRunChannel(runId);
 
     await deliverWebhooksSafe(env, 'run.completed', {
       runId,
@@ -89,6 +123,14 @@ export async function runFlowReal(env: Env, runId: string) {
       "UPDATE run SET status='failed', finished_at=?, error_code=?, error_message=? WHERE id=?",
       [finished, 'EXECUTION_ERROR', err.message || 'Unknown error', runId]
     );
+
+    publishRunEvent(runId, {
+      type: 'run_failed',
+      runId,
+      error: err.message || 'Unknown error',
+      timestamp: Date.now(),
+    });
+    closeRunChannel(runId);
 
     await deliverWebhooksSafe(env, 'run.failed', {
       runId,

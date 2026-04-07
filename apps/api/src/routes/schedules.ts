@@ -4,6 +4,7 @@
 
 import { Hono } from 'hono';
 import type { Env } from '../env';
+import type { ExecutionContext, ScheduledController } from '@cloudflare/workers-types';
 import { q, q1 } from '../db';
 import { requireAuth } from '../auth';
 import { createSchedule, processScheduledFlows } from '../scheduler';
@@ -15,7 +16,7 @@ const auth = requireAuth();
 schedules.get('/', auth, async (c) => {
   const flowId = c.req.query('flowId');
   let sql = 'SELECT * FROM schedule';
-  const params: any[] = [];
+  const params: unknown[] = [];
   if (flowId) {
     sql += ' WHERE flow_id = ?';
     params.push(flowId);
@@ -29,7 +30,7 @@ schedules.post('/', auth, async (c) => {
   const body = await c.req.json<{
     flowId: string;
     cronExpression: string;
-    params?: Record<string, any>;
+    params?: Record<string, unknown>;
   }>();
   if (!body.flowId || !body.cronExpression) {
     return c.json({ error: 'flowId and cronExpression required' }, 400);
@@ -43,10 +44,10 @@ schedules.put('/:id', auth, async (c) => {
   const body = await c.req.json<{
     enabled?: boolean;
     cronExpression?: string;
-    params?: Record<string, any>;
+    params?: Record<string, unknown>;
   }>();
   const updates: string[] = [];
-  const params: any[] = [];
+  const params: unknown[] = [];
 
   if (body.enabled !== undefined) {
     updates.push('enabled = ?');
@@ -77,7 +78,7 @@ schedules.delete('/:id', auth, async (c) => {
   return c.json({ ok: true });
 });
 
-export async function scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+export async function scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext) {
   ctx.waitUntil(processScheduledFlows(env));
 }
 

@@ -27,7 +27,12 @@ function cleanup() {
  * @param max   Maximum requests per window
  * @param windowMs  Window size in milliseconds
  */
-export function rateLimit(max: number, windowMs: number): MiddlewareHandler<{ Bindings: Env }> {
+type RateLimitContextVariables = object;
+
+export function rateLimit<V extends RateLimitContextVariables = RateLimitContextVariables>(
+  max: number,
+  windowMs: number
+): MiddlewareHandler<{ Bindings: Env; Variables: V }> {
   return async (c, next) => {
     cleanup();
 
@@ -44,6 +49,50 @@ export function rateLimit(max: number, windowMs: number): MiddlewareHandler<{ Bi
     bucket.count++;
 
     // Set standard rate-limit headers
+    c.header('X-RateLimit-Limit', String(max));
+    c.header('X-RateLimit-Remaining', String(Math.max(0, max - bucket.count)));
+    c.header('X-RateLimit-Reset', String(Math.ceil(bucket.resetAt / 1000)));
+
+    if (bucket.count > max) {
+      return c.json(
+        {
+          error: 'rate_limit_exceeded',
+          message: `Too many requests. Try again in ${Math.ceil((bucket.resetAt - now) / 1000)}s.`,
+        },
+        429
+      );
+    }
+
+    return next();
+  };
+}
+
+/**
+ * Rate limit by authenticated user ID.
+ * Falls back to IP-based limiting if userId is not set.
+ */
+export function rateLimitByUser<V extends { userId?: string }>(
+  max: number,
+  windowMs: number
+): MiddlewareHandler<{ Bindings: Env; Variables: V }> {
+  return async (c, next) => {
+    cleanup();
+
+    const userId =
+      (c.get('userId') || c.req.header('cf-connecting-ip')) ??
+      c.req.header('x-forwarded-for') ??
+      'unknown';
+    const key = `user:${userId}:${c.req.path}`;
+    const now = Date.now();
+
+    let bucket = buckets.get(key);
+    if (!bucket || bucket.resetAt < now) {
+      bucket = { count: 0, resetAt: now + windowMs };
+      buckets.set(key, bucket);
+    }
+
+    bucket.count++;
+
     c.header('X-RateLimit-Limit', String(max));
     c.header('X-RateLimit-Remaining', String(Math.max(0, max - bucket.count)));
     c.header('X-RateLimit-Reset', String(Math.ceil(bucket.resetAt / 1000)));

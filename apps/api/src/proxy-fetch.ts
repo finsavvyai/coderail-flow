@@ -49,7 +49,7 @@ export async function proxyFetch(
     const body = await response.arrayBuffer();
     return new Response(body, { status: response.status, headers });
   } catch (err: any) {
-    return c.json({ error: 'Proxy error', details: err.message }, 502);
+    return c.json({ error: 'proxy_error', message: 'Failed to fetch the target URL.' }, 502);
   }
 }
 

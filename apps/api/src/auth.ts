@@ -3,14 +3,23 @@ import type { Env } from './env';
 import { isProductionLikeEnv } from './runtime-config';
 import { verifyApiToken } from './auth-token';
 
-type AuthVariables = { userId: string; userEmail?: string };
+type AuthContextVariables = {
+  userId?: string;
+  userEmail?: string;
+  [key: string]: unknown;
+};
 
 /**
  * Hono middleware: require a valid signed API token.
  * Sets `userId` on context variables.
  * Skips auth only when AUTH_SECRET is intentionally omitted in local/test mode.
  */
-export function requireAuth(): MiddlewareHandler<{ Bindings: Env; Variables: AuthVariables }> {
+export function requireAuth<
+  V extends AuthContextVariables = AuthContextVariables,
+>(): MiddlewareHandler<{
+  Bindings: Env;
+  Variables: V;
+}> {
   return async (c, next) => {
     const env = c.env;
 
@@ -43,8 +52,9 @@ export function requireAuth(): MiddlewareHandler<{ Bindings: Env; Variables: Aut
       const claims = await verifyApiToken(token, env.AUTH_SECRET);
       c.set('userId', claims.sub);
       if (claims.email) c.set('userEmail', claims.email);
-    } catch (err: any) {
-      return c.json({ error: 'unauthorized', message: err.message }, 401);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Invalid token';
+      return c.json({ error: 'unauthorized', message }, 401);
     }
 
     return next();

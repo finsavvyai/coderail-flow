@@ -13,6 +13,7 @@
     "build:web": "pnpm --filter @coderail-flow/web run build",
     "deploy:api": "npm --workspace apps/api run deploy",
     "deploy:web": "npm --workspace apps/web run deploy",
+    "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:web": "pnpm --filter @coderail-flow/web run test",
     "test:watch": "vitest",
@@ -29,13 +30,14 @@
     "perf:benchmark": "tsx scripts/perf-benchmark.ts",
     "security:verify": "tsx scripts/security-verify.ts",
     "security:pentest": "tsx scripts/pentest-smoke.ts",
-    "validate:production": "pnpm run format:check && pnpm test && pnpm run test:web && pnpm run build:web",
+    "validate:production": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm test && pnpm run test:web && pnpm run build:web",
     "deploy:production": "bash scripts/deploy-production.sh",
     "deploy:production:api": "cd apps/api && wrangler deploy --env=\"\"",
     "deploy:production:web": "cd apps/web && pnpm run build && wrangler pages deploy dist --project-name=coderail-flow --commit-dirty=true",
     "test:e2e:production": "bash scripts/run-e2e-production.sh"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260405.1",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@testing-library/jest-dom": "^6.9.1",

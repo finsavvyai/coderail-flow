@@ -46,8 +46,7 @@ test.describe("Billing page (/billing)", () => {
     await page.goto("/billing");
     await page.waitForSelector(".auth-gate, .container", { timeout: 30_000 }).catch(() => {});
     const billingContent = page.getByText(/plan|billing|pricing|pro|free|usage/i).first();
-    const signInGate = page.getByText(/Sign in to CodeRail/i);
-    const loader = page.getByText(/Loading/i);
-    await expect(billingContent.or(signInGate).or(loader)).toBeVisible({ timeout: 10_000 });
+    const signInHeading = page.getByRole('heading', { name: /Sign in to CodeRail/i });
+    await expect(billingContent.or(signInHeading)).toBeVisible({ timeout: 10_000 });
   });
 });

@@ -1,9 +1,4 @@
-/**
- * Core flow execution orchestrator.
- *
- * Launches the browser, iterates steps, captures video/screenshots,
- * generates reports and subtitles, and uploads artifacts to R2.
- */
+/** Core flow execution orchestrator. */
 
 import puppeteer from '@cloudflare/puppeteer';
 import { generateSRT, buildNarrationTimeline } from './subtitle';
@@ -13,6 +8,7 @@ import { injectOverlay } from './executor-overlay';
 import { uploadFlowArtifacts } from './executor-artifacts';
 import { getStepDescription } from './steps-navigation';
 import { executeStep } from './executor-dispatch';
+import { runHooks, buildBeforeStepPayload, buildAfterStepPayload } from './hook-pipeline';
 
 export async function executeFlow(input: ExecuteInput): Promise<ExecuteOutput> {
   const startTime = Date.now();
@@ -62,7 +58,27 @@ export async function executeFlow(input: ExecuteInput): Promise<ExecuteOutput> {
       }
 
       try {
+        // Run beforeStep hooks
+        if (input.hooks?.beforeStep?.length) {
+          const hookPayload = buildBeforeStepPayload(
+            input.flowId || '', input.runId, step.type, i, step as any
+          );
+          const hookResult = await runHooks(input.hooks.beforeStep, hookPayload);
+          if (hookResult.outcome === 'deny') {
+            throw new Error(`Step denied by hook: ${hookResult.messages.join('; ')}`);
+          }
+        }
+
         await executeStep(page, step, input, i);
+
+        // Run afterStep hooks (non-blocking)
+        if (input.hooks?.afterStep?.length) {
+          const hookPayload = buildAfterStepPayload(
+            input.flowId || '', input.runId, step.type, i,
+            step as any, { status: 'ok' }, false
+          );
+          await runHooks(input.hooks.afterStep, hookPayload).catch(() => {});
+        }
 
         stepResults.push({
           idx: i,
@@ -86,6 +102,15 @@ export async function executeFlow(input: ExecuteInput): Promise<ExecuteOutput> {
           });
         }
       } catch (err: any) {
+        // Run afterStep hooks on failure (non-blocking)
+        if (input.hooks?.afterStep?.length) {
+          const hookPayload = buildAfterStepPayload(
+            input.flowId || '', input.runId, step.type, i,
+            step as any, { error: err.message }, true
+          );
+          await runHooks(input.hooks.afterStep, hookPayload).catch(() => {});
+        }
+
         stepResults.push({
           idx: i,
           type: step.type,

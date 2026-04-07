@@ -30,7 +30,9 @@ export type ExecuteInput = {
   orgId?: string;
   projectId?: string;
   runId: string;
+  flowId?: string;
   onProgress?: ProgressCallback;
+  hooks?: ExecuteHooks;
 };
 
 export interface ExecuteResult {
@@ -65,3 +67,20 @@ export type StepDispatcher = (
   input: ExecuteInput,
   stepIndex: number
 ) => Promise<void>;
+
+export type HookHandlerFn = (payload: {
+  event: 'beforeStep' | 'afterStep';
+  stepType: string;
+  stepIndex: number;
+  flowId: string;
+  runId: string;
+  input: Record<string, unknown>;
+  output?: Record<string, unknown>;
+  isError?: boolean;
+  timestamp: number;
+}) => Promise<{ outcome: 'allow' | 'deny' | 'warn'; messages: string[] }>;
+
+export interface ExecuteHooks {
+  beforeStep?: HookHandlerFn[];
+  afterStep?: HookHandlerFn[];
+}

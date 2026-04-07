@@ -18,8 +18,47 @@ import { Hono } from 'hono';
 import type { Env } from './env';
 import { b64Encode, b64Decode } from './proxy-helpers';
 import { proxyFetch } from './proxy-fetch';
+import { requireAuth } from './auth';
+import { rateLimit } from './ratelimit';
 
-const proxy = new Hono<{ Bindings: Env }>();
+const proxy = new Hono<{ Bindings: Env; Variables: { userId?: string; userEmail?: string } }>();
+
+// ── Auth & rate limiting ─────────────────────────────────────
+proxy.use('*', requireAuth());
+proxy.use('*', rateLimit(30, 60_000));
+
+// ── SSRF protection ──────────────────────────────────────────
+
+/** RFC 1918 / loopback / link-local patterns for SSRF blocking. */
+const PRIVATE_IP_RE =
+  /^(127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|0\.0\.0\.0|169\.254\.\d+\.\d+|\[::1\]|\[fc00:)/i;
+
+/**
+ * Validate that a decoded origin is an allowed proxy target.
+ * Rejects non-HTTPS in production and private/loopback addresses.
+ *
+ * TODO: Implement project-scoped allowlisting — only allow origins
+ *       that match the authenticated user's project `base_url`.
+ */
+function validateOrigin(raw: string): { valid: true; url: URL } | { valid: false; reason: string } {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return { valid: false, reason: 'Decoded origin is not a valid URL.' };
+  }
+
+  if (!['http:', 'https:'].includes(url.protocol)) {
+    return { valid: false, reason: 'Only HTTP(S) origins are allowed.' };
+  }
+
+  const hostname = url.hostname.replace(/^\[|\]$/g, '');
+  if (hostname === 'localhost' || PRIVATE_IP_RE.test(hostname)) {
+    return { valid: false, reason: 'Private or loopback addresses are not allowed.' };
+  }
+
+  return { valid: true, url };
+}
 
 // ── Catch-all proxy route ────────────────────────────────────
 // Matches:  /proxy/<b64origin>/any/path?query
@@ -32,6 +71,11 @@ proxy.all('/:b64origin{[A-Za-z0-9_-]+}/*', async (c) => {
     targetOrigin = b64Decode(b64origin);
   } catch {
     return c.json({ error: 'Invalid base64 origin' }, 400);
+  }
+
+  const check = validateOrigin(targetOrigin);
+  if (!check.valid) {
+    return c.json({ error: 'origin_not_allowed', message: check.reason }, 403);
   }
 
   const url = new URL(c.req.url);
@@ -48,6 +92,11 @@ proxy.all('/:b64origin{[A-Za-z0-9_-]+}', async (c) => {
     targetOrigin = b64Decode(b64origin);
   } catch {
     return c.json({ error: 'Invalid base64 origin' }, 400);
+  }
+
+  const check = validateOrigin(targetOrigin);
+  if (!check.valid) {
+    return c.json({ error: 'origin_not_allowed', message: check.reason }, 403);
   }
 
   const url = new URL(c.req.url);
