@@ -1,0 +1,5 @@
+# Redirect www to root domain
+https://www.coderail.dev/* https://coderail.dev/:splat 301
+
+# Redirect root domain to flow subdomain (the actual app)
+https://coderail.dev/* https://flow.coderail.dev/:splat 301

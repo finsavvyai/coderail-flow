@@ -94,6 +94,56 @@ billing.post('/checkout', auth, async (c) => {
   return c.json({ checkoutUrl });
 });
 
+// ---- Get plan definitions (public) ----
+billing.get('/plans', async (c) => {
+  const env = c.env;
+  const variantPro = env.LEMONSQUEEZY_VARIANT_PRO ?? null;
+  const variantTeam = env.LEMONSQUEEZY_VARIANT_TEAM ?? null;
+  const storeId = env.LEMONSQUEEZY_STORE_ID ?? null;
+
+  const baseCheckoutUrl = storeId
+    ? `https://${storeId}.lemonsqueezy.com/checkout/buy`
+    : null;
+
+  const plans = [
+    {
+      id: 'free',
+      name: 'Free',
+      price: 0,
+      currency: 'USD',
+      interval: null,
+      limits: PLAN_LIMITS.free,
+      checkoutUrl: null,
+    },
+    {
+      id: 'pro',
+      name: 'Pro',
+      price: 2900,
+      currency: 'USD',
+      interval: 'month',
+      limits: PLAN_LIMITS.pro,
+      checkoutUrl:
+        baseCheckoutUrl && variantPro
+          ? `${baseCheckoutUrl}/${variantPro}`
+          : null,
+    },
+    {
+      id: 'team',
+      name: 'Team',
+      price: 7900,
+      currency: 'USD',
+      interval: 'month',
+      limits: PLAN_LIMITS.team,
+      checkoutUrl:
+        baseCheckoutUrl && variantTeam
+          ? `${baseCheckoutUrl}/${variantTeam}`
+          : null,
+    },
+  ];
+
+  return c.json({ plans });
+});
+
 // Mount webhook routes
 billing.route('/', webhookRouter);
 

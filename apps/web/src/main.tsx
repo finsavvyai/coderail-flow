@@ -66,6 +66,9 @@ const BillingPage = lazy(() =>
 const ProjectManager = lazy(() =>
   import('./ui/ProjectManager').then((module) => ({ default: module.ProjectManager }))
 );
+const PricingRedirect = lazy(() =>
+  import('./ui/PricingRedirect').then((module) => ({ default: module.PricingRedirect }))
+);
 const App = lazy(() => import('./ui/App').then((module) => ({ default: module.App })));
 const DashboardPage = lazy(() => import('./ui/DashboardPage'));
 
@@ -142,6 +145,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </ProtectedRoute>
               )}
             />
+            <Route path="/pricing" element={routeElement(<PricingRedirect />)} />
             <Route
               path="/billing"
               element={routeElement(
@@ -170,6 +174,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/app/dashboard" element={routeElement(<DashboardPage />)} />
           <Route path="/app/flows" element={routeElement(<App />)} />
           <Route path="/app/runs/:runId" element={routeElement(<App />)} />
+          <Route path="/pricing" element={routeElement(<PricingRedirect />)} />
           <Route path="/billing" element={routeElement(<BillingPage />)} />
           <Route path="/projects" element={routeElement(<ProjectManager />)} />
           <Route path="*" element={routeElement(<NotFoundPage />)} />
@@ -183,6 +188,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/app/dashboard" element={routeElement(<ProtectedAppUnavailable />)} />
           <Route path="/app/flows" element={routeElement(<ProtectedAppUnavailable />)} />
           <Route path="/app/runs/:runId" element={routeElement(<ProtectedAppUnavailable />)} />
+          <Route path="/pricing" element={routeElement(<PricingRedirect />)} />
           <Route path="/billing" element={routeElement(<ProtectedAppUnavailable />)} />
           <Route path="/projects" element={routeElement(<ProtectedAppUnavailable />)} />
           <Route path="*" element={routeElement(<NotFoundPage />)} />
