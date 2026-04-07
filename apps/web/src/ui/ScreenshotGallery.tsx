@@ -37,9 +37,7 @@ export function ScreenshotGallery({ screenshots }: ScreenshotGalleryProps) {
               className="gallery-thumb-img"
               loading="lazy"
             />
-            <div className="gallery-thumb-label">
-              Step {getStepNumber(screenshot, index)}
-            </div>
+            <div className="gallery-thumb-label">Step {getStepNumber(screenshot, index)}</div>
           </button>
         ))}
       </div>

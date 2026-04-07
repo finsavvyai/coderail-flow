@@ -111,38 +111,42 @@ runEvents.get('/:id/events', auth, async (c) => {
     });
 
     // Poll queue for events (Workers don't support true push)
-    const interval = setInterval(async () => {
-      while (sub.queue.length > 0) {
-        const event = sub.queue.shift()!;
-        try {
-          await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
-        } catch {
-          closed = true;
+    const interval = setInterval(() => {
+      void (async () => {
+        while (sub.queue.length > 0) {
+          const event = sub.queue.shift()!;
+          try {
+            await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+          } catch {
+            closed = true;
+          }
+          // Close after terminal events
+          if (event.type === 'run_completed' || event.type === 'run_failed') {
+            closed = true;
+          }
         }
-        // Close after terminal events
-        if (event.type === 'run_completed' || event.type === 'run_failed') {
-          closed = true;
+        if (closed) {
+          clearInterval(interval);
+          sub.unsubscribe();
         }
-      }
-      if (closed) {
-        clearInterval(interval);
-        sub.unsubscribe();
-      }
+      })();
     }, 200);
 
     // Keep alive — send comment every 15s
-    const keepAlive = setInterval(async () => {
-      if (closed) {
-        clearInterval(keepAlive);
-        return;
-      }
-      try {
-        await stream.writeSSE({ event: 'ping', data: '' });
-      } catch {
-        closed = true;
-        clearInterval(keepAlive);
-        sub.unsubscribe();
-      }
+    const keepAlive = setInterval(() => {
+      void (async () => {
+        if (closed) {
+          clearInterval(keepAlive);
+          return;
+        }
+        try {
+          await stream.writeSSE({ event: 'ping', data: '' });
+        } catch {
+          closed = true;
+          clearInterval(keepAlive);
+          sub.unsubscribe();
+        }
+      })();
     }, 15_000);
 
     // Wait until closed

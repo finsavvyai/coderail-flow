@@ -88,7 +88,7 @@ async function executeStep(page: Page, step: FlowStep, input: RunRequest): Promi
       break;
     }
     case 'keyboard': {
-      if (step.keys) await page.keyboard.press(step.keys);
+      if (step.keys) await page.keyboard.press(step.keys as import('puppeteer').KeyInput);
       break;
     }
     case 'waitFor': {
@@ -366,14 +366,14 @@ async function handleRecordStart(req: http.IncomingMessage, res: http.ServerResp
         if (el.tagName === 'SELECT') {
           sendAction({
             type: 'select',
-            selector: selectorFor(el),
+            selector: selectorFor(el as unknown as Element),
             value: el.value,
             tagName: 'select',
           });
         } else {
           sendAction({
             type: 'fill',
-            selector: selectorFor(el),
+            selector: selectorFor(el as unknown as Element),
             value: el.value,
             tagName: el.tagName.toLowerCase(),
             placeholder: (el as HTMLInputElement).placeholder,

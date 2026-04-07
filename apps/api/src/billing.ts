@@ -1,7 +1,5 @@
 import { Hono } from 'hono';
 import type { Env } from './env';
-import { q, q1 } from './db';
-import { uuid } from './ids';
 import { requireAuth } from './auth';
 import {
   PLAN_LIMITS,

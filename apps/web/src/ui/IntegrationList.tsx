@@ -81,9 +81,7 @@ export function WebhookUrls() {
       <div className="webhook-header">
         <Globe size={16} /> Incoming Webhook URLs
       </div>
-      <div className="webhook-hint">
-        Use these URLs in your CI/CD pipelines to trigger flows:
-      </div>
+      <div className="webhook-hint">Use these URLs in your CI/CD pipelines to trigger flows:</div>
       <div className="webhook-urls">
         <CodeBlock label="GitLab CI" url={`${API_BASE}/triggers/gitlab`} />
         <CodeBlock label="GitHub Actions" url={`${API_BASE}/triggers/github`} />

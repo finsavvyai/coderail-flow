@@ -59,10 +59,7 @@ export function ProjectManager() {
   if (pm.view === 'integrations' && pm.selectedProject) {
     return (
       <div className="pm-subpage">
-        <button
-          className="btn btn-back"
-          onClick={() => pm.setView('list')}
-        >
+        <button className="btn btn-back" onClick={() => pm.setView('list')}>
           &larr; Back to Project
         </button>
         <IntegrationsPage projectId={pm.selectedProject.id} />
@@ -81,10 +78,7 @@ export function ProjectManager() {
   if (pm.view === 'templates' && pm.selectedProject) {
     return (
       <div className="pm-subpage">
-        <button
-          className="btn btn-back"
-          onClick={() => pm.setView('list')}
-        >
+        <button className="btn btn-back" onClick={() => pm.setView('list')}>
           &larr; Back to Project
         </button>
         <FlowTemplates projectId={pm.selectedProject.id} onSuccess={() => pm.setView('list')} />

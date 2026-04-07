@@ -124,9 +124,7 @@ export function JiraAutoCreateToggle({ config, onChange }: JiraFormFieldsProps) 
         />
         <div>
           <div className="jira-auto-title">Auto-create issues on failure</div>
-          <div className="jira-auto-desc">
-            Automatically create Jira issues when flows fail
-          </div>
+          <div className="jira-auto-desc">Automatically create Jira issues when flows fail</div>
         </div>
       </label>
     </div>

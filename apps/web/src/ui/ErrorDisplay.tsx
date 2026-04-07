@@ -29,21 +29,13 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
         <div className="error-display-header-left">
           <XCircle size={24} className="error-display-icon" />
           <div>
-            <div className="h2 error-display-title">
-              Execution Failed
-            </div>
-            <div className="small error-display-code">
-              {run.error_code || 'UNKNOWN_ERROR'}
-            </div>
+            <div className="h2 error-display-title">Execution Failed</div>
+            <div className="small error-display-code">{run.error_code || 'UNKNOWN_ERROR'}</div>
           </div>
         </div>
 
         {onRetry && (
-          <button
-            className="btn error-display-retry"
-            onClick={handleRetry}
-            disabled={retrying}
-          >
+          <button className="btn error-display-retry" onClick={handleRetry} disabled={retrying}>
             <RefreshCw size={14} className="ftr-inline-icon" />
             {retrying ? 'Retrying...' : 'Retry'}
           </button>
@@ -52,9 +44,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
 
       {/* Error Message */}
       <div className="error-display-panel">
-        <div className="small error-display-label">
-          Error Message:
-        </div>
+        <div className="small error-display-label">Error Message:</div>
         <div className="error-display-message">
           {run.error_message || 'No error message provided'}
         </div>
@@ -63,9 +53,7 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
       {/* Error Screenshot */}
       {errorScreenshot && (
         <div className="error-display-panel">
-          <div className="small error-display-label">
-            Screenshot at time of failure:
-          </div>
+          <div className="small error-display-label">Screenshot at time of failure:</div>
           <button
             onClick={() => {
               window.open(apiUrl(`/artifacts/${errorScreenshot.id}/preview`), '_blank');
@@ -95,21 +83,14 @@ export function ErrorDisplay({ run, errorScreenshot, onRetry }: ErrorDisplayProp
             {showStack ? 'Hide Details' : 'Show Details'}
           </button>
 
-          {showStack && (
-            <pre className="error-display-stack">
-              {run.error_message}
-            </pre>
-          )}
+          {showStack && <pre className="error-display-stack">{run.error_message}</pre>}
         </div>
       )}
 
       {/* Troubleshooting Tips */}
       <div className="error-display-panel">
         <div className="small error-display-tips">
-          <Lightbulb
-            size={14}
-            className="error-display-tips-icon"
-          />
+          <Lightbulb size={14} className="error-display-tips-icon" />
           Troubleshooting Tips:
         </div>
         <ul className="error-display-tips-list">

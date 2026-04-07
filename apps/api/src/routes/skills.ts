@@ -20,11 +20,12 @@ const writeLimit = rateLimit(30, 60_000);
 skills.get('/', readLimit, async (c) => {
   const tag = c.req.query('tag');
   const search = c.req.query('q');
-  let sql = 'SELECT id, name, version, description, author_name, tags, installs, stars, rating, created_at FROM skill WHERE published = 1';
+  let sql =
+    'SELECT id, name, version, description, author_name, tags, installs, stars, rating, created_at FROM skill WHERE published = 1';
   const params: unknown[] = [];
 
   if (tag) {
-    sql += " AND tags LIKE ?";
+    sql += ' AND tags LIKE ?';
     params.push(`%${tag}%`);
   }
   if (search) {
@@ -55,7 +56,10 @@ skills.post('/', auth, writeLimit, async (c) => {
   }>();
 
   if (!body.name || !body.version || !body.description || !body.manifest) {
-    return c.json({ error: 'validation_error', message: 'name, version, description, manifest required' }, 400);
+    return c.json(
+      { error: 'validation_error', message: 'name, version, description, manifest required' },
+      400
+    );
   }
 
   const existing = await q1(c.env, 'SELECT id FROM skill WHERE name = ?', [body.name]);
@@ -71,7 +75,18 @@ skills.post('/', auth, writeLimit, async (c) => {
     c.env,
     `INSERT INTO skill (id, name, version, description, author_id, author_name, manifest, tags, published, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
-    [id, body.name, body.version, body.description, userId, userId, JSON.stringify(body.manifest), JSON.stringify(body.tags || []), now, now]
+    [
+      id,
+      body.name,
+      body.version,
+      body.description,
+      userId,
+      userId,
+      JSON.stringify(body.manifest),
+      JSON.stringify(body.tags || []),
+      now,
+      now,
+    ]
   );
 
   return c.json({ skill: { id, name: body.name } }, 201);

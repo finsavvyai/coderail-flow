@@ -31,19 +31,12 @@ export function CookieEditorModal({
       onClick={onClose}
       className="cookie-modal-backdrop"
     >
-      <div
-        className="card cookie-modal-body"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="card cookie-modal-body" onClick={(e) => e.stopPropagation()}>
         <div className="cookie-modal-header">
           <div id="cookie-editor-title" className="h2">
             Edit Cookie
           </div>
-          <button
-            className="btn btn-icon"
-            onClick={onClose}
-            aria-label="Close dialog"
-          >
+          <button className="btn btn-icon" onClick={onClose} aria-label="Close dialog">
             <X size={16} />
           </button>
         </div>

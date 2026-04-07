@@ -37,14 +37,10 @@ export function RunProgressStepList({ steps }: RunProgressStepListProps) {
             {step.status === 'completed' && (
               <CheckCircle size={16} className="ftr-status-icon-success" />
             )}
-            {step.status === 'failed' && (
-              <XCircle size={16} className="ftr-status-icon-error" />
-            )}
+            {step.status === 'failed' && <XCircle size={16} className="ftr-status-icon-error" />}
             <span className={nameClass}>Step {i + 1}</span>
             {step.duration && (
-              <span className="rpsl-duration">
-                {(step.duration / 1000).toFixed(1)}s
-              </span>
+              <span className="rpsl-duration">{(step.duration / 1000).toFixed(1)}s</span>
             )}
           </div>
         );

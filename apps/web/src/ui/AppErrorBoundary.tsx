@@ -33,13 +33,8 @@ export class AppErrorBoundary extends React.Component<
 
     return (
       <div className="error-boundary-backdrop">
-        <div
-          className="card error-boundary-card"
-          role="alert"
-        >
-          <div className="eyebrow error-boundary-eyebrow">
-            Application Error
-          </div>
+        <div className="card error-boundary-card" role="alert">
+          <div className="eyebrow error-boundary-eyebrow">Application Error</div>
           <h1 className="h1" style={{ marginBottom: 12 }}>
             The workspace failed to load.
           </h1>
@@ -47,9 +42,7 @@ export class AppErrorBoundary extends React.Component<
             Reload the page to retry. If this persists, check the browser console and API health
             endpoints before routing traffic to this deployment.
           </p>
-          <div className="error-boundary-trace">
-            {this.state.error.message}
-          </div>
+          <div className="error-boundary-trace">{this.state.error.message}</div>
           <button className="btn btn-primary" type="button" onClick={this.handleReload}>
             Reload App
           </button>

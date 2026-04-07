@@ -2,13 +2,8 @@
 // Handles integration between CodeRail runs and Jira issues
 
 import { Context } from 'hono';
-import {
-  createJiraIssue,
-  addJiraComment,
-  formatRunAsJiraDescription,
-  type JiraConfig,
-  type JiraIssueFields,
-} from './jira-client';
+import type { Env } from '../env.d';
+import { type JiraConfig } from './jira-client';
 
 export interface JiraIntegrationConfig {
   project_id: string;

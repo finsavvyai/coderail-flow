@@ -42,7 +42,7 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
   async function pollProgress() {
     try {
       const res = await fetch(apiUrl(`/runs/${runId}`));
-      const data = await res.json();
+      const data = (await res.json()) as { run?: { status: string; progress?: any } };
       if (data.run) {
         if (data.run.status === 'succeeded' || data.run.status === 'failed') {
           setStatus(data.run.status);
@@ -93,9 +93,7 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
     <div className="card">
       <div className="rp-header">
         <div className="rp-status-group">
-          {status === 'running' && (
-            <Loader2 size={18} className="spin ftr-status-icon-accent" />
-          )}
+          {status === 'running' && <Loader2 size={18} className="spin ftr-status-icon-accent" />}
           {status === 'succeeded' && <CheckCircle size={18} className="ftr-status-icon-success" />}
           {status === 'failed' && <XCircle size={18} className="ftr-status-icon-error" />}
           <span className="rp-status-label">
@@ -115,10 +113,7 @@ export function RunProgress({ runId, totalSteps, onComplete }: RunProgressProps)
         aria-label="Flow execution progress"
         className="rp-bar-track"
       >
-        <div
-          className={barClass}
-          style={{ width: `${progress}%` }}
-        />
+        <div className={barClass} style={{ width: `${progress}%` }} />
       </div>
 
       <div className="rp-meta">

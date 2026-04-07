@@ -107,7 +107,7 @@ export async function attachFileToIssue(
 ): Promise<void> {
   const buffer = Buffer.isBuffer(content) ? content : Buffer.from(content);
   const formData = new FormData();
-  formData.append('file', new Blob([buffer], { type: contentType }), filename);
+  formData.append('file', new Blob([new Uint8Array(buffer)], { type: contentType }), filename);
 
   const response = await fetch(`${config.instanceUrl}/rest/api/3/issue/${issueKey}/attachments`, {
     method: 'POST',

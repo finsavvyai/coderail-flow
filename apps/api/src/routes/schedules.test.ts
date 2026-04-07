@@ -43,7 +43,7 @@ describe('GET /schedules', () => {
     } as any);
     const res = await schedules.request('/', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.schedules).toHaveLength(1);
   });
 
@@ -51,7 +51,7 @@ describe('GET /schedules', () => {
     mockQ.mockResolvedValueOnce({ results: [] } as any);
     const res = await schedules.request('/', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.schedules).toHaveLength(0);
   });
 });
@@ -75,7 +75,7 @@ describe('POST /schedules', () => {
       ENV
     );
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.schedule).toBeTruthy();
   });
 

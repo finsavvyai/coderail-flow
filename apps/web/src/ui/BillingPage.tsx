@@ -45,7 +45,7 @@ export function BillingPage() {
           name: user.name,
         }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { user: AccountInfo };
       setAccount(data.user);
     } catch (err) {
       console.error('Failed to sync account:', err);
@@ -67,7 +67,7 @@ export function BillingPage() {
         },
         body: JSON.stringify({ plan }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { checkoutUrl?: string; error?: string };
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
       } else {

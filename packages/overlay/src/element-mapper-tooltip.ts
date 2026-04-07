@@ -1,6 +1,6 @@
 // Element mapper tooltip and style injection
 
-import type { ElementInfo, OverlayOptions } from './element-mapper';
+import type { ElementInfo } from './element-mapper';
 
 /** Inject mapper overlay styles into the document */
 export function injectMapperStyles(highlightColor: string): void {

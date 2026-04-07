@@ -1,0 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export function DeploymentConfigPage({ title, body, actions, issues = [], }) {
+    return (_jsx("main", { className: "deploy-config-backdrop", children: _jsxs("section", { className: "card deploy-config-card", role: "alert", children: [_jsx("div", { className: "eyebrow deploy-config-eyebrow", children: "Deployment Configuration" }), _jsx("h1", { className: "h1", style: { marginBottom: 12 }, children: title }), _jsx("p", { className: "body deploy-config-body", children: body }), issues.length > 0 ? (_jsx("div", { className: "deploy-config-issues", children: issues.map((issue) => (_jsxs("div", { className: "deploy-config-issue", children: [_jsx("strong", { children: issue.code }), _jsx("div", { children: issue.message })] }, issue.code))) })) : null, actions] }) }));
+}

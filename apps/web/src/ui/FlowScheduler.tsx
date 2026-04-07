@@ -40,7 +40,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as { schedules?: Schedule[] };
         setSchedules(data.schedules || []);
       }
     } catch (error) {
@@ -65,7 +65,7 @@ export function FlowScheduler({ projectId, flows }: FlowSchedulerProps) {
         body: JSON.stringify({ projectId, flowId: selectedFlow, cronExpression }),
       });
       if (!res.ok) {
-        const error = await res.json();
+        const error = (await res.json()) as { message?: string };
         throw new Error(error.message || 'Failed to create schedule');
       }
       toast.success('Schedule created successfully!');

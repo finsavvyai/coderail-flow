@@ -16,11 +16,7 @@ export function CookieManager({ projectId, onClose }: { projectId: string; onClo
               <Cookie size={18} style={{ marginRight: 8 }} />
               Auth Profiles
             </div>
-            <button
-              className="btn btn-icon"
-              onClick={onClose}
-              aria-label="Close auth profiles"
-            >
+            <button className="btn btn-icon" onClick={onClose} aria-label="Close auth profiles">
               <X size={16} />
             </button>
           </div>
@@ -42,11 +38,7 @@ export function CookieManager({ projectId, onClose }: { projectId: string; onClo
             </button>
           </div>
 
-          {cm.error && (
-            <div className="error-banner error-banner--small mb-12">
-              {cm.error}
-            </div>
-          )}
+          {cm.error && <div className="error-banner error-banner--small mb-12">{cm.error}</div>}
 
           <CookieProfileList
             profiles={cm.profiles}

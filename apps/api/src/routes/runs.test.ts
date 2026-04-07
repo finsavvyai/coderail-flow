@@ -26,7 +26,7 @@ const mockQ = vi.mocked(q);
 const mockQ1 = vi.mocked(q1);
 const mockEnqueue = vi.mocked(enqueueRunExecution);
 const ENV = { DB: {}, APP_ENV: 'test', PUBLIC_BASE_URL: 'http://localhost' };
-const EXEC_CTX = { waitUntil: vi.fn(), passThroughOnException: vi.fn() };
+const EXEC_CTX = { waitUntil: vi.fn(), passThroughOnException: vi.fn(), props: {} } as any;
 
 describe('POST /runs', () => {
   beforeEach(() => vi.clearAllMocks());

@@ -78,7 +78,9 @@ export async function updateIssueStatus(
     throw new Error('Failed to get issue transitions');
   }
 
-  const transitionsData = await transitionsResponse.json();
+  const transitionsData = (await transitionsResponse.json()) as {
+    transitions: Array<{ id: string; name: string }>;
+  };
   const transition = transitionsData.transitions.find(
     (t: any) => t.name.toLowerCase() === transitionName.toLowerCase()
   );

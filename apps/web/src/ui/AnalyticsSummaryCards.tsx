@@ -15,7 +15,9 @@ export function AnalyticsSummaryCards({ stats }: { stats: AnalyticsStats }) {
       </div>
       <div className="card analytics-summary-cell">
         <CheckCircle size={24} className="analytics-summary-icon analytics-summary-icon--success" />
-        <div className="analytics-summary-value analytics-summary-value--success">{successRate}%</div>
+        <div className="analytics-summary-value analytics-summary-value--success">
+          {successRate}%
+        </div>
         <div className="analytics-summary-label">Success Rate</div>
       </div>
       <div className="card analytics-summary-cell">
@@ -25,9 +27,7 @@ export function AnalyticsSummaryCards({ stats }: { stats: AnalyticsStats }) {
       </div>
       <div className="card analytics-summary-cell">
         <Clock size={24} className="analytics-summary-icon analytics-summary-icon--warning" />
-        <div className="analytics-summary-value">
-          {(stats.avgDuration / 1000).toFixed(1)}s
-        </div>
+        <div className="analytics-summary-value">{(stats.avgDuration / 1000).toFixed(1)}s</div>
         <div className="analytics-summary-label">Avg Duration</div>
       </div>
     </div>

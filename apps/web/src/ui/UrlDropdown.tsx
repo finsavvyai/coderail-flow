@@ -23,12 +23,7 @@ export function UrlDropdown({
             <Star size={10} className="star-gold" aria-hidden="true" /> Favorites
           </div>
           {favoriteUrls.map((url) => (
-            <UrlRow
-              key={'fav-' + url}
-              url={url}
-              onSelect={onSelect}
-              onRemove={onRemoveFavorite}
-            />
+            <UrlRow key={'fav-' + url} url={url} onSelect={onSelect} onRemove={onRemoveFavorite} />
           ))}
         </>
       )}
@@ -40,12 +35,7 @@ export function UrlDropdown({
             <Clock size={10} aria-hidden="true" /> Recent
           </div>
           {recentUrls.map((url) => (
-            <UrlRow
-              key={'rec-' + url}
-              url={url}
-              onSelect={onSelect}
-              onRemove={onRemoveRecent}
-            />
+            <UrlRow key={'rec-' + url} url={url} onSelect={onSelect} onRemove={onRemoveRecent} />
           ))}
         </>
       )}

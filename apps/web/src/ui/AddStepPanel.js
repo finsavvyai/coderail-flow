@@ -1,0 +1,7 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { Lightbulb } from 'lucide-react';
+import { STEP_TYPES } from './flow-builder-step-types';
+import { StepIcon } from './step-icons';
+export function AddStepPanel({ onAddStep }) {
+    return (_jsxs(_Fragment, { children: [_jsx("h2", { className: "h2 add-step-heading", children: "Add Step" }), _jsx("div", { className: "add-step-grid", children: STEP_TYPES.map((type) => (_jsxs("button", { className: "add-step-type-btn", onClick: () => onAddStep(type.value), children: [_jsx(StepIcon, { type: type.value, size: 24 }), _jsx("span", { className: "add-step-type-label", children: type.label })] }, type.value))) }), _jsxs("div", { className: "add-step-tips", children: [_jsxs("div", { className: "small add-step-tips-title", children: [_jsx(Lightbulb, { size: 14, className: "add-step-tips-icon" }), "Quick Tips"] }), _jsxs("ul", { className: "add-step-tips-list", children: [_jsxs("li", { children: ["Use ", _jsx("code", { className: "add-step-tips-code", children: "goto" }), " to navigate to pages"] }), _jsxs("li", { children: ["Use ", _jsx("code", { className: "add-step-tips-code", children: "caption" }), " to show explanatory text"] }), _jsxs("li", { children: ["Use ", _jsx("code", { className: "add-step-tips-code", children: "highlight" }), " to draw attention to elements"] }), _jsxs("li", { children: ["Parameters: Use ", _jsx("code", { className: "add-step-tips-code", children: '{{paramName}}' }), " in values"] })] })] })] }));
+}

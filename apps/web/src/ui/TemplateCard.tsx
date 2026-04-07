@@ -37,13 +37,8 @@ export function TemplateCard({ template, isCopied, onCopy, onSelect }: TemplateC
         ))}
       </div>
       <div className="template-card-footer">
-        <span className="template-card-param-count">
-          {template.params?.length ?? 0} params
-        </span>
-        <button
-          className="btn template-card-use-btn"
-          onClick={() => onSelect(template)}
-        >
+        <span className="template-card-param-count">{template.params?.length ?? 0} params</span>
+        <button className="btn template-card-use-btn" onClick={() => onSelect(template)}>
           Use Template
         </button>
       </div>

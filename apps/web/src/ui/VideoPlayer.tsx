@@ -83,13 +83,7 @@ export function VideoPlayer({ artifactId, subtitleArtifactId }: VideoPlayerProps
 
   return (
     <div className="video-wrapper">
-      <video
-        ref={videoRef}
-        controls
-        preload="metadata"
-        src={src}
-        className="video-element"
-      >
+      <video ref={videoRef} controls preload="metadata" src={src} className="video-element">
         {subtitleSrc ? (
           <track kind="captions" src={subtitleSrc} srcLang="en" label="Subtitles" default />
         ) : null}

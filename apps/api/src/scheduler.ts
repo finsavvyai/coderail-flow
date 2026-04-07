@@ -3,7 +3,7 @@
  */
 
 import type { Env } from './env';
-import { q, q1 } from './db';
+import { q } from './db';
 import { uuid } from './ids';
 import { runFlow } from './runner';
 
@@ -29,7 +29,7 @@ export function shouldRunNow(cronExpression: string, lastRunAt: string | null): 
 
   const [minute, hour, dayOfMonth, month, dayOfWeek] = parts;
 
-  const matches = (value: string, current: number, max: number): boolean => {
+  const matches = (value: string, current: number, _max: number): boolean => {
     if (value === '*') return true;
     if (value.includes('/')) {
       const [, interval] = value.split('/');

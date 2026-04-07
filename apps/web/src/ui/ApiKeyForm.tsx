@@ -3,13 +3,9 @@ import { Copy, Key } from 'lucide-react';
 export function NewKeyBanner({ keyValue }: { keyValue: string }) {
   return (
     <div className="card new-key-banner">
-      <div className="new-key-title">
-        API Key Created -- copy it now, it won't be shown again!
-      </div>
+      <div className="new-key-title">API Key Created -- copy it now, it won't be shown again!</div>
       <div className="new-key-row">
-        <code className="new-key-code">
-          {keyValue}
-        </code>
+        <code className="new-key-code">{keyValue}</code>
         <button
           className="btn new-key-copy-btn"
           onClick={() => navigator.clipboard.writeText(keyValue)}
@@ -78,13 +74,11 @@ export function AddKeyForm({
 export function EmptyKeyState() {
   return (
     <div className="card empty-key-state">
-      <Key
-        size={48}
-        strokeWidth={1}
-        className="empty-key-icon"
-      />
+      <Key size={48} strokeWidth={1} className="empty-key-icon" />
       <div className="empty-key-title">No API keys</div>
-      <div className="empty-key-desc">Create an API key to trigger flows from external services</div>
+      <div className="empty-key-desc">
+        Create an API key to trigger flows from external services
+      </div>
     </div>
   );
 }

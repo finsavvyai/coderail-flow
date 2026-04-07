@@ -10,12 +10,7 @@ import { z } from 'zod';
 
 export type SkillPermission = 'read' | 'browser-interact' | 'network' | 'js-eval';
 
-export const SkillPermissionSchema = z.enum([
-  'read',
-  'browser-interact',
-  'network',
-  'js-eval',
-]);
+export const SkillPermissionSchema = z.enum(['read', 'browser-interact', 'network', 'js-eval']);
 
 export const SkillStepSchema = z.object({
   name: z.string().min(1),

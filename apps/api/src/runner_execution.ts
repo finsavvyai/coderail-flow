@@ -57,8 +57,12 @@ export async function runFlowReal(env: Env, runId: string) {
       projectId: flow.project_id,
       runId,
       onProgress: async (progress) => {
-        const type = progress.status === 'failed' ? 'step_failed'
-          : progress.status === 'completed' ? 'step_completed' : 'step_started';
+        const type =
+          progress.status === 'failed'
+            ? 'step_failed'
+            : progress.status === 'completed'
+              ? 'step_completed'
+              : 'step_started';
         publishRunEvent(runId, {
           type: type as any,
           runId,
@@ -174,7 +178,7 @@ async function countArtifacts(env: Env, runId: string): Promise<number> {
 async function deliverWebhooksSafe(env: Env, event: string, payload: RunEvent): Promise<void> {
   try {
     await deliverWebhooks(env, event, payload);
-  } catch (_e) {
+  } catch {
     /* don't fail the run if webhooks fail */
   }
 }

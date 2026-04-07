@@ -34,11 +34,18 @@ export async function executeGoto(
     await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
   } catch (err: any) {
     if (err.message?.includes('net::ERR_CONNECTION_REFUSED'))
-      throw new Error(`Connection refused to ${targetUrl}. Server may be blocking Cloudflare IPs.`);
+      throw new Error(
+        `Connection refused to ${targetUrl}. Server may be blocking Cloudflare IPs.`,
+        { cause: err }
+      );
     if (err.message?.includes('net::ERR_NAME_NOT_RESOLVED'))
-      throw new Error(`DNS resolution failed for ${targetUrl}. Check if the URL is correct.`);
+      throw new Error(`DNS resolution failed for ${targetUrl}. Check if the URL is correct.`, {
+        cause: err,
+      });
     if (err.message?.includes('Timeout'))
-      throw new Error(`Navigation timeout for ${targetUrl}. Server may be slow or blocking.`);
+      throw new Error(`Navigation timeout for ${targetUrl}. Server may be slow or blocking.`, {
+        cause: err,
+      });
     throw err;
   }
 

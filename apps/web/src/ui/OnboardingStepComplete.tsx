@@ -12,9 +12,7 @@ export function OnboardingStepComplete({ onFinish }: OnboardingStepCompleteProps
         <Check size={40} className="onboarding-icon-white" />
       </div>
       <h2 className="onboarding-welcome-heading">You're ready to go!</h2>
-      <p className="onboarding-complete-text">
-        Your project is set up and ready for automation
-      </p>
+      <p className="onboarding-complete-text">Your project is set up and ready for automation</p>
       <div className="onboarding-next-steps-box">
         <div className="onboarding-next-steps-label">Next Steps:</div>
         <NextStep number={1} text="Record your first flow" />

@@ -25,19 +25,12 @@ export function InspectToolbar({
     <div className="card">
       <div className="panel-header">
         <div className="h2">Element Mapper</div>
-        <button
-          className="btn btn-icon"
-          onClick={onCancel}
-          aria-label="Close inspector"
-        >
+        <button className="btn btn-icon" onClick={onCancel} aria-label="Close inspector">
           <X size={16} />
         </button>
       </div>
       <div className="field-group">
-        <label
-          htmlFor="inspect-url"
-          className="small field-label"
-        >
+        <label htmlFor="inspect-url" className="small field-label">
           Page URL
         </label>
         <div className="field-row">

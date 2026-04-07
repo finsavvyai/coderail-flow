@@ -14,17 +14,12 @@ export function BillingUsageCard({ runsThisMonth, runsLimit, plan }: BillingUsag
         <div>
           <div className="usage-big-number">
             {runsThisMonth}
-            <span className="usage-big-limit">
-              {' '}
-              / {runsLimit === -1 ? 'Unlimited' : runsLimit}
-            </span>
+            <span className="usage-big-limit"> / {runsLimit === -1 ? 'Unlimited' : runsLimit}</span>
           </div>
           <div className="small">Runs used</div>
         </div>
         <div>
-          <div className="usage-big-number">
-            {plan.toUpperCase()}
-          </div>
+          <div className="usage-big-number">{plan.toUpperCase()}</div>
           <div className="small">Current plan</div>
         </div>
       </div>

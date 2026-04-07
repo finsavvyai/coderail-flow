@@ -14,11 +14,8 @@ import { requireAuth } from './auth';
 import { getSessionUserProfile } from './auth-config';
 import { encodeApiToken } from './auth-token';
 import { proxy } from './proxy';
-import { integrationRoutes, apiKeyRoutes, apiKeyAuth } from './integrations';
-import { triggerRoutes } from './triggers';
 import { auditMutationMiddleware } from './security/audit-log';
-import { ssoRoutes } from './security/sso';
-import { complianceRoutes } from './security/compliance';
+import { mountAuthWrappedRoutes } from './routes/auth-wrapped';
 import { elementRoutes } from './routes/elements';
 import { analytics } from './routes/analytics';
 import { runs } from './routes/runs';
@@ -145,51 +142,7 @@ app.route('/billing', billing);
 app.route('/', resources);
 app.route('/', misc);
 
-// Auth-wrapped sub-apps
-const auth = requireAuth();
-
-app.route(
-  '/integrations',
-  (() => {
-    const r = new Hono<{ Bindings: Env; Variables: Variables }>();
-    r.use('*', auth);
-    r.route('/', integrationRoutes());
-    return r;
-  })()
-);
-
-app.route(
-  '/api-keys',
-  (() => {
-    const r = new Hono<{ Bindings: Env; Variables: Variables }>();
-    r.use('*', auth);
-    r.route('/', apiKeyRoutes());
-    return r;
-  })()
-);
-
-app.route('/sso', ssoRoutes());
-
-app.route(
-  '/compliance',
-  (() => {
-    const r = new Hono<{ Bindings: Env; Variables: Variables }>();
-    r.use('*', auth);
-    r.route('/', complianceRoutes());
-    return r;
-  })()
-);
-
-app.route(
-  '/triggers',
-  (() => {
-    const r = new Hono<{ Bindings: Env; Variables: Variables }>();
-    r.use('*', apiKeyAuth());
-    r.use('*', auth);
-    r.route('/', triggerRoutes());
-    return r;
-  })()
-);
+mountAuthWrappedRoutes(app);
 
 const handler = {
   fetch(request: Parameters<typeof app.fetch>[0], env: Env, executionCtx: ExecutionContext) {

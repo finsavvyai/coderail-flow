@@ -92,9 +92,7 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
     <div className="lp-wrapper">
       <div className="lp-header">
         <div>
-          <span className={badgeClass}>
-            {progress.status}
-          </span>
+          <span className={badgeClass}>{progress.status}</span>
           {progress.step > 0 && (
             <span className="small lp-step-info">
               Step {progress.step} {progress.total > 0 ? `of ${progress.total}` : ''}
@@ -113,18 +111,11 @@ export function LiveProgress({ runId, onComplete }: LiveProgressProps) {
         aria-label="Flow execution progress"
         className="lp-bar-track"
       >
-        <div
-          className={barFillClass}
-          style={{ width: `${progress.percentage}%` }}
-        />
+        <div className={barFillClass} style={{ width: `${progress.percentage}%` }} />
       </div>
 
       {/* Description */}
-      {progress.description && (
-        <div className="small lp-description">
-          {progress.description}
-        </div>
-      )}
+      {progress.description && <div className="small lp-description">{progress.description}</div>}
     </div>
   );
 }

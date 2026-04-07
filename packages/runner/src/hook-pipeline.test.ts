@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { runHooks, buildBeforeStepPayload, buildAfterStepPayload } from './hook-pipeline';
-import type { HookHandler, HookPayload } from './hook-pipeline';
+import type { HookHandler } from './hook-pipeline';
 
 describe('runHooks', () => {
   it('returns allow when no hooks registered', async () => {
@@ -58,7 +58,10 @@ describe('buildBeforeStepPayload', () => {
 describe('buildAfterStepPayload', () => {
   it('builds correct payload with output', () => {
     const payload = buildAfterStepPayload(
-      'f1', 'r1', 'type', 1,
+      'f1',
+      'r1',
+      'type',
+      1,
       { text: 'hello' },
       { status: 'ok' },
       false

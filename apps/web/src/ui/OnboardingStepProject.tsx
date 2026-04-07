@@ -30,13 +30,11 @@ export function OnboardingStepProject({
           value={projectUrl}
           onChange={(e) => setProjectUrl(e.target.value)}
         />
-        <div className="onboarding-input-hint">
-          The website you want to automate or test
-        </div>
+        <div className="onboarding-input-hint">The website you want to automate or test</div>
       </div>
       <div className="onboarding-tip-box">
-        <strong className="onboarding-tip-label">Tip:</strong> You can add more projects and configure
-        advanced settings later from the dashboard.
+        <strong className="onboarding-tip-label">Tip:</strong> You can add more projects and
+        configure advanced settings later from the dashboard.
       </div>
     </div>
   );

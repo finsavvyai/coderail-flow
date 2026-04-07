@@ -1,6 +1,6 @@
-import { FlowSchema, TemplateSchema, type Template } from '@coderail-flow/dsl';
+import { type Template } from '@coderail-flow/dsl';
 
-const templatesSeed: Template[] = [
+const templatesSeed = [
   {
     id: 'bug-report-generator',
     name: 'Bug Report Generator',
@@ -114,7 +114,7 @@ const templatesSeed: Template[] = [
 ];
 
 // Export templates directly without validation to avoid deployment issues
-export const templates: Template[] = templatesSeed;
+export const templates: Template[] = templatesSeed as Template[];
 
 export function getTemplateById(templateId: string): Template | undefined {
   return templates.find((t) => t.id === templateId);

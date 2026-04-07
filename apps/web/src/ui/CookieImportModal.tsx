@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { toastUtils } from './toast';
+import { toastUtils } from './toast-utils';
 import { Button } from './Button';
 import type { ImportCookie, CookieImportModalProps } from './CookieImportTypes';
 import { validateCookieArray } from './CookieImportTypes';

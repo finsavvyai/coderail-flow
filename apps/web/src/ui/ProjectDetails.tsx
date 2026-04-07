@@ -79,7 +79,15 @@ function ProjectStats({ screens, elements }: { screens: any[]; elements: any[] }
   );
 }
 
-function StatCard({ label, value, colorClass }: { label: string; value: number; colorClass: string }) {
+function StatCard({
+  label,
+  value,
+  colorClass,
+}: {
+  label: string;
+  value: number;
+  colorClass: string;
+}) {
   return (
     <div className="project-stat-card">
       <div className="small project-stat-label">{label}</div>

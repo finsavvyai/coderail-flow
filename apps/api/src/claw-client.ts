@@ -5,8 +5,6 @@
  * screenshot analysis, narration) without embedding provider keys.
  */
 
-import type { Env } from './env';
-
 interface ClawEnv {
   CLAW_API_KEY?: string;
   CLAW_ENDPOINT?: string;

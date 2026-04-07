@@ -53,7 +53,10 @@ visualRegression.post('/baselines', auth, async (c) => {
   );
 
   if (!artifact) {
-    return c.json({ error: 'not_found', message: 'Screenshot artifact not found for this step' }, 404);
+    return c.json(
+      { error: 'not_found', message: 'Screenshot artifact not found for this step' },
+      404
+    );
   }
 
   const row = artifact as Record<string, unknown>;

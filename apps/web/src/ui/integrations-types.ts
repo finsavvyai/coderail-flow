@@ -78,7 +78,7 @@ export const INTEGRATION_TYPES = [
   },
 ];
 
-export async function apiRequest(path: string, options: RequestInit = {}) {
+export async function apiRequest(path: string, options: RequestInit = {}): Promise<any> {
   const token = await getApiToken();
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
@@ -88,7 +88,7 @@ export async function apiRequest(path: string, options: RequestInit = {}) {
       ...(options.headers || {}),
     },
   });
-  return res.json();
+  return res.json() as Promise<any>;
 }
 
 export function getConfigFields(type: string): ConfigField[] {

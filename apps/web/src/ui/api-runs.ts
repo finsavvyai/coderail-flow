@@ -8,14 +8,14 @@ export async function createRun(flowId: string, params: Record<string, any> = {}
     body: JSON.stringify({ flowId, params }),
   });
   if (!res.ok) throw new Error('Failed to create run');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.runId;
 }
 
 export async function getRuns(): Promise<RunRow[]> {
   const res = await fetch(`${API_BASE}/runs`, { headers: await authHeaders() });
   if (!res.ok) throw new Error('Failed to load runs');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.runs ?? [];
 }
 
@@ -24,7 +24,7 @@ export async function getRun(runId: string): Promise<any> {
     headers: await authHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load run');
-  return res.json();
+  return res.json() as Promise<any>;
 }
 
 export async function retryRun(runId: string): Promise<void> {

@@ -56,12 +56,8 @@ export function RunShareCard({ run, selectedRun, artifacts }: RunShareCardProps)
       <div className="card rsc-card">
         <div className="rsc-layout">
           <div className="rsc-content">
-            <div className="small rsc-heading">
-              Share this run
-            </div>
-            <div className="rsc-summary">
-              {runSummary}
-            </div>
+            <div className="small rsc-heading">Share this run</div>
+            <div className="rsc-summary">{runSummary}</div>
           </div>
           <div className="rsc-actions">
             <button className="btn" onClick={() => handleCopy('link')}>
@@ -70,10 +66,7 @@ export function RunShareCard({ run, selectedRun, artifacts }: RunShareCardProps)
             <button className="btn" onClick={() => handleCopy('summary')}>
               {copiedState === 'summary' ? 'Copied summary' : 'Copy run summary'}
             </button>
-            <button
-              className="btn rsc-btn-slack"
-              onClick={() => setShowSlackModal(true)}
-            >
+            <button className="btn rsc-btn-slack" onClick={() => setShowSlackModal(true)}>
               <svg
                 width="14"
                 height="14"

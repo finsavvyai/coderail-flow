@@ -21,7 +21,7 @@ export function Waitlist() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email, source: 'landing-page' }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { message?: string; error?: string };
       if (res.ok) {
         setStatus('success');
         setMessage(

@@ -72,9 +72,7 @@ const DashboardPage = lazy(() => import('./ui/DashboardPage'));
 function RouteFallback() {
   return (
     <div className="route-fallback">
-      <div className="card route-fallback-card">
-        Loading workspace...
-      </div>
+      <div className="card route-fallback-card">Loading workspace...</div>
     </div>
   );
 }

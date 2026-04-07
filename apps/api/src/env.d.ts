@@ -42,4 +42,5 @@ export interface Env {
   CLAW_API_KEY?: string;
   CLAW_ENDPOINT?: string;
   CLAW_PROJECT_ID?: string;
+  COOKIE_ENCRYPTION_KEY?: string;
 }

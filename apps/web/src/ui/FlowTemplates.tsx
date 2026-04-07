@@ -62,9 +62,7 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
       <div className="templates-header">
         <Sparkles size={18} className="templates-icon" />
         <h2 style={{ margin: 0, fontSize: 18 }}>Template Library</h2>
-        <span className="templates-count">
-          {templates.length} templates
-        </span>
+        <span className="templates-count">{templates.length} templates</span>
       </div>
       <SearchBar search={search} onSearchChange={setSearch} />
       <CategoryPills
@@ -73,9 +71,7 @@ export function FlowTemplates({ projectId, onSuccess }: FlowTemplatesProps) {
         categories={categories}
       />
       {loading ? (
-        <div className="templates-loading">
-          Loading templates...
-        </div>
+        <div className="templates-loading">Loading templates...</div>
       ) : (
         <div className="templates-grid">
           {filteredTemplates.map((t) => (

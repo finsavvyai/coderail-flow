@@ -10,19 +10,11 @@ export function AppHeader({ err }: AppHeaderProps) {
           <div className="h1" style={{ marginBottom: 4 }}>
             CodeRail Flow
           </div>
-          <div className="small app-header-subtitle">
-            Automated Browser Workflows
-          </div>
+          <div className="small app-header-subtitle">Automated Browser Workflows</div>
         </div>
-        <div className="badge badge-production">
-          PRODUCTION READY
-        </div>
+        <div className="badge badge-production">PRODUCTION READY</div>
       </div>
-      {err && (
-        <div className="small app-header-error">
-          {err}
-        </div>
-      )}
+      {err && <div className="small app-header-error">{err}</div>}
     </div>
   );
 }

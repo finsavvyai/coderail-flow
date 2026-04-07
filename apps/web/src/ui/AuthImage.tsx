@@ -9,7 +9,13 @@ interface AuthImageProps {
   loading?: 'lazy' | 'eager';
 }
 
-export function AuthImage({ artifactId, alt, style, className, loading: loadingProp }: AuthImageProps) {
+export function AuthImage({
+  artifactId,
+  alt,
+  style,
+  className,
+  loading: loadingProp,
+}: AuthImageProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
@@ -28,10 +34,7 @@ export function AuthImage({ artifactId, alt, style, className, loading: loadingP
 
   if (error) {
     return (
-      <div
-        className="auth-image-placeholder auth-image-placeholder--error"
-        style={style}
-      >
+      <div className="auth-image-placeholder auth-image-placeholder--error" style={style}>
         Failed to load
       </div>
     );
@@ -39,10 +42,7 @@ export function AuthImage({ artifactId, alt, style, className, loading: loadingP
 
   if (!src) {
     return (
-      <div
-        className="auth-image-placeholder auth-image-placeholder--loading"
-        style={style}
-      >
+      <div className="auth-image-placeholder auth-image-placeholder--loading" style={style}>
         Loading...
       </div>
     );

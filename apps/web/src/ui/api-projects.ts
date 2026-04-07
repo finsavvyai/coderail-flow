@@ -5,7 +5,7 @@ export async function getProjects(): Promise<any[]> {
     headers: await authHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load projects');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.projects ?? [];
 }
 
@@ -20,7 +20,7 @@ export async function createProject(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to create project');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.project;
 }
 
@@ -29,7 +29,7 @@ export async function getScreens(projectId: string): Promise<any[]> {
     headers: await authHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load screens');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.screens ?? [];
 }
 
@@ -45,7 +45,7 @@ export async function createScreen(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to create screen');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.screen;
 }
 
@@ -54,7 +54,7 @@ export async function getElements(screenId: string): Promise<any[]> {
     headers: await authHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load elements');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.elements ?? [];
 }
 
@@ -71,6 +71,6 @@ export async function createElement(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Failed to create element');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.element;
 }

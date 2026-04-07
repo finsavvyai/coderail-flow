@@ -42,14 +42,8 @@ export function ToastContainer() {
   return (
     <div className="toast-container">
       {toasts.map((toast) => (
-        <div
-          key={toast.id}
-          className={`toast-base toast-${toast.type}`}
-        >
-          <span
-            aria-hidden="true"
-            className={`toast-icon toast-icon-${toast.type}`}
-          >
+        <div key={toast.id} className={`toast-base toast-${toast.type}`}>
+          <span aria-hidden="true" className={`toast-icon toast-icon-${toast.type}`}>
             {icons[toast.type]}
           </span>
           <span className="toast-message" role="status">

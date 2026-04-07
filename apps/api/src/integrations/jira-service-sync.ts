@@ -1,6 +1,7 @@
 // Jira sync operations: issue creation from runs, status updates, OAuth callback
 
 import { Context } from 'hono';
+import type { Env } from '../env.d';
 import {
   createJiraIssue,
   addJiraComment,
@@ -8,7 +9,6 @@ import {
   exchangeCodeForToken,
   formatRunAsJiraDescription,
   mapRunStatusToTransition,
-  type JiraConfig,
   type JiraIssueFields,
 } from './jira-client';
 import { getJiraIntegration, buildJiraConfig } from './jira-service';
@@ -57,7 +57,7 @@ export async function createIssueFromRun(
         status: (run as any).status,
         duration: (run as any).duration,
         error: (run as any).error,
-        artifacts: artifacts.results,
+        artifacts: artifacts.results as { kind: string; url?: string; content_type?: string }[],
         projectUrl: (run as any).project_url,
       }),
       ...(integration.issue_type && { issuetype: { name: integration.issue_type } }),

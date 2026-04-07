@@ -104,7 +104,9 @@ export function perUserRateLimit(maxRequests: number, windowMs: number): Middlew
     try {
       const stored = await c.env.CACHE?.get(key);
       count = stored ? parseInt(stored, 10) : 0;
-    } catch {}
+    } catch {
+      /* KV read may fail in dev */
+    }
 
     if (count >= maxRequests) {
       return c.json(
@@ -123,7 +125,9 @@ export function perUserRateLimit(maxRequests: number, windowMs: number): Middlew
       await c.env.CACHE?.put(key, String(count + 1), {
         expirationTtl: Math.floor(windowMs / 1000),
       });
-    } catch {}
+    } catch {
+      /* KV write may fail in dev */
+    }
   };
 }
 
@@ -151,7 +155,12 @@ export function validateWebhookSignature(secret: string): MiddlewareHandler {
     const signatureBytes = hexToBytes(signature.replace('sha256=', ''));
     const bodyBytes = new TextEncoder().encode(body);
 
-    const isValid = await crypto.subtle.verify('HMAC', cryptoKey, signatureBytes, bodyBytes);
+    const isValid = await crypto.subtle.verify(
+      'HMAC',
+      cryptoKey,
+      signatureBytes as BufferSource,
+      bodyBytes
+    );
 
     if (!isValid) {
       return c.json({ error: 'invalid_signature' }, 401);

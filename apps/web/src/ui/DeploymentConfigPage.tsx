@@ -15,19 +15,12 @@ export function DeploymentConfigPage({
 }: DeploymentConfigPageProps) {
   return (
     <main className="deploy-config-backdrop">
-      <section
-        className="card deploy-config-card"
-        role="alert"
-      >
-        <div className="eyebrow deploy-config-eyebrow">
-          Deployment Configuration
-        </div>
+      <section className="card deploy-config-card" role="alert">
+        <div className="eyebrow deploy-config-eyebrow">Deployment Configuration</div>
         <h1 className="h1" style={{ marginBottom: 12 }}>
           {title}
         </h1>
-        <p className="body deploy-config-body">
-          {body}
-        </p>
+        <p className="body deploy-config-body">{body}</p>
         {issues.length > 0 ? (
           <div className="deploy-config-issues">
             {issues.map((issue) => (

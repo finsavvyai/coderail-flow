@@ -38,9 +38,7 @@ export function BillingPlanCards({
 
           return (
             <div key={p.key} className={cardClass}>
-              {p.featured && (
-                <div className="billing-popular-badge">Most Popular</div>
-              )}
+              {p.featured && <div className="billing-popular-badge">Most Popular</div>}
               <div className="billing-plan-name">{p.name}</div>
               <div className="billing-plan-price-row">
                 <span className="billing-plan-price">{p.price}</span>

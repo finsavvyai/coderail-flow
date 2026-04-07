@@ -1,7 +1,7 @@
 // Cookie Encryption Utility for Auth Profiles
 // Uses AES-256-GCM for secure cookie storage
 
-import { crypto } from 'crypto';
+import nodeCrypto from 'node:crypto';
 
 const KEY_LENGTH = 256;
 const IV_LENGTH = 12;
@@ -30,7 +30,12 @@ export async function deriveKey(
   );
 
   const key = await crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+    {
+      name: 'PBKDF2',
+      salt: new Uint8Array(salt) as BufferSource,
+      iterations: 100000,
+      hash: 'SHA-256',
+    },
     keyMaterial,
     { name: 'AES-GCM', length: KEY_LENGTH },
     false,
@@ -55,12 +60,12 @@ export async function encryptCookies(
   orgId: string,
   masterSecret: string
 ): Promise<EncryptedData> {
-  const salt = crypto.randomBytes(SALT_LENGTH);
-  const iv = crypto.randomBytes(IV_LENGTH);
+  const salt = nodeCrypto.randomBytes(SALT_LENGTH);
+  const iv = nodeCrypto.randomBytes(IV_LENGTH);
   const key = await deriveKey(orgId, masterSecret, salt);
 
   const plaintext = JSON.stringify(cookies);
-  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+  const cipher = nodeCrypto.createCipheriv('aes-256-gcm', key, iv);
   let ciphertext = cipher.update(plaintext, 'utf8', 'hex');
   ciphertext += cipher.final('hex');
   const tag = cipher.getAuthTag();
@@ -92,7 +97,7 @@ export async function decryptCookies(
   const salt = Buffer.from(encrypted.salt, 'hex');
   const key = await deriveKey(orgId, masterSecret, salt);
   const iv = Buffer.from(encrypted.iv, 'hex');
-  const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+  const decipher = nodeCrypto.createDecipheriv('aes-256-gcm', key, iv);
 
   const tag = Buffer.from(encrypted.tag, 'hex');
   decipher.setAuthTag(tag);

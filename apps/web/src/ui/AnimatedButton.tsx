@@ -48,12 +48,7 @@ export function AnimatedButton({
     .join(' ');
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={disabled || loading}
-      className={classes}
-      {...props}
-    >
+    <button onClick={handleClick} disabled={disabled || loading} className={classes} {...props}>
       {loading && <span className="btn-animated-spinner spin" />}
       {children}
       {ripples.map((ripple) => (

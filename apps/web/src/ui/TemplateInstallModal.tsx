@@ -88,11 +88,7 @@ export function TemplateInstallModal({
         style={{ maxWidth: 600 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="modal-close"
-          onClick={onClose}
-          aria-label="Close dialog"
-        >
+        <button className="modal-close" onClick={onClose} aria-label="Close dialog">
           <X size={20} />
         </button>
         <ModalHeader template={template} />
@@ -130,27 +126,17 @@ export function TemplateInstallModal({
                   </option>
                 ))}
               </select>
-              <div className="modal-form-hint">
-                Required for authenticated workflows
-              </div>
+              <div className="modal-form-hint">Required for authenticated workflows</div>
             </div>
           )}
           {template.params && template.params.length > 0 && (
             <TemplateParamForm params={template.params} values={params} onUpdate={updateParam} />
           )}
           <div className="modal-footer-actions">
-            <button
-              type="button"
-              className="btn modal-btn-cancel"
-              onClick={onClose}
-            >
+            <button type="button" className="btn modal-btn-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button
-              type="submit"
-              className="btn modal-btn-submit"
-              disabled={loading || !projectId}
-            >
+            <button type="submit" className="btn modal-btn-submit" disabled={loading || !projectId}>
               {loading ? 'Creating...' : 'Create Flow'}
             </button>
           </div>

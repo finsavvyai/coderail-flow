@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { signIn, signOut, useSession } from '@hono/auth-js/react';
-import { Zap, ArrowLeft, CreditCard, Loader2, Folder, LogOut } from 'lucide-react';
+import { useSession } from '@hono/auth-js/react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   clearApiTokenCache,
@@ -10,15 +10,8 @@ import {
   type AuthProviderOption,
 } from './auth-client';
 import { setTokenProvider } from './api';
-
-function FullScreenLoader({ label }: { label: string }) {
-  return (
-    <div className="fullscreen-loader">
-      <Loader2 size={32} className="spin fullscreen-loader-icon" />
-      <div className="fullscreen-loader-label">{label}</div>
-    </div>
-  );
-}
+import { handleSignIn, handleSignOut } from './ProtectedRouteHelpers';
+import { FullScreenLoader, AuthGateCard, AppTopBar } from './ProtectedRouteUI';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -78,9 +71,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     void listAuthProviders()
       .then((items) => {
-        if (!cancelled) {
-          setProviders(items);
-        }
+        if (!cancelled) setProviders(items);
       })
       .catch((error) => {
         if (!cancelled) {
@@ -91,9 +82,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         }
       })
       .finally(() => {
-        if (!cancelled) {
-          setProvidersLoading(false);
-        }
+        if (!cancelled) setProvidersLoading(false);
       });
 
     return () => {
@@ -101,9 +90,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     };
   }, [status]);
 
-  if (status === 'loading') {
-    return <FullScreenLoader label="Restoring your session..." />;
-  }
+  if (status === 'loading') return <FullScreenLoader label="Restoring your session..." />;
 
   if (user) {
     if (tokenError) {
@@ -125,50 +112,12 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
       );
     }
 
-    if (!tokenReady) {
-      return <FullScreenLoader label="Preparing your workspace..." />;
-    }
+    if (!tokenReady) return <FullScreenLoader label="Preparing your workspace..." />;
 
     return (
-      <>
-        <div className="app-topbar">
-          <div className="app-topbar-inner">
-            <Link to="/" className="app-topbar-brand">
-              <Zap size={18} strokeWidth={2.5} />
-              <span>CodeRail Flow</span>
-            </Link>
-            <div className="topbar-nav">
-              <Link to="/app" className="nav-link">
-                Dashboard
-              </Link>
-              <Link to="/projects" className="nav-link">
-                <Folder size={14} /> Projects
-              </Link>
-              <Link to="/billing" className="nav-link">
-                <CreditCard size={14} /> Billing
-              </Link>
-              <div className="user-pill">
-                <div className="user-pill-info">
-                  <span className="user-pill-name">
-                    {user.name || user.email || 'Signed in'}
-                  </span>
-                  {user.email ? (
-                    <span className="user-pill-email">{user.email}</span>
-                  ) : null}
-                </div>
-                <button
-                  className="btn btn-signout"
-                  onClick={() => void handleSignOut()}
-                >
-                  <LogOut size={14} />
-                  Sign Out
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      <AppTopBar user={user} onSignOut={() => void handleSignOut()}>
         {children}
-      </>
+      </AppTopBar>
     );
   }
 
@@ -224,50 +173,4 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
       }
     />
   );
-}
-
-function AuthGateCard({
-  title,
-  body,
-  actions,
-}: {
-  title: string;
-  body: string;
-  actions: React.ReactNode;
-}) {
-  return (
-    <div className="auth-gate">
-      <div className="auth-gate-card">
-        <Zap size={32} className="auth-gate-icon" />
-        <h2>{title}</h2>
-        <p>{body}</p>
-        <div className="auth-gate-actions">
-          {actions}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-async function handleSignIn(
-  providerId: string,
-  setActiveProvider: (value: string | null) => void,
-  setSignInError: (value: string | null) => void
-) {
-  setActiveProvider(providerId);
-  setSignInError(null);
-
-  try {
-    await signIn(providerId as any, { callbackUrl: window.location.href });
-  } catch (error) {
-    setSignInError(error instanceof Error ? error.message : 'Failed to open the sign-in flow.');
-  } finally {
-    setActiveProvider(null);
-  }
-}
-
-async function handleSignOut() {
-  clearApiTokenCache();
-  setTokenProvider(async () => null);
-  await signOut({ callbackUrl: `${window.location.origin}/` });
 }

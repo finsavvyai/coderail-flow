@@ -1,0 +1,8 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Target, Eye } from 'lucide-react';
+export function ElementMapperPreview({ iframeLoaded, inspectMode, previewRef, onElementClick, }) {
+    if (!iframeLoaded) {
+        return (_jsx("div", { className: "mapper-empty", children: _jsxs("div", { className: "mapper-empty-inner", children: [_jsx(Eye, { size: 48, style: { marginBottom: 16, opacity: 0.5 } }), _jsx("div", { children: "Enter a URL and click refresh to load the page" })] }) }));
+    }
+    return (_jsx("div", { ref: previewRef, className: `mapper-viewport${inspectMode ? ' inspect' : ''}`, onClick: onElementClick, children: _jsxs("div", { className: "mapper-demo-content", children: [_jsx("h1", { "data-testid": "page-title", children: "Demo Page" }), _jsx("p", { children: "This is a simulated page. In production, this would load the actual URL in an embedded browser." }), _jsxs("div", { style: { marginTop: 20 }, children: [_jsx("button", { "data-testid": "search-button", role: "button", "aria-label": "Search", className: "mapper-demo-btn", children: "Search" }), _jsx("input", { type: "text", "data-testid": "search-input", placeholder: "Search...", className: "mapper-demo-input" })] }), _jsxs("div", { className: "mapper-demo-section", children: [_jsx("h2", { id: "section-title", children: "Section Title" }), _jsx("p", { className: "description-text", children: "Click elements above to inspect and generate locators." })] }), inspectMode && (_jsxs("div", { className: "mapper-inspect-banner", children: [_jsx(Target, { size: 14, style: { display: 'inline', marginRight: 6 } }), "Click any element to select it"] }))] }) }));
+}

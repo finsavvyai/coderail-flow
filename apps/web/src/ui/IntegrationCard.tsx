@@ -27,9 +27,7 @@ export function IntegrationCard({
 
   return (
     <div>
-      <div
-        className={`card integ-card${integ.enabled ? '' : ' integ-card--disabled'}`}
-      >
+      <div className={`card integ-card${integ.enabled ? '' : ' integ-card--disabled'}`}>
         <div className="integ-icon-box">
           {info && <info.icon size={20} style={{ color: info.color }} />}
         </div>

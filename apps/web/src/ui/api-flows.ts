@@ -4,10 +4,10 @@ import type { Flow, TemplateSummary, AuthProfile } from './api-types';
 export async function getFlows(): Promise<Flow[]> {
   const res = await fetch(`${API_BASE}/flows`, { headers: await authHeaders() });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
     throw new Error(body.message || `Failed to load flows (${res.status})`);
   }
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.flows ?? [];
 }
 
@@ -24,10 +24,10 @@ export async function createFlow(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
     throw new Error(body.message || 'Failed to create flow');
   }
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.flow;
 }
 
@@ -46,17 +46,17 @@ export async function updateFlow(
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
     throw new Error(body.message || 'Failed to update flow');
   }
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.flow;
 }
 
 export async function getTemplates(): Promise<TemplateSummary[]> {
   const res = await fetch(`${API_BASE}/templates`, { headers: await authHeaders() });
   if (!res.ok) throw new Error('Failed to load templates');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.templates ?? [];
 }
 
@@ -73,10 +73,10 @@ export async function createFlowFromTemplate(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
     throw new Error(body.message || 'Failed to create flow from template');
   }
-  return res.json();
+  return res.json() as Promise<{ flowId: string; versionId: string; templateId: string }>;
 }
 
 export async function getAuthProfiles(projectId: string): Promise<AuthProfile[]> {
@@ -84,6 +84,6 @@ export async function getAuthProfiles(projectId: string): Promise<AuthProfile[]>
     headers: await authHeaders(),
   });
   if (!res.ok) throw new Error('Failed to load auth profiles');
-  const json = await res.json();
+  const json = (await res.json()) as any;
   return json.profiles ?? [];
 }

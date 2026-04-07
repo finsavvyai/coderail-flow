@@ -46,7 +46,7 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
-        const error = await res.json();
+        const error = (await res.json()) as { message?: string };
         throw new Error(error.message || 'Failed to share to Slack');
       }
       toast.success('Shared to Slack successfully!');
@@ -80,15 +80,8 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
       aria-modal="true"
       aria-label="Share to Slack"
     >
-      <div
-        className="card slack-modal-card"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close dialog"
-          className="slack-modal-close"
-        >
+      <div className="card slack-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} aria-label="Close dialog" className="slack-modal-close">
           <X size={18} />
         </button>
 
@@ -107,11 +100,7 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
         />
 
         <div className="slack-modal-actions">
-          <button
-            type="button"
-            onClick={copyToClipboard}
-            className="btn slack-btn-copy"
-          >
+          <button type="button" onClick={copyToClipboard} className="btn slack-btn-copy">
             <Copy size={14} style={{ display: 'inline', marginRight: 6 }} />
             Copy Link
           </button>
@@ -125,11 +114,7 @@ export function ShareToSlackModal({ flowId, flowName, runId, onClose }: ShareToS
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="slack-btn-cancel"
-        >
+        <button type="button" onClick={onClose} className="slack-btn-cancel">
           Cancel
         </button>
       </div>
@@ -146,9 +131,7 @@ function SlackModalHeader() {
         </svg>
       </div>
       <h2 className="slack-modal-title">Share to Slack</h2>
-      <div className="slack-modal-subtitle">
-        Share flow results with your team
-      </div>
+      <div className="slack-modal-subtitle">Share flow results with your team</div>
     </div>
   );
 }

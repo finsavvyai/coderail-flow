@@ -59,19 +59,13 @@ export function OpsSnapshotCard({
     <div className="card ops-snapshot-card">
       <div className="ops-snapshot-layout">
         <div className="ops-snapshot-body">
-          <div className="small ops-snapshot-label">
-            Shareable ops snapshot
-          </div>
+          <div className="small ops-snapshot-label">Shareable ops snapshot</div>
           <div className="h2 ops-snapshot-heading">
             {snapshot.successRate}% success rate over the {formatTimeRangeLabel(timeRange)}
           </div>
-          <div className="small ops-snapshot-message">
-            {snapshot.message}
-          </div>
+          <div className="small ops-snapshot-message">{snapshot.message}</div>
           <div className="ops-snapshot-badges">
-            <span className="badge badge--translucent">
-              {snapshot.benchmark}
-            </span>
+            <span className="badge badge--translucent">{snapshot.benchmark}</span>
             <span className="badge badge--translucent">
               Avg runtime {(stats.avgDuration / 1000).toFixed(1)}s
             </span>

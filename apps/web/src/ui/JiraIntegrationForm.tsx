@@ -72,11 +72,7 @@ export function JiraIntegrationForm({ projectId, onClose }: JiraIntegrationProps
 
         <div className="jira-form-actions">
           {existingConfig && (
-            <button
-              type="button"
-              onClick={deleteIntegration}
-              className="jira-delete-btn"
-            >
+            <button type="button" onClick={deleteIntegration} className="jira-delete-btn">
               <Trash2 size={14} style={{ display: 'inline', marginRight: 6 }} />
               Remove
             </button>
@@ -99,11 +95,7 @@ export function JiraIntegrationForm({ projectId, onClose }: JiraIntegrationProps
         </div>
 
         {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            className="btn jira-close-btn"
-          >
+          <button type="button" onClick={onClose} className="btn jira-close-btn">
             Close
           </button>
         )}

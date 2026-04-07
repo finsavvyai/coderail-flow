@@ -25,9 +25,9 @@ export default function DashboardPage() {
         headers: await authHeaders(),
       });
       if (response.ok) {
-        setStats(await response.json());
+        setStats((await response.json()) as Stats);
       } else {
-        const error = await response.json();
+        const error = (await response.json()) as { message?: string };
         throw new Error(error.message || 'Failed to load stats');
       }
     } catch (error: any) {
@@ -44,8 +44,8 @@ export default function DashboardPage() {
         headers: await authHeaders(),
       });
       if (response.ok) {
-        const data = await response.json();
-        setRuns(data.runs || data);
+        const data = (await response.json()) as { runs?: Run[] };
+        setRuns(data.runs || []);
       }
     } catch (error) {
       console.error('Failed to load runs:', error);

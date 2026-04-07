@@ -69,7 +69,7 @@ export async function executeAssertText(
   }
 
   const searchText = step.text.replace(/\{\{(\w+)\}\}/g, (_, key) => input.params[key] || '');
-  let found = false;
+  let found: boolean;
 
   if (step.elementId) {
     const elementData = input.elements.find((e) => e.id === step.elementId);

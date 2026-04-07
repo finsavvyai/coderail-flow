@@ -13,9 +13,7 @@ interface TemplateParamFormProps {
 export function TemplateParamForm({ params, values, onUpdate }: TemplateParamFormProps) {
   return (
     <div className="tpl-param-wrap">
-      <label className="tpl-param-title">
-        Template Parameters
-      </label>
+      <label className="tpl-param-title">Template Parameters</label>
       <div className="tpl-param-box">
         {params.map((param) => (
           <div key={param.name} className="tpl-param-field">

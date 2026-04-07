@@ -48,7 +48,7 @@ export async function proxyFetch(
     // Non-HTML/CSS: pass through
     const body = await response.arrayBuffer();
     return new Response(body, { status: response.status, headers });
-  } catch (err: any) {
+  } catch {
     return c.json({ error: 'proxy_error', message: 'Failed to fetch the target URL.' }, 502);
   }
 }

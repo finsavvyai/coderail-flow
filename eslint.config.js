@@ -28,12 +28,16 @@ export default [
         ...globals.es2022,
         React: "readonly",
         JSX: "readonly",
+        ImportMetaEnv: "readonly",
       },
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
         ecmaFeatures: { jsx: true },
-        project: "./apps/web/tsconfig.json",
+        projectService: {
+          allowDefaultProject: [],
+        },
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
@@ -59,13 +63,19 @@ export default [
     },
   },
   {
-    files: ["apps/web/src/**/*.test.{ts,tsx}", "apps/web/src/**/*.spec.{ts,tsx}"],
+    files: [
+      "apps/web/src/**/*.test.{ts,tsx}",
+      "apps/web/src/**/*.spec.{ts,tsx}",
+      "apps/web/src/test/**/*.{ts,tsx}",
+    ],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.es2022,
         React: "readonly",
         JSX: "readonly",
+        ImportMetaEnv: "readonly",
+        global: "writable",
         vi: "readonly",
         describe: "readonly",
         it: "readonly",
@@ -87,6 +97,22 @@ export default [
       parser: tsparser,
       globals: {
         ...globals.es2022,
+        crypto: "readonly",
+        fetch: "readonly",
+        atob: "readonly",
+        btoa: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        console: "readonly",
+        Buffer: "readonly",
+        global: "readonly",
+        D1Database: "readonly",
+        R2Bucket: "readonly",
+        KVNamespace: "readonly",
+        Fetcher: "readonly",
+        Env: "readonly",
       },
       parserOptions: {
         ecmaVersion: 2022,
@@ -111,6 +137,39 @@ export default [
       "@typescript-eslint/no-misused-promises": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "prettier/prettier": "error",
+    },
+  },
+  {
+    files: [
+      "packages/runner/src/steps-*.ts",
+      "packages/runner/src/executor-overlay.ts",
+      "packages/runner/src/export.ts",
+      "packages/runner/src/visual-compare.ts",
+      "packages/overlay/src/**/*.ts",
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+  {
+    files: [
+      "apps/api/src/**/*.test.{ts,tsx}",
+      "packages/**/src/**/*.test.{ts,tsx}",
+    ],
+    languageOptions: {
+      globals: {
+        vi: "readonly",
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        test: "readonly",
+      },
     },
   },
 ];

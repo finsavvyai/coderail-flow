@@ -10,24 +10,18 @@ import { requireAuth } from '../auth';
 import { getConfiguredAuthProviderIds } from '../auth-config';
 import type { Variables } from '../index';
 import { getRuntimeConfig } from '../runtime-config';
+import {
+  checkDatabase,
+  checkR2,
+  checkBrowser,
+  isRuntimeReadyEnoughForWarnings,
+  type HealthCheckResult,
+  type HealthResponse,
+} from './health-checks';
 
 const health = new Hono<{ Bindings: Env; Variables: Variables }>();
 const SERVICE_NAME = 'coderail-flow-api';
 const SERVICE_VERSION = '1.0.0';
-
-interface HealthCheckResult {
-  name: string;
-  status: 'pass' | 'fail' | 'warn';
-  duration?: number;
-  message?: string;
-}
-
-interface HealthResponse {
-  status: 'pass' | 'fail' | 'warn';
-  version: string;
-  timestamp: string;
-  checks: Record<string, HealthCheckResult>;
-}
 
 /**
  * Basic health check (no auth required).
@@ -109,16 +103,10 @@ health.get('/detailed', requireAuth(), async (c) => {
       : authIssues || 'Authentication is not fully configured.',
   };
 
-  // Check database
   checks.database = await checkDatabase(c.env);
-
-  // Check R2 storage
   checks.storage = await checkR2(c.env);
-
-  // Check browser rendering service
   checks.browser = await checkBrowser(c.env);
 
-  // Determine overall status
   const checkValues = Object.values(checks);
   if (checkValues.some((c) => c.status === 'fail')) {
     overallStatus = 'fail';
@@ -135,84 +123,5 @@ health.get('/detailed', requireAuth(), async (c) => {
 
   return c.json(response, overallStatus === 'fail' ? 503 : 200);
 });
-
-/**
- * Check database connectivity.
- */
-async function checkDatabase(env: Env): Promise<HealthCheckResult> {
-  const start = Date.now();
-  try {
-    await env.DB.prepare('SELECT 1').first();
-    return {
-      name: 'database',
-      status: 'pass',
-      duration: Date.now() - start,
-    };
-  } catch (error: any) {
-    return {
-      name: 'database',
-      status: 'fail',
-      duration: Date.now() - start,
-      message: error.message,
-    };
-  }
-}
-
-/**
- * Check R2 bucket accessibility.
- */
-async function checkR2(env: Env): Promise<HealthCheckResult> {
-  const start = Date.now();
-  try {
-    // Try to list objects (should be empty or have objects)
-    await env.ARTIFACTS.list({ limit: 1 });
-    return {
-      name: 'storage',
-      status: 'pass',
-      duration: Date.now() - start,
-    };
-  } catch (error: any) {
-    return {
-      name: 'storage',
-      status: 'fail',
-      duration: Date.now() - start,
-      message: error.message,
-    };
-  }
-}
-
-/**
- * Check browser rendering service.
- */
-async function checkBrowser(env: Env): Promise<HealthCheckResult> {
-  const start = Date.now();
-  try {
-    // Just check if the binding exists
-    if (!env.BROWSER) {
-      return {
-        name: 'browser',
-        status: 'warn',
-        duration: Date.now() - start,
-        message: 'Browser binding not configured',
-      };
-    }
-    return {
-      name: 'browser',
-      status: 'pass',
-      duration: Date.now() - start,
-    };
-  } catch (error: any) {
-    return {
-      name: 'browser',
-      status: 'fail',
-      duration: Date.now() - start,
-      message: error.message,
-    };
-  }
-}
-
-function isRuntimeReadyEnoughForWarnings(config: ReturnType<typeof getRuntimeConfig>): boolean {
-  return !config.issues.some((issue) => issue.level === 'fail');
-}
 
 export { health };

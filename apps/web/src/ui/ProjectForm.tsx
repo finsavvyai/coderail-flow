@@ -56,19 +56,11 @@ export function ProjectSidebar({
             onChange={(e) => onUrlChange(e.target.value)}
             style={{ marginBottom: 8 }}
           />
-          <button
-            className="btn btn-fullwidth"
-            onClick={onCreateProject}
-            disabled={loading}
-          >
+          <button className="btn btn-fullwidth" onClick={onCreateProject} disabled={loading}>
             <Plus size={16} /> Create Project
           </button>
         </div>
-        {error && (
-          <div className="project-error">
-            {error}
-          </div>
-        )}
+        {error && <div className="project-error">{error}</div>}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {projects.map((p) => (
             <div
@@ -80,9 +72,7 @@ export function ProjectSidebar({
                 <Folder size={16} className="project-item-icon" />
                 <div className="project-item-info">
                   <div className="project-item-name">{p.name}</div>
-                  <div className="small project-item-url">
-                    {p.base_url}
-                  </div>
+                  <div className="small project-item-url">{p.base_url}</div>
                 </div>
               </div>
             </div>

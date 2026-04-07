@@ -53,9 +53,7 @@ export function SlackMessagePreview({
       </div>
 
       <div className="slack-field-group--lg">
-        <label className="slack-field-label slack-field-label--attach">
-          Attachments
-        </label>
+        <label className="slack-field-label slack-field-label--attach">Attachments</label>
         <label className="slack-checkbox-label">
           <input
             type="checkbox"
@@ -81,9 +79,7 @@ export function SlackMessagePreview({
       <div className="slack-integration-box">
         <div className="slack-integration-header">
           <AlertCircle size={16} className="slack-integration-icon" />
-          <span className="slack-integration-title">
-            Slack Integration Required
-          </span>
+          <span className="slack-integration-title">Slack Integration Required</span>
         </div>
         <div className="slack-integration-body">
           You need to configure a Slack integration first. Go to Settings → Integrations → Add

@@ -1,0 +1,6 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Target, Zap, Shield, Sparkles } from 'lucide-react';
+import { FeatureItem } from './OnboardingWizardParts';
+export function OnboardingStepWelcome() {
+    return (_jsxs("div", { className: "onboarding-welcome-wrapper", children: [_jsx("div", { className: "onboarding-welcome-hero-icon", children: _jsx(Sparkles, { size: 40, className: "onboarding-icon-white" }) }), _jsx("h2", { className: "onboarding-welcome-heading", children: "Welcome to CodeRail Flow!" }), _jsx("p", { className: "onboarding-complete-text", children: "The fastest way to create, test, and document browser automations" }), _jsxs("div", { className: "onboarding-welcome-list", children: [_jsx(FeatureItem, { icon: _jsx(Target, { size: 20, className: "onboarding-icon-accent" }), title: "Record Flows", description: "Capture browser actions as reusable automated workflows" }), _jsx(FeatureItem, { icon: _jsx(Zap, { size: 20, className: "onboarding-icon-success" }), title: "Test Automatically", description: "Run flows on schedule or trigger them from webhooks" }), _jsx(FeatureItem, { icon: _jsx(Shield, { size: 20, className: "onboarding-icon-warning" }), title: "Document Instantly", description: "Generate videos, screenshots, and step-by-step guides" })] })] }));
+}

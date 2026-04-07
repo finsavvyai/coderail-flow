@@ -1,0 +1,72 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React, { Suspense, lazy } from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
+import { SessionProvider } from '@hono/auth-js/react';
+import { AppErrorBoundary } from './ui/AppErrorBoundary';
+import { DeploymentConfigPage } from './ui/DeploymentConfigPage';
+import { NotFoundPage } from './ui/NotFoundPage';
+import { ToastContainer } from './ui/ToastContainer';
+import { configureAuthClient } from './ui/auth-client';
+import { getWebRuntimeConfig } from './ui/runtime-config';
+import './ui/styles.css';
+import './ui/landing.css';
+import './ui/landing-features.css';
+import './ui/landing-pricing.css';
+import './ui/landing-cta.css';
+import './ui/landing-footer.css';
+import './ui/dashboard.css';
+import './ui/dashboard-cards.css';
+import './ui/dashboard-states.css';
+import './ui/dashboard-onboarding.css';
+import './ui/dashboard-responsive.css';
+import './ui/recorder-preview.css';
+import './ui/recorder-input.css';
+import './ui/recorder-url.css';
+import './ui/onboarding-parts.css';
+import './ui/onboarding-welcome.css';
+import './ui/analytics.css';
+import './ui/schedule.css';
+import './ui/templates.css';
+import './ui/modal.css';
+import './ui/billing.css';
+import './ui/project.css';
+import './ui/project-screens.css';
+import './ui/steps.css';
+import './ui/api-keys.css';
+import './ui/misc.css';
+import './ui/notfound-skeleton.css';
+import './ui/preview-misc.css';
+import './ui/media.css';
+import './ui/media-ext.css';
+import './ui/integrations.css';
+import './ui/integrations-ext.css';
+import './ui/inspector.css';
+import './ui/inspector-ext.css';
+import './ui/flows.css';
+import './ui/flows-ext.css';
+import './ui/runs.css';
+import './ui/runs-ext.css';
+import './ui/app-shell.css';
+import './ui/app-shell-ext.css';
+import './ui/analytics-ext.css';
+import './ui/last-fixes.css';
+import './ui/recorder-steplist.css';
+const runtimeConfig = getWebRuntimeConfig(import.meta.env);
+configureAuthClient();
+const LandingPage = lazy(() => import('./ui/LandingPage').then((module) => ({ default: module.LandingPage })));
+const ProtectedRoute = lazy(() => import('./ui/ProtectedRoute').then((module) => ({ default: module.ProtectedRoute })));
+const BillingPage = lazy(() => import('./ui/BillingPage').then((module) => ({ default: module.BillingPage })));
+const ProjectManager = lazy(() => import('./ui/ProjectManager').then((module) => ({ default: module.ProjectManager })));
+const App = lazy(() => import('./ui/App').then((module) => ({ default: module.App })));
+const DashboardPage = lazy(() => import('./ui/DashboardPage'));
+function RouteFallback() {
+    return (_jsx("div", { className: "route-fallback", children: _jsx("div", { className: "card route-fallback-card", children: "Loading workspace..." }) }));
+}
+function routeElement(element) {
+    return (_jsx(AppErrorBoundary, { children: _jsx(Suspense, { fallback: _jsx(RouteFallback, {}), children: element }) }));
+}
+function ProtectedAppUnavailable() {
+    return (_jsx(DeploymentConfigPage, { title: "The protected app is not configured for this deployment.", body: "Protected routes stay unavailable until the production API origin is configured for this deployment.", issues: runtimeConfig.issues, actions: _jsx("div", { style: { display: 'flex', gap: 12, flexWrap: 'wrap' }, children: _jsx(Link, { className: "btn btn-primary", to: "/", children: "Back to Landing Page" }) }) }));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(_jsxs(React.StrictMode, { children: [_jsx(ToastContainer, {}), runtimeConfig.authReady && runtimeConfig.apiReady ? (_jsx(SessionProvider, { children: _jsx(BrowserRouter, { children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: routeElement(_jsx(LandingPage, {})) }), _jsx(Route, { path: "/app", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(DashboardPage, {}) })) }), _jsx(Route, { path: "/app/dashboard", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(DashboardPage, {}) })) }), _jsx(Route, { path: "/app/flows", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(App, {}) })) }), _jsx(Route, { path: "/app/runs/:runId", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(App, {}) })) }), _jsx(Route, { path: "/billing", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(BillingPage, {}) })) }), _jsx(Route, { path: "/projects", element: routeElement(_jsx(ProtectedRoute, { children: _jsx(ProjectManager, {}) })) }), _jsx(Route, { path: "*", element: routeElement(_jsx(NotFoundPage, {})) })] }) }) })) : runtimeConfig.allowDevelopmentFallback ? (_jsx(BrowserRouter, { children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: routeElement(_jsx(LandingPage, {})) }), _jsx(Route, { path: "/app", element: routeElement(_jsx(DashboardPage, {})) }), _jsx(Route, { path: "/app/dashboard", element: routeElement(_jsx(DashboardPage, {})) }), _jsx(Route, { path: "/app/flows", element: routeElement(_jsx(App, {})) }), _jsx(Route, { path: "/app/runs/:runId", element: routeElement(_jsx(App, {})) }), _jsx(Route, { path: "/billing", element: routeElement(_jsx(BillingPage, {})) }), _jsx(Route, { path: "/projects", element: routeElement(_jsx(ProjectManager, {})) }), _jsx(Route, { path: "*", element: routeElement(_jsx(NotFoundPage, {})) })] }) })) : (_jsx(BrowserRouter, { children: _jsxs(Routes, { children: [_jsx(Route, { path: "/", element: routeElement(_jsx(LandingPage, {})) }), _jsx(Route, { path: "/app", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "/app/dashboard", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "/app/flows", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "/app/runs/:runId", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "/billing", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "/projects", element: routeElement(_jsx(ProtectedAppUnavailable, {})) }), _jsx(Route, { path: "*", element: routeElement(_jsx(NotFoundPage, {})) })] }) }))] }));

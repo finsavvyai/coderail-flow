@@ -63,7 +63,9 @@ export async function resolveElement(
   try {
     primary = JSON.parse(elementData.locator_primary);
   } catch (err) {
-    throw new Error(`Invalid locator_primary JSON for element ${elementData.id}: ${err}`);
+    throw new Error(`Invalid locator_primary JSON for element ${elementData.id}: ${err}`, {
+      cause: err,
+    });
   }
 
   // Replace template variables (e.g., {{cardId}})
@@ -84,7 +86,7 @@ export async function resolveElement(
   let fallbacks: LocatorPrimary[] = [];
   try {
     fallbacks = JSON.parse(elementData.locator_fallbacks);
-  } catch (err) {
+  } catch {
     console.warn(`Invalid locator_fallbacks JSON for element ${elementData.id}`);
   }
 

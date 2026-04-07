@@ -28,7 +28,7 @@ interface RecorderUrlInputProps {
   setShowUrlDropdown: (show: boolean) => void;
   urlDropdownRef: React.RefObject<HTMLDivElement>;
   startRecording: () => void | Promise<void>;
-  stopRecording: () => void | Promise<void>;
+  stopRecording: () => void | Promise<any>;
   onToggleFavorite: (url: string) => void;
   onRemoveFavorite: (url: string) => void;
   onRemoveRecent: (url: string) => void;

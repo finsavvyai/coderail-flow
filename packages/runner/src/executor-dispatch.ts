@@ -56,7 +56,7 @@ export async function executeStep(
   page: any,
   step: Step,
   input: ExecuteInput,
-  stepIndex: number
+  _stepIndex: number
 ): Promise<void> {
   switch (step.type) {
     case 'goto':

@@ -70,9 +70,7 @@ export async function compareScreenshots(
 /**
  * Capture a PNG screenshot via CDP for reliable pixel comparison.
  */
-export async function captureComparisonScreenshot(
-  cdpSession: any
-): Promise<Uint8Array> {
+export async function captureComparisonScreenshot(cdpSession: any): Promise<Uint8Array> {
   const shot = await cdpSession.send('Page.captureScreenshot', {
     format: 'png',
   });
@@ -85,10 +83,7 @@ export async function captureComparisonScreenshot(
 }
 
 async function sha256(data: Uint8Array): Promise<string> {
-  const hashBuffer = await crypto.subtle.digest(
-    'SHA-256',
-    data as unknown as ArrayBuffer
-  );
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data as unknown as ArrayBuffer);
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');

@@ -27,9 +27,7 @@ export function CookieProfileList({ profiles, selectedId, onSelect, onDelete }: 
         >
           <div>
             <div className="profile-name">{p.name}</div>
-            <div className="small profile-count">
-              {p.cookies.length} cookies
-            </div>
+            <div className="small profile-count">{p.cookies.length} cookies</div>
           </div>
           <button
             className="btn btn-delete"

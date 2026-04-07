@@ -1,0 +1,6 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Video, FileText, Wrench, BarChart3 } from 'lucide-react';
+import { OptionCard } from './OnboardingWizardParts';
+export function OnboardingStepPath({ onChoice }) {
+    return (_jsxs("div", { className: "onboarding-step-body", children: [_jsx("h3", { className: "onboarding-step-heading", children: "How would you like to start?" }), _jsxs("div", { className: "onboarding-path-grid", children: [_jsx(OptionCard, { title: "Record a Flow", description: "Capture browser actions as you click through your website", icon: _jsx(Video, { size: 28 }), onClick: () => onChoice('record') }), _jsx(OptionCard, { title: "Use a Template", description: "Start with a pre-built flow for common use cases", icon: _jsx(FileText, { size: 28 }), onClick: () => onChoice('template') }), _jsx(OptionCard, { title: "Build Manually", description: "Create a flow step-by-step using the visual builder", icon: _jsx(Wrench, { size: 28 }), onClick: () => onChoice('manual') }), _jsx(OptionCard, { title: "Explore Dashboard", description: "Learn the platform with our interactive guide", icon: _jsx(BarChart3, { size: 28 }), onClick: () => onChoice('explore') })] })] }));
+}

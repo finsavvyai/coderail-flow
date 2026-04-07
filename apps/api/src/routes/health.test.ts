@@ -30,7 +30,7 @@ describe('health routes', () => {
     const res = await health.request('/', {}, createEnv());
 
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.ok).toBe(true);
     expect(body.service).toBe('coderail-flow-api');
     expect(body.readiness.ok).toBe(true);
@@ -40,7 +40,7 @@ describe('health routes', () => {
     const res = await health.request('/ready', {}, createEnv({ AUTH_SECRET: undefined }));
 
     expect(res.status).toBe(503);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.ok).toBe(false);
     expect(
       body.issues.some((issue: { code: string }) => issue.code === 'auth_secret_missing')
@@ -51,7 +51,7 @@ describe('health routes', () => {
     const res = await health.request('/ready', {}, createEnv());
 
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.ok).toBe(true);
     expect(body.features.auth).toBe(true);
     expect(body.features.browser).toBe(true);

@@ -33,7 +33,7 @@ describe('GET /runs/:runId/artifacts', () => {
     } as any);
     const res = await artifacts.request('/run-1', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.artifacts).toHaveLength(2);
   });
 
@@ -41,7 +41,7 @@ describe('GET /runs/:runId/artifacts', () => {
     mockQ.mockResolvedValueOnce({ results: [] } as any);
     const res = await artifacts.request('/run-1', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.artifacts).toHaveLength(0);
   });
 });

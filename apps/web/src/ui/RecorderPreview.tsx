@@ -67,13 +67,7 @@ function ServerModeView({
   iframeLoaded: boolean;
 }) {
   if (screenshot) {
-    return (
-      <img
-        src={screenshot}
-        alt="Live browser preview"
-        className="recorder-preview-img"
-      />
-    );
+    return <img src={screenshot} alt="Live browser preview" className="recorder-preview-img" />;
   }
   return (
     <div className="recorder-preview-placeholder">

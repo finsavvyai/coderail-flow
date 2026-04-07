@@ -1,11 +1,11 @@
 type QueryableDb = Pick<D1Database, 'prepare'>;
 
-const AUTH_SUBJECT_COLUMNS = ['auth_subject', 'clerk_id'] as const;
+type AuthSubjectColumn = 'auth_subject' | 'clerk_id';
 const USER_LOOKUP_TABLES = ['users', 'user_account', 'user'] as const;
 
 export interface UserLookupConfig {
   tableName: (typeof USER_LOOKUP_TABLES)[number];
-  subjectColumn: (typeof AUTH_SUBJECT_COLUMNS)[number];
+  subjectColumn: AuthSubjectColumn;
 }
 
 async function getTableColumns(db: QueryableDb, tableName: string): Promise<Set<string>> {
@@ -20,7 +20,7 @@ async function getTableColumns(db: QueryableDb, tableName: string): Promise<Set<
 export async function resolveAuthSubjectColumn(
   db: QueryableDb,
   tableName: string
-): Promise<(typeof AUTH_SUBJECT_COLUMNS)[number]> {
+): Promise<AuthSubjectColumn> {
   const columns = await getTableColumns(db, tableName);
 
   if (columns.has('auth_subject')) {

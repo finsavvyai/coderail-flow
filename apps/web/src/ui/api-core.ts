@@ -51,7 +51,7 @@ export async function apiRequest(path: string, options: RequestInit = {}): Promi
     if (!res.ok) {
       let error = res.statusText;
       try {
-        const body = await res.json();
+        const body = (await res.json()) as Record<string, any>;
         error = body?.message || body?.error || error;
       } catch {
         const text = await res.text();
@@ -63,10 +63,10 @@ export async function apiRequest(path: string, options: RequestInit = {}): Promi
     if (res.status === 204) return null;
 
     const contentType = res.headers.get('content-type') || '';
-    return contentType.includes('application/json') ? res.json() : res.text();
+    return contentType.includes('application/json') ? (res.json() as Promise<any>) : res.text();
   } catch (error: any) {
     if (error?.name === 'AbortError') {
-      throw new Error('Request timed out. Please try again.');
+      throw new Error('Request timed out. Please try again.', { cause: error });
     }
     throw error;
   } finally {

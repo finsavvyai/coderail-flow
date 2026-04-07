@@ -28,7 +28,7 @@ runs.post('/', auth, writeLimit, async (c) => {
   const isTestRun = body.flowId === 'test' && body.definition;
   const now = new Date().toISOString();
 
-  let flowId = body.flowId;
+  let flowId: string;
   let flowVersion = 1;
 
   if (isTestRun) {

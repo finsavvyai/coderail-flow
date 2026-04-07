@@ -86,15 +86,12 @@ export function FlowTestResults({
   onReset,
   onClose,
 }: FlowTestResultsProps) {
-  const statusBoxClass =
-    `ftr-status-box${status === 'failed' ? ' ftr-status-box--failed' : ''}`;
+  const statusBoxClass = `ftr-status-box${status === 'failed' ? ' ftr-status-box--failed' : ''}`;
 
   return (
     <>
       <div className={statusBoxClass}>
-        <div className="ftr-status-text">
-          {getStatusText(status, currentStep, totalSteps)}
-        </div>
+        <div className="ftr-status-text">{getStatusText(status, currentStep, totalSteps)}</div>
       </div>
 
       {/* Per-step progress list */}
@@ -156,11 +153,7 @@ export function FlowTestResults({
 
       <div className="ftr-actions">
         {status === 'idle' && (
-          <button
-            onClick={onStartTest}
-            disabled={testing}
-            className="btn ftr-btn-start"
-          >
+          <button onClick={onStartTest} disabled={testing} className="btn ftr-btn-start">
             <Play size={16} className="ftr-inline-icon" />
             Start Test
           </button>
@@ -176,18 +169,12 @@ export function FlowTestResults({
         )}
 
         {(status === 'succeeded' || status === 'failed') && (
-          <button
-            onClick={onReset}
-            className="btn ftr-btn-again"
-          >
+          <button onClick={onReset} className="btn ftr-btn-again">
             Test Again
           </button>
         )}
 
-        <button
-          onClick={onClose}
-          className="btn ftr-btn-close"
-        >
+        <button onClick={onClose} className="btn ftr-btn-close">
           Close
         </button>
       </div>

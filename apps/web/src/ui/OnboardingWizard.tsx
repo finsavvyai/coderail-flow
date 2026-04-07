@@ -76,10 +76,10 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
         }),
       });
       if (!res.ok) {
-        const error = await res.json();
+        const error = (await res.json()) as { message?: string };
         throw new Error(error.message || 'Failed to create project');
       }
-      const data = await res.json();
+      const data = (await res.json()) as { project: { id: string } };
       setProjectId(data.project.id);
       toast.success('Project created successfully!');
       setStep(step + 1);
@@ -117,15 +117,8 @@ export function OnboardingWizard({ onComplete, onClose }: OnboardingWizardProps)
       aria-modal="true"
       aria-label="Onboarding wizard"
     >
-      <div
-        className="card onboarding-card"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close wizard"
-          className="onboarding-close"
-        >
+      <div className="card onboarding-card" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} aria-label="Close wizard" className="onboarding-close">
           <X size={18} />
         </button>
 

@@ -68,10 +68,7 @@ export interface HookConfig {
  * Run all hooks for an event. Returns combined result.
  * A single deny stops execution. Warnings accumulate.
  */
-export async function runHooks(
-  hooks: HookHandler[],
-  payload: HookPayload
-): Promise<HookResult> {
+export async function runHooks(hooks: HookHandler[], payload: HookPayload): Promise<HookResult> {
   if (hooks.length === 0) {
     return { outcome: 'allow', messages: [] };
   }

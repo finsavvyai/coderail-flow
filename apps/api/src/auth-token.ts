@@ -74,7 +74,7 @@ async function sign(input: string, secret: string): Promise<Uint8Array> {
 
 async function verify(input: string, signature: Uint8Array, secret: string): Promise<boolean> {
   const key = await importSigningKey(secret, ['verify']);
-  return crypto.subtle.verify('HMAC', key, signature, textEncoder.encode(input));
+  return crypto.subtle.verify('HMAC', key, signature as BufferSource, textEncoder.encode(input));
 }
 
 async function importSigningKey(secret: string, usages: KeyUsage[]): Promise<CryptoKey> {

@@ -52,11 +52,7 @@ export function FlowBuilder({
       <div className="flow-builder-sidebar">
         <div className="card">
           <div className="flow-builder-header">
-            <button
-              className="btn flow-builder-back"
-              onClick={onCancel}
-              aria-label="Go back"
-            >
+            <button className="btn flow-builder-back" onClick={onCancel} aria-label="Go back">
               <ArrowLeft size={16} />
             </button>
             <div className="h2" style={{ margin: 0 }}>
@@ -111,11 +107,7 @@ export function FlowBuilder({
           </select>
 
           {error && (
-            <div
-              id="flow-builder-error"
-              role="alert"
-              className="flow-builder-error"
-            >
+            <div id="flow-builder-error" role="alert" className="flow-builder-error">
               {error}
             </div>
           )}

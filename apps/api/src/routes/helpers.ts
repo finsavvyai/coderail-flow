@@ -4,7 +4,7 @@
 
 import type { Env } from '../env';
 import { q } from '../db';
-import { readAuthProfilePayloadFromRow, type AuthProfileStorageMode } from '../auth_profiles';
+import { type AuthProfileStorageMode } from '../auth_profiles';
 
 export function toNumber(value: unknown, fallback = 0): number {
   const num = Number(value);

@@ -47,20 +47,13 @@ export function StepItem({
 }) {
   const hasSubtitle = Boolean(action.subtitle);
   return (
-    <div
-      onClick={onSelect}
-      className={`step-item-container${isActive ? ' active' : ''}`}
-    >
+    <div onClick={onSelect} className={`step-item-container${isActive ? ' active' : ''}`}>
       <div className="step-item-row">
-        <span className={`step-item-number${isActive ? ' active' : ''}`}>
-          {index + 1}
-        </span>
+        <span className={`step-item-number${isActive ? ' active' : ''}`}>{index + 1}</span>
         <span className={`step-item-action-icon ${getActionColorClass(action.type)}`}>
           {getActionIcon(action.type)}
         </span>
-        <span className="step-item-description">
-          {getActionDescription(action)}
-        </span>
+        <span className="step-item-description">{getActionDescription(action)}</span>
         <button
           onClick={(e) => {
             e.stopPropagation();

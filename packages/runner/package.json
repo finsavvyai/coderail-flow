@@ -4,11 +4,11 @@
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {
-    "@coderail-flow/dsl": "workspace:*",
     "@cloudflare/puppeteer": "^0.0.11",
-    "zod": "^3.23.0"
+    "@coderail-flow/dsl": "workspace:*",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241127.0"
+    "@cloudflare/workers-types": "^4.20260405.1"
   }
 }

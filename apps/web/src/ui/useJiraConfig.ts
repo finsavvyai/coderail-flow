@@ -25,7 +25,7 @@ export function useJiraConfig(projectId: string) {
         }
       );
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as { config?: Record<string, any> };
         if (data.config) {
           setExistingConfig(data.config);
           setConfig({
@@ -74,7 +74,7 @@ export function useJiraConfig(projectId: string) {
         }),
       });
       if (!res.ok) {
-        const error = await res.json();
+        const error = (await res.json()) as { message?: string };
         throw new Error(error.message || 'Failed to save Jira configuration');
       }
       toast.success('Jira integration saved successfully!');
@@ -107,7 +107,7 @@ export function useJiraConfig(projectId: string) {
         }),
       });
       if (!res.ok) {
-        const error = await res.json();
+        const error = (await res.json()) as { message?: string };
         throw new Error(error.message || 'Connection test failed');
       }
       toast.success('Jira connection successful!');

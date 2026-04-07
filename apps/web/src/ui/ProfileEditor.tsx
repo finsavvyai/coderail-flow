@@ -30,10 +30,7 @@ function ProfileToolbar({ cm, profileName }: { cm: CookieManagerState; profileNa
     <div className="profile-toolbar">
       <h2>{profileName}</h2>
       <div className="profile-toolbar-actions">
-        <button
-          className="btn btn-dark"
-          onClick={() => cm.setShowValues(!cm.showValues)}
-        >
+        <button className="btn btn-dark" onClick={() => cm.setShowValues(!cm.showValues)}>
           {cm.showValues ? <EyeOff size={16} /> : <Eye size={16} />}
           {cm.showValues ? 'Hide' : 'Show'} Values
         </button>
@@ -72,9 +69,7 @@ function CookiesTable({ cm }: { cm: CookieManagerState }) {
           <tbody>
             {profile.cookies.map((cookie, i) => (
               <tr key={i}>
-                <td className="mono">
-                  {cookie.name}
-                </td>
+                <td className="mono">{cookie.name}</td>
                 <td className="small">{cookie.domain}</td>
                 <td className="mono cookie-value">
                   {cm.showValues
@@ -84,10 +79,7 @@ function CookiesTable({ cm }: { cm: CookieManagerState }) {
                 <td>{cookie.secure ? '\u2713' : '\u2717'}</td>
                 <td>
                   <div className="cookie-actions">
-                    <button
-                      className="btn btn-edit"
-                      onClick={() => cm.setEditingCookie(cookie)}
-                    >
+                    <button className="btn btn-edit" onClick={() => cm.setEditingCookie(cookie)}>
                       Edit
                     </button>
                     <button

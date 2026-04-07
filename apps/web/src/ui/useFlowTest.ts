@@ -63,12 +63,16 @@ export function useFlowTest({
                 return;
               }
 
-              const runData = await runRes.json();
+              const runData = (await runRes.json()) as {
+                run: { status: string; error_message?: string };
+              };
               const run = runData.run;
 
               // Update step details from real DB records
               if (stepsRes.ok) {
-                const stepsData = await stepsRes.json();
+                const stepsData = (await stepsRes.json()) as {
+                  steps?: Array<{ idx: number; type: string; status: string; detail?: string }>;
+                };
                 const steps: StepDetail[] = (stepsData.steps || []).map((s: any) => ({
                   idx: s.idx,
                   type: s.type,
@@ -140,11 +144,11 @@ export function useFlowTest({
       });
 
       if (!res.ok) {
-        const errData = await res.json();
+        const errData = (await res.json()) as { message?: string };
         throw new Error(errData.message || 'Failed to create test run');
       }
 
-      const data = await res.json();
+      const data = (await res.json()) as { runId: string };
       setRunId(data.runId);
       void pollRunStatus(data.runId);
     } catch (err: any) {

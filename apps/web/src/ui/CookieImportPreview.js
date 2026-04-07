@@ -1,0 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { getCookieExpiryStatus } from './CookieImportTypes';
+export function CookieImportPreview({ cookies }) {
+    if (cookies.length === 0)
+        return null;
+    return (_jsxs("div", { children: [_jsx("h3", { className: "text-lg font-semibold text-gray-900 mb-3", children: "Cookie Preview (First 10)" }), _jsxs("div", { className: "border border-gray-300 rounded-lg overflow-hidden", children: [_jsxs("table", { className: "min-w-full divide-y divide-gray-200", children: [_jsx("thead", { className: "bg-gray-50", children: _jsxs("tr", { children: [_jsx("th", { className: "px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase", children: "Name" }), _jsx("th", { className: "px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase", children: "Domain" }), _jsx("th", { className: "px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase", children: "Value (masked)" }), _jsx("th", { className: "px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase", children: "Status" })] }) }), _jsx("tbody", { className: "bg-white divide-y divide-gray-200", children: cookies.slice(0, 10).map((cookie, index) => {
+                                    const status = getCookieExpiryStatus(cookie);
+                                    return (_jsxs("tr", { children: [_jsx("td", { className: "px-4 py-2 text-sm font-medium text-gray-900", children: cookie.name }), _jsx("td", { className: "px-4 py-2 text-sm text-gray-600", children: cookie.domain || '*' }), _jsxs("td", { className: "px-4 py-2 text-sm font-mono text-gray-600", children: [cookie.value.slice(0, 8), cookie.value.length > 8 ? '...' : ''] }), _jsx("td", { className: `px-4 py-2 text-xs ${status.color}`, children: status.status })] }, index));
+                                }) })] }), cookies.length > 10 && (_jsxs("div", { className: "px-4 py-2 bg-gray-50 text-sm text-gray-600 text-center", children: ["... and ", cookies.length - 10, " more cookies"] }))] })] }));
+}

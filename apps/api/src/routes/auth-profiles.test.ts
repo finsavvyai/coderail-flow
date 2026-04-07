@@ -43,7 +43,7 @@ describe('GET /auth-profiles', () => {
       } as any);
     const res = await authProfiles.request('/?projectId=proj-1', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.profiles).toHaveLength(1);
   });
 
@@ -55,7 +55,7 @@ describe('GET /auth-profiles', () => {
       .mockResolvedValueOnce({ results: [] } as any);
     const res = await authProfiles.request('/?projectId=proj-1', {}, ENV);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    const body = (await res.json()) as any;
     expect(body.profiles).toHaveLength(0);
   });
 });

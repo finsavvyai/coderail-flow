@@ -4,10 +4,7 @@ export function OnboardingProgressBar({ step, total }: { step: number; total: nu
   return (
     <div className="onboarding-progress-track">
       {Array.from({ length: total }, (_, i) => (
-        <div
-          key={i}
-          className={`onboarding-progress-dot ${i <= step ? 'active' : 'inactive'}`}
-        />
+        <div key={i} className={`onboarding-progress-dot ${i <= step ? 'active' : 'inactive'}`} />
       ))}
     </div>
   );
@@ -46,7 +43,9 @@ export function OptionCard({
 }) {
   return (
     <button onClick={onClick} className="onboarding-step-card">
-      <div className="onboarding-welcome-icon" style={{ marginBottom: 8 }}>{icon}</div>
+      <div className="onboarding-welcome-icon" style={{ marginBottom: 8 }}>
+        {icon}
+      </div>
       <div className="onboarding-step-title">{title}</div>
       <div className="onboarding-step-desc">{description}</div>
     </button>
@@ -57,7 +56,9 @@ export function NextStep({ number, text }: { number: number; text: string }) {
   return (
     <div className="onboarding-welcome-item">
       <div className="onboarding-next-step-num">{number}</div>
-      <div className="onboarding-step-desc" style={{ paddingTop: 2 }}>{text}</div>
+      <div className="onboarding-step-desc" style={{ paddingTop: 2 }}>
+        {text}
+      </div>
     </div>
   );
 }

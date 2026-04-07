@@ -18,9 +18,7 @@ export function TemplateLibrary({
         Template Library
       </div>
       {templates.length === 0 ? (
-        <div className="small tpl-lib-empty">
-          No templates available yet.
-        </div>
+        <div className="small tpl-lib-empty">No templates available yet.</div>
       ) : (
         <div className="tpl-lib-grid">
           {templates.map((t) => (
@@ -29,12 +27,8 @@ export function TemplateLibrary({
                 <div className="tpl-lib-card-name">{t.name}</div>
                 <span className="badge">{t.category}</span>
               </div>
-              <div className="small tpl-lib-card-desc">
-                {t.description}
-              </div>
-              <div className="small tpl-lib-card-params">
-                Params: {t.params?.length ?? 0}
-              </div>
+              <div className="small tpl-lib-card-desc">{t.description}</div>
+              <div className="small tpl-lib-card-params">Params: {t.params?.length ?? 0}</div>
               <button
                 className="btn tpl-lib-card-btn"
                 disabled={installingTemplateId === t.id}

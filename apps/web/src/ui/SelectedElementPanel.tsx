@@ -74,19 +74,11 @@ export function SelectedElementPanel({
         Generated Locators ({locators.length})
       </div>
       <div className="locator-card-header mb-8">
-        <button
-          className="btn btn-compact"
-          type="button"
-          onClick={testSelectedLocator}
-        >
+        <button className="btn btn-compact" type="button" onClick={testSelectedLocator}>
           Test Locator
         </button>
-        {locatorTestResult === 'pass' && (
-          <span className="small locator-pass">Match found</span>
-        )}
-        {locatorTestResult === 'fail' && (
-          <span className="small locator-fail">No match found</span>
-        )}
+        {locatorTestResult === 'pass' && <span className="small locator-pass">Match found</span>}
+        {locatorTestResult === 'fail' && <span className="small locator-fail">No match found</span>}
       </div>
       <div className="locator-list">
         {locators.map((loc, i) => (
@@ -142,11 +134,7 @@ export function SelectedElementPanel({
         </div>
       </div>
 
-      <button
-        className="btn w-full mt-12"
-        onClick={handleSave}
-        disabled={saving}
-      >
+      <button className="btn w-full mt-12" onClick={handleSave} disabled={saving}>
         <Save size={16} /> {saving ? 'Saving...' : 'Save Element'}
       </button>
     </div>

@@ -1,11 +1,17 @@
-/** SCM/issue-tracker integration providers: GitHub, GitLab, and Jira. */
+/** SCM/issue-tracker integration providers: GitLab and Jira. */
 import type { Env } from './env';
 import { q } from './db';
 import { uuid } from './ids';
 import type { Integration, RunEvent } from './integration_types';
 import { postWebhook } from './post_webhook';
 
-async function logDelivery(
+/** Re-export GitHub delivery from dedicated module. */
+export { deliverGitHub } from './providers_scm_github';
+
+/**
+ * Log a webhook delivery attempt to the database.
+ */
+export async function logDelivery(
   env: Env,
   integrationId: string,
   runId: string,
@@ -54,7 +60,6 @@ export async function deliverGitLab(
   return false;
 }
 
-// ── Jira (create issue on failure / webhook) ────────────────
 export async function deliverJira(
   env: Env,
   integration: Integration,
@@ -130,74 +135,5 @@ export async function deliverJira(
     });
   }
 
-  return false;
-}
-
-// ── GitHub (create issue on failure / webhook) ──────────────
-export async function deliverGitHub(
-  env: Env,
-  integration: Integration,
-  config: {
-    webhook_url?: string;
-    token?: string;
-    repo?: string;
-    create_issue_on_failure?: boolean;
-  },
-  event: string,
-  runEvent: RunEvent
-): Promise<boolean> {
-  if (
-    runEvent.status === 'failed' &&
-    config.token &&
-    config.repo &&
-    config.create_issue_on_failure
-  ) {
-    const issueTitle = `[CodeRail] Flow run failed: ${runEvent.flowName}`;
-    const issueBody = [
-      `Flow: ${runEvent.flowName}`,
-      `Run ID: ${runEvent.runId}`,
-      runEvent.errorMessage ? `Error: ${runEvent.errorMessage}` : '',
-      env.PUBLIC_BASE_URL
-        ? `Details: ${env.PUBLIC_BASE_URL.replace(/\/$/, '')}/runs/${runEvent.runId}`
-        : '',
-    ]
-      .filter(Boolean)
-      .join('\n');
-
-    const ghResp = await fetch(`https://api.github.com/repos/${config.repo}/issues`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'CodeRailFlow/1.0',
-        Authorization: `Bearer ${config.token}`,
-        Accept: 'application/vnd.github+json',
-      },
-      body: JSON.stringify({ title: issueTitle, body: issueBody }),
-    });
-
-    const body = (await ghResp.text()).slice(0, 1000);
-    await logDelivery(
-      env,
-      integration.id,
-      runEvent.runId,
-      event,
-      { provider: 'github', action: 'create_issue', repo: config.repo },
-      ghResp.status,
-      body,
-      ghResp.ok
-    );
-    return ghResp.ok;
-  }
-
-  if (config.webhook_url) {
-    return await postWebhook(env, integration.id, runEvent.runId, event, config.webhook_url, {
-      event,
-      data: {
-        run_id: runEvent.runId,
-        flow_name: runEvent.flowName,
-        status: runEvent.status,
-      },
-    });
-  }
   return false;
 }

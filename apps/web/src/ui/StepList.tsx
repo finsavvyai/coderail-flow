@@ -13,9 +13,7 @@ interface StepListProps {
 export function StepList({ steps, selectedStep, onSelectStep, onDeleteStep }: StepListProps) {
   if (steps.length === 0) {
     return (
-      <div className="step-list-empty">
-        No steps yet. Add steps from the panel on the right.
-      </div>
+      <div className="step-list-empty">No steps yet. Add steps from the panel on the right.</div>
     );
   }
 

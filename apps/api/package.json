@@ -12,12 +12,12 @@
     "@coderail-flow/dsl": "workspace:*",
     "@coderail-flow/runner": "workspace:*",
     "@hono/auth-js": "^1.1.1",
-    "hono": "^4.11.1",
+    "hono": "^4.12.12",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251201.0",
-    "typescript": "^5.6.3",
-    "wrangler": "^3.114.0"
+    "@cloudflare/workers-types": "^4.20260405.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^3.114.17"
   }
 }

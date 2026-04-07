@@ -103,9 +103,7 @@ export function EmptyPreview() {
     <div className="preview-empty-placeholder">
       <MousePointer size={48} strokeWidth={1} />
       <div>Enter a URL and click "Start Recording"</div>
-      <div className="preview-empty-hint">
-        Your clicks, inputs, and navigation will be captured
-      </div>
+      <div className="preview-empty-hint">Your clicks, inputs, and navigation will be captured</div>
     </div>
   );
 }

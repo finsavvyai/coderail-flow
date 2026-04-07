@@ -1,0 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Copy, Key } from 'lucide-react';
+export function NewKeyBanner({ keyValue }) {
+    return (_jsxs("div", { className: "card new-key-banner", children: [_jsx("div", { className: "new-key-title", children: "API Key Created -- copy it now, it won't be shown again!" }), _jsxs("div", { className: "new-key-row", children: [_jsx("code", { className: "new-key-code", children: keyValue }), _jsxs("button", { className: "btn new-key-copy-btn", onClick: () => navigator.clipboard.writeText(keyValue), children: [_jsx(Copy, { size: 14 }), " Copy"] })] })] }));
+}
+export function AddKeyForm({ keyName, keyExpiry, onNameChange, onExpiryChange, onCreate, onCancel, }) {
+    return (_jsxs("div", { className: "card add-key-form", children: [_jsx("div", { className: "add-key-form-title", children: "New API Key" }), _jsx("label", { htmlFor: "api-key-name", className: "sr-only", children: "Key name" }), _jsx("input", { id: "api-key-name", className: "input add-key-input", placeholder: "Key name (e.g., 'GitLab CI')", value: keyName, onChange: (e) => onNameChange(e.target.value) }), _jsx("label", { htmlFor: "api-key-expiry", className: "sr-only", children: "Expiry" }), _jsxs("select", { id: "api-key-expiry", className: "input add-key-select", value: keyExpiry, onChange: (e) => onExpiryChange(e.target.value), children: [_jsx("option", { value: "30", children: "Expires in 30 days" }), _jsx("option", { value: "90", children: "Expires in 90 days" }), _jsx("option", { value: "365", children: "Expires in 1 year" }), _jsx("option", { value: "", children: "Never expires" })] }), _jsxs("div", { className: "add-key-actions", children: [_jsxs("button", { className: "btn add-key-generate-btn", onClick: onCreate, children: [_jsx(Key, { size: 14 }), " Generate Key"] }), _jsx("button", { className: "btn add-key-cancel-btn", onClick: onCancel, children: "Cancel" })] })] }));
+}
+export function EmptyKeyState() {
+    return (_jsxs("div", { className: "card empty-key-state", children: [_jsx(Key, { size: 48, strokeWidth: 1, className: "empty-key-icon" }), _jsx("div", { className: "empty-key-title", children: "No API keys" }), _jsx("div", { className: "empty-key-desc", children: "Create an API key to trigger flows from external services" })] }));
+}

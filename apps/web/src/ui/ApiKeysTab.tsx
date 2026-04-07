@@ -99,18 +99,14 @@ function UsageExamples() {
   return (
     <div className="card api-key-usage-card">
       <div className="api-key-usage-title">Usage Examples</div>
-      <div className="api-key-usage-label">
-        Trigger a flow run via API:
-      </div>
+      <div className="api-key-usage-label">Trigger a flow run via API:</div>
       <pre className="api-key-code-block">
         {`curl -X POST ${API_BASE}/triggers/run \\
   -H "Authorization: Bearer crf_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"flowId": "FLOW_ID", "params": {}}'`}
       </pre>
-      <div className="api-key-usage-label spaced">
-        GitLab CI example:
-      </div>
+      <div className="api-key-usage-label spaced">GitLab CI example:</div>
       <pre className="api-key-code-block">
         {`# .gitlab-ci.yml
 e2e_test:

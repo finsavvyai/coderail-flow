@@ -83,11 +83,7 @@ export function DashboardCharts({ stats }: DashboardChartsProps) {
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={stats.runs_by_flow.slice(0, 5)}>
               <CartesianGrid strokeDasharray="3 3" stroke={chartTheme.border} />
-              <XAxis
-                dataKey="flow_name"
-                stroke={chartTheme.textDim}
-                tick={axisTick}
-              />
+              <XAxis dataKey="flow_name" stroke={chartTheme.textDim} tick={axisTick} />
               <YAxis stroke={chartTheme.textDim} tick={axisTick} />
               <Tooltip contentStyle={chartTooltipStyle} />
               <Legend wrapperStyle={{ color: chartTheme.textMuted }} />

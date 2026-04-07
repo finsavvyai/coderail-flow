@@ -73,11 +73,7 @@ export function Modal({
             <h3 id="modal-title" className="modal-title">
               {title}
             </h3>
-            <button
-              onClick={onClose}
-              aria-label="Close dialog"
-              className="modal-close"
-            >
+            <button onClick={onClose} aria-label="Close dialog" className="modal-close">
               <X size={18} />
             </button>
           </div>
@@ -97,12 +93,7 @@ export function Skeleton({
   height?: number;
   borderRadius?: number;
 }) {
-  return (
-    <div
-      className="skeleton"
-      style={{ width, height, borderRadius }}
-    />
-  );
+  return <div className="skeleton" style={{ width, height, borderRadius }} />;
 }
 
 export function ProgressRing({

@@ -17,9 +17,7 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
       <div className="recorder-header">
         <div className="h2 recorder-title">
           Flow Recorder
-          {recorder.isRecording && (
-            <span className="recorder-rec-badge">REC</span>
-          )}
+          {recorder.isRecording && <span className="recorder-rec-badge">REC</span>}
         </div>
         <div className="recorder-actions">
           <button className="btn recorder-btn-cancel" onClick={onCancel}>
@@ -35,11 +33,7 @@ export function FlowRecorder({ onSaveFlow, onCancel }: FlowRecorderProps) {
         </div>
       </div>
 
-      {recorder.error && (
-        <div className="recorder-error">
-          {recorder.error}
-        </div>
-      )}
+      {recorder.error && <div className="recorder-error">{recorder.error}</div>}
 
       <RecorderUrlInput
         targetUrl={recorder.targetUrl}

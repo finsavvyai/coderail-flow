@@ -1,11 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 /**
  * Unit tests for visual regression route handlers.
  * Tests the route logic with mocked D1 database.
  */
 
-function mockEnv() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _mockEnv() {
   const results: any[] = [];
   return {
     DB: {

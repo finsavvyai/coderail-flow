@@ -39,8 +39,7 @@ export function AddStepPanel({ onAddStep }: AddStepPanelProps) {
             Use <code className="add-step-tips-code">highlight</code> to draw attention to elements
           </li>
           <li>
-            Parameters: Use{' '}
-            <code className="add-step-tips-code">{'{{paramName}}'}</code> in values
+            Parameters: Use <code className="add-step-tips-code">{'{{paramName}}'}</code> in values
           </li>
         </ul>
       </div>

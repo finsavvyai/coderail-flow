@@ -46,9 +46,7 @@ export function ElementReliabilityCard({
         <span className="badge badge--reliability-medium">
           Medium: {elementStats?.summary.medium ?? 0}
         </span>
-        <span className="badge badge--reliability-low">
-          Low: {elementStats?.summary.low ?? 0}
-        </span>
+        <span className="badge badge--reliability-low">Low: {elementStats?.summary.low ?? 0}</span>
       </div>
       {lowReliability.length === 0 ? (
         <div className="small analytics-text-muted">No elements tracked yet.</div>

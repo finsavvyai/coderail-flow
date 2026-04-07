@@ -19,7 +19,10 @@ import { rateLimit } from '../ratelimit';
 export function applyMiddlewareStack(app: Hono<{ Bindings: Env; Variables: Variables }>) {
   app.use('*', loggerMiddleware());
   app.use('*', validationErrorHandler);
-  app.use('*', initAuthConfig((c) => getAuthConfig(c.env)));
+  app.use(
+    '*',
+    initAuthConfig((c) => getAuthConfig(c.env))
+  );
 
   app.use('*', cspHeaders);
   app.use('*', requestTimeout(30000));

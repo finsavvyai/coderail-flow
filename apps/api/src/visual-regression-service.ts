@@ -6,7 +6,7 @@
  */
 
 import type { Env } from './env';
-import { q, q1 } from './db';
+import { q } from './db';
 import { compareScreenshots } from '@coderail-flow/runner';
 import { clawPrompt, isClawConfigured } from './claw-client';
 
