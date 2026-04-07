@@ -8,6 +8,7 @@
 import type { Env } from './env';
 import { q, q1 } from './db';
 import { compareScreenshots } from '@coderail-flow/runner';
+import { clawPrompt, isClawConfigured } from './claw-client';
 
 interface RunContext {
   runId: string;
@@ -86,7 +87,7 @@ async function compareStep(
       threshold: 0.1,
     });
 
-    await insertDiff(
+    const diffId = await insertDiff(
       env,
       ctx.runId,
       baseline.id,
@@ -96,6 +97,11 @@ async function compareStep(
       'pending',
       now
     );
+
+    // AI analysis for significant visual diffs
+    if (diffId && result.mismatchPercentage > 5 && isClawConfigured(env)) {
+      await analyzeVisualDiff(env, diffId, stepIndex, result.mismatchPercentage);
+    }
   } catch {
     // Don't fail the run if visual regression check fails
   }
@@ -110,7 +116,7 @@ async function insertDiff(
   mismatchPercentage: number,
   status: string,
   now: string
-): Promise<void> {
+): Promise<string> {
   const id = crypto.randomUUID();
   await q(
     env,
@@ -118,4 +124,28 @@ async function insertDiff(
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [id, runId, baselineId, stepIndex, mismatchPixels, mismatchPercentage, status, now]
   );
+  return id;
+}
+
+/** Ask Claw Gateway to describe what changed between two UI states. */
+async function analyzeVisualDiff(
+  env: Env,
+  diffId: string,
+  stepIndex: number,
+  mismatchPct: number
+): Promise<void> {
+  try {
+    const prompt =
+      `Step ${stepIndex} has a ${mismatchPct.toFixed(1)}% pixel mismatch ` +
+      'between the baseline and current screenshot. ' +
+      'What likely changed between these two UI states?';
+    const system =
+      'You are a visual regression analyst. Based on the mismatch percentage ' +
+      'and step context, describe the most likely UI changes concisely.';
+
+    const analysis = await clawPrompt(env, prompt, { system, maxTokens: 512 });
+    await q(env, 'UPDATE visual_diff SET ai_analysis = ? WHERE id = ?', [analysis, diffId]);
+  } catch {
+    // AI analysis is best-effort; don't fail the diff
+  }
 }

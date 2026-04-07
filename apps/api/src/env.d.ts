@@ -39,4 +39,7 @@ export interface Env {
   LEMONSQUEEZY_STORE_ID?: string;
   LEMONSQUEEZY_VARIANT_PRO?: string;
   LEMONSQUEEZY_VARIANT_TEAM?: string;
+  CLAW_API_KEY?: string;
+  CLAW_ENDPOINT?: string;
+  CLAW_PROJECT_ID?: string;
 }
